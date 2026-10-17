@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Portal Warga RT</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f1f5f9;
+      padding: 20px;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 400px;
+      background: white;
+      padding: 32px;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .logo {
+      text-align: center;
+      font-size: 42px;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #163b35;
+      font-size: 25px;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #64748b;
+      font-size: 14px;
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #334155;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      margin-bottom: 18px;
+      font-size: 14px;
+    }
+
+    input:focus {
+      outline: 2px solid #b7d9cf;
+      border-color: #28685a;
+    }
+
+    button {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 8px;
+      background: #28685a;
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+
+    #message {
+      margin-top: 16px;
+      font-size: 14px;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .back-link {
+      display: block;
+      margin-top: 22px;
+      text-align: center;
+      color: #28685a;
+      text-decoration: none;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="login-card">
+    <div class="logo">🏡</div>
+
+    <h1>Selamat Datang</h1>
+
+    <p class="subtitle">
+      Masuk ke Portal Informasi dan Pelayanan Warga RT
+    </p>
+
+    <form id="loginForm">
+      <label for="email">Email</label>
+      <input
+        type="email"
+        id="email"
+        placeholder="Masukkan email"
+        autocomplete="email"
+        required
+      >
+
+      <label for="password">Password</label>
+      <input
+        type="password"
+        id="password"
+        placeholder="Masukkan password"
+        autocomplete="current-password"
+        required
+      >
+
+      <button type="submit" id="loginButton">Masuk</button>
+
+      <p id="message" role="status" aria-live="polite"></p>
+    </form>
+
+    <a href="index.html" class="back-link">← Kembali ke Beranda</a>
+  </main>
+
+  <script type="module">
+    import { auth } from "./firebase.js";
+    import { signInWithEmailAndPassword } from
+      "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    const form = document.getElementById("loginForm");
+    const message = document.getElementById("message");
+    const button = document.getElementById("loginButton");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      button.disabled = true;
+      button.textContent = "Memproses...";
+      message.textContent = "";
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+
+        message.style.color = "#166534";
+        message.textContent = "Login berhasil! Mengalihkan halaman...";
+
+        // Sementara diarahkan ke halaman warga.
+        // Hak akses admin akan kita atur secara terpisah.
+        setTimeout(() => {
+          window.location.href = "warga.html";
+        }, 1000);
+
+      } catch (error) {
+        message.style.color = "#b91c1c";
+
+        if (
+          error.code === "auth/invalid-credential" ||
+          error.code === "auth/wrong-password" ||
+          error.code === "auth/user-not-found"
+        ) {
+          message.textContent = "Email atau password tidak sesuai.";
+        } else if (error.code === "auth/too-many-requests") {
+          message.textContent =
+            "Terlalu banyak percobaan. Coba lagi nanti.";
+        } else if (error.code === "auth/network-request-failed") {
+          message.textContent =
+            "Koneksi bermasalah. Periksa internet kamu.";
+        } else {
+          message.textContent =
+            "Login gagal. Periksa konfigurasi Firebase dan coba lagi.";
+          console.error("Login error:", error.code, error.message);
+        }
+
+      } finally {
+        button.disabled = false;
+        button.textContent = "Masuk";
+      }
+    });
+  </script>
+</body>
+</html>
