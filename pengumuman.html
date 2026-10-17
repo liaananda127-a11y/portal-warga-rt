@@ -4,27 +4,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Pengumuman Warga | Portal RT</title>
+  <title>Pengumuman | Portal Warga RT</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
 
     :root {
       --green: #16845b;
+      --dark-green: #106b49;
       --light-green: #e9f7ef;
       --background: #f6f9f7;
       --text: #24352c;
       --muted: #7c8b81;
       --border: #e7eee9;
       --white: #ffffff;
+      --red: #c74646;
     }
 
     body {
@@ -35,17 +36,22 @@
     }
 
     a {
-      text-decoration: none;
       color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
     }
 
     .navbar {
-      background: white;
+      background: var(--white);
       border-bottom: 1px solid var(--border);
-      padding: 15px 6%;
+      padding: 15px 5%;
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       gap: 15px;
     }
 
@@ -53,13 +59,13 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 800;
     }
 
     .brand-icon {
-      width: 39px;
-      height: 39px;
+      width: 40px;
+      height: 40px;
       border-radius: 12px;
       background: var(--light-green);
       color: var(--green);
@@ -68,137 +74,247 @@
       font-size: 22px;
     }
 
-    .back-link {
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .nav-link {
       font-size: 12px;
+      font-weight: 700;
       color: var(--green);
+    }
+
+    .logout-btn {
+      background: white;
+      color: var(--red);
+      border: 1px solid #f0dada;
+      padding: 9px 12px;
+      border-radius: 9px;
+      font-size: 12px;
       font-weight: 700;
     }
 
     .container {
-      max-width: 900px;
-      width: 90%;
-      margin: 35px auto 50px;
+      width: 92%;
+      max-width: 1000px;
+      margin: 35px auto 55px;
     }
 
     .hero {
-      background: linear-gradient(120deg, #16845b, #36a779);
-      border-radius: 20px;
-      padding: 30px;
+      background: linear-gradient(135deg, #16845b, #35a979);
       color: white;
-      margin-bottom: 30px;
+      border-radius: 20px;
+      padding: 32px;
+      margin-bottom: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border: 30px solid rgba(255,255,255,.09);
+      border-radius: 50%;
+      right: -35px;
+      top: -60px;
     }
 
     .hero-label {
       display: inline-block;
-      background: rgba(255,255,255,.17);
-      border-radius: 30px;
-      padding: 7px 12px;
+      padding: 7px 11px;
+      background: rgba(255,255,255,.15);
+      border-radius: 20px;
       font-size: 11px;
+      font-weight: 700;
       margin-bottom: 15px;
     }
 
     .hero h1 {
       font-size: clamp(24px, 4vw, 32px);
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 1;
     }
 
     .hero p {
+      max-width: 550px;
       font-size: 13px;
-      line-height: 1.8;
-      color: #e5fff0;
+      line-height: 1.9;
+      color: rgba(255,255,255,.9);
+      position: relative;
+      z-index: 1;
     }
 
-    .section-title {
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 18px;
+    }
+
+    .section-heading h2 {
       font-size: 19px;
-      margin-bottom: 7px;
+      margin-bottom: 6px;
     }
 
-    .section-description {
+    .section-heading p {
       color: var(--muted);
       font-size: 12px;
-      line-height: 1.8;
-      margin-bottom: 20px;
+      line-height: 1.7;
+    }
+
+    .count {
+      background: var(--light-green);
+      color: var(--green);
+      padding: 7px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
     }
 
     .announcement-list {
       display: grid;
-      gap: 15px;
+      gap: 16px;
     }
 
     .announcement-card {
       background: var(--white);
       border: 1px solid var(--border);
-      border-radius: 16px;
+      border-radius: 15px;
       padding: 23px;
-      transition: .2s;
+      transition: transform .2s, box-shadow .2s;
     }
 
     .announcement-card:hover {
-      border-color: #b5ddc5;
-      box-shadow: 0 8px 24px rgba(31, 89, 58, .05);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(30,70,45,.05);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .announcement-card h3 {
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-wrap: anywhere;
+    }
+
+    .badge {
+      background: var(--light-green);
+      color: var(--green);
+      padding: 5px 9px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 700;
+      white-space: nowrap;
     }
 
     .announcement-date {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--muted);
       font-size: 11px;
-      color: var(--green);
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-
-    .announcement-card h2 {
-      font-size: 16px;
-      margin-bottom: 10px;
-      line-height: 1.6;
+      margin-bottom: 15px;
     }
 
     .announcement-content {
+      color: #58695e;
       font-size: 13px;
       line-height: 1.9;
-      color: #65756b;
       white-space: pre-wrap;
       overflow-wrap: anywhere;
     }
 
     .state-box {
       background: white;
-      border: 1px dashed #d6e5db;
+      border: 1px dashed #dce7df;
       border-radius: 15px;
-      padding: 27px 20px;
       text-align: center;
+      padding: 40px 20px;
       color: var(--muted);
       font-size: 13px;
-      line-height: 1.8;
+      line-height: 1.9;
+    }
+
+    .state-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+
+    .retry-btn {
+      background: var(--green);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-top: 15px;
     }
 
     .footer {
+      background: white;
       border-top: 1px solid var(--border);
-      text-align: center;
       padding: 22px 15px;
+      text-align: center;
       color: var(--muted);
       font-size: 11px;
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 550px) {
       .navbar {
-        padding: 13px 5%;
+        padding: 13px 4%;
       }
 
       .brand {
-        font-size: 13px;
+        font-size: 12px;
+      }
+
+      .brand-icon {
+        width: 34px;
+        height: 34px;
+      }
+
+      .nav-actions {
+        gap: 9px;
+      }
+
+      .nav-link {
+        font-size: 10px;
+      }
+
+      .logout-btn {
+        padding: 8px;
+        font-size: 10px;
       }
 
       .container {
-        width: 92%;
         margin-top: 22px;
       }
 
       .hero {
-        padding: 24px 21px;
-        border-radius: 16px;
+        padding: 24px;
+        border-radius: 15px;
       }
 
       .announcement-card {
         padding: 18px;
+      }
+
+      .card-top {
+        flex-direction: column;
       }
     }
   </style>
@@ -212,29 +328,40 @@
       <span>Portal Warga RT</span>
     </a>
 
-    <a href="warga.html" class="back-link">← Dashboard</a>
+    <div class="nav-actions">
+      <a href="warga.html" class="nav-link">Dashboard Warga</a>
+      <button id="logoutBtn" class="logout-btn">Keluar ↗</button>
+    </div>
   </header>
 
   <main class="container">
 
     <section class="hero">
-      <span class="hero-label">📢 Informasi Lingkungan</span>
-      <h1>Pengumuman Warga</h1>
+      <span class="hero-label">INFORMASI WARGA</span>
+
+      <h1>Pengumuman RT 📢</h1>
+
       <p>
-        Temukan informasi kegiatan, pemberitahuan, dan pengumuman
-        terbaru dari pengurus RT dalam satu halaman.
+        Temukan informasi terbaru mengenai kegiatan, pemberitahuan,
+        dan informasi penting lainnya untuk warga.
       </p>
     </section>
 
     <section>
-      <h2 class="section-title">Pengumuman Terbaru</h2>
+      <div class="section-heading">
+        <div>
+          <h2>Informasi Terbaru</h2>
+          <p>Berikut pengumuman aktif yang dapat dibaca warga.</p>
+        </div>
 
-      <p class="section-description">
-        Berikut pengumuman yang tersedia untuk warga.
-      </p>
+        <span id="announcementCount" class="count">0 pengumuman</span>
+      </div>
 
       <div id="announcementList" class="announcement-list">
-        <div class="state-box">Memuat pengumuman...</div>
+        <div class="state-box">
+          <div class="state-icon">⏳</div>
+          Memuat pengumuman...
+        </div>
       </div>
     </section>
 
@@ -248,90 +375,215 @@
     import { auth, db } from "./firebase.js";
 
     import {
-      onAuthStateChanged
+      onAuthStateChanged,
+      signOut
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
     import {
       collection,
-      getDocs
+      getDocs,
+      query,
+      where
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    const announcementList = document.getElementById("announcementList");
+    const announcementList =
+      document.getElementById("announcementList");
+
+    const announcementCount =
+      document.getElementById("announcementCount");
+
+    const logoutBtn =
+      document.getElementById("logoutBtn");
 
     document.getElementById("year").textContent =
       new Date().getFullYear();
 
-    onAuthStateChanged(auth, async (user) => {
+    let currentUser = null;
+    let loading = false;
+
+    function showState(icon, message, showRetry = false) {
+      announcementList.replaceChildren();
+
+      const box = document.createElement("div");
+      box.className = "state-box";
+
+      const iconElement = document.createElement("div");
+      iconElement.className = "state-icon";
+      iconElement.textContent = icon;
+
+      const messageElement = document.createElement("p");
+      messageElement.textContent = message;
+
+      box.append(iconElement, messageElement);
+
+      if (showRetry) {
+        const retryButton = document.createElement("button");
+        retryButton.className = "retry-btn";
+        retryButton.textContent = "Coba Lagi";
+
+        retryButton.addEventListener("click", () => {
+          loadAnnouncements();
+        });
+
+        box.appendChild(retryButton);
+      }
+
+      announcementList.appendChild(box);
+    }
+
+    onAuthStateChanged(auth, (user) => {
       if (!user) {
         window.location.replace("login.html");
         return;
       }
 
-      await loadAnnouncements();
+      currentUser = user;
+      loadAnnouncements();
     });
 
     async function loadAnnouncements() {
-      announcementList.replaceChildren();
+      if (!currentUser || loading) return;
 
-      const loading = document.createElement("div");
-      loading.className = "state-box";
-      loading.textContent = "Memuat pengumuman...";
-      announcementList.appendChild(loading);
+      loading = true;
+
+      announcementCount.textContent = "Memuat...";
+
+      showState("⏳", "Sedang mengambil data pengumuman...");
 
       try {
-        const snapshot = await getDocs(collection(db, "pengumuman"));
+        /*
+          Hanya mengambil pengumuman aktif.
+          Query ini sesuai dengan Firestore Rules
+          yang mengizinkan warga membaca data aktif.
+        */
+
+        const announcementQuery = query(
+          collection(db, "pengumuman"),
+          where("aktif", "==", true)
+        );
+
+        const snapshot = await getDocs(announcementQuery);
 
         const announcements = snapshot.docs
-          .map((document) => document.data())
-          .filter((item) => item.aktif === true)
-          .sort((a, b) =>
-            String(b.tanggal || "").localeCompare(String(a.tanggal || ""))
-          );
+          .map((document) => ({
+            id: document.id,
+            ...document.data()
+          }))
+          .sort((a, b) => {
+            return String(b.tanggal || "")
+              .localeCompare(String(a.tanggal || ""));
+          });
+
+        announcementCount.textContent =
+          `${announcements.length} pengumuman`;
 
         announcementList.replaceChildren();
 
         if (announcements.length === 0) {
-          showMessage("Belum ada pengumuman aktif saat ini.");
+          showState(
+            "📭",
+            "Belum ada pengumuman aktif saat ini."
+          );
+
+          announcementCount.textContent = "0 pengumuman";
           return;
         }
 
-        announcements.forEach((item) => {
-          const card = document.createElement("article");
-          card.className = "announcement-card";
-
-          const date = document.createElement("div");
-          date.className = "announcement-date";
-          date.textContent = item.tanggal || "Tanggal belum tersedia";
-
-          const title = document.createElement("h2");
-          title.textContent = item.judul || "Tanpa judul";
-
-          const content = document.createElement("p");
-          content.className = "announcement-content";
-          content.textContent = item.isi || "Belum ada isi pengumuman.";
-
-          card.append(date, title, content);
-          announcementList.appendChild(card);
+        announcements.forEach((announcement) => {
+          renderAnnouncement(announcement);
         });
 
       } catch (error) {
-        console.error("Gagal memuat pengumuman:", error);
-
-        showMessage(
-          "Pengumuman belum dapat dimuat. Silakan periksa koneksi atau izin akses Firebase."
+        console.error(
+          "Gagal mengambil pengumuman:",
+          error
         );
+
+        announcementCount.textContent =
+          "Gagal memuat";
+
+        showState(
+          "⚠️",
+          "Pengumuman belum dapat dimuat. Periksa koneksi internet dan aturan akses Firestore.",
+          true
+        );
+
+      } finally {
+        loading = false;
       }
     }
 
-    function showMessage(message) {
-      announcementList.replaceChildren();
+    function renderAnnouncement(item) {
+      const card = document.createElement("article");
+      card.className = "announcement-card";
 
-      const box = document.createElement("div");
-      box.className = "state-box";
-      box.textContent = message;
+      const top = document.createElement("div");
+      top.className = "card-top";
 
-      announcementList.appendChild(box);
+      const title = document.createElement("h3");
+      title.textContent = item.judul || "Tanpa judul";
+
+      const badge = document.createElement("span");
+      badge.className = "badge";
+      badge.textContent = "Pengumuman Aktif";
+
+      top.append(title, badge);
+
+      const date = document.createElement("div");
+      date.className = "announcement-date";
+
+      const calendarIcon = document.createElement("span");
+      calendarIcon.textContent = "📅";
+
+      const dateText = document.createElement("span");
+
+      if (item.tanggal) {
+        const parsedDate = new Date(
+          `${item.tanggal}T00:00:00`
+        );
+
+        dateText.textContent = Number.isNaN(parsedDate.getTime())
+          ? `Tanggal: ${item.tanggal}`
+          : parsedDate.toLocaleDateString("id-ID", {
+              day: "numeric",
+              month: "long",
+              year: "numeric"
+            });
+      } else {
+        dateText.textContent = "Tanggal belum ditentukan";
+      }
+
+      date.append(calendarIcon, dateText);
+
+      const content = document.createElement("p");
+      content.className = "announcement-content";
+      content.textContent =
+        item.isi || "Tidak ada isi pengumuman.";
+
+      card.append(top, date, content);
+
+      announcementList.appendChild(card);
     }
+
+    logoutBtn.addEventListener("click", async () => {
+      const confirmed = confirm(
+        "Yakin ingin keluar dari akun?"
+      );
+
+      if (!confirmed) return;
+
+      try {
+        await signOut(auth);
+        window.location.replace("login.html");
+
+      } catch (error) {
+        console.error("Gagal logout:", error);
+
+        alert(
+          "Gagal keluar dari akun. Silakan coba lagi."
+        );
+      }
+    });
   </script>
 
 </body>

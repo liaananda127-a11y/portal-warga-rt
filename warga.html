@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Dashboard Warga | Portal RT</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
 
     :root {
@@ -25,6 +25,7 @@
       --muted: #7c8b81;
       --border: #e7eee9;
       --white: #ffffff;
+      --red: #c74646;
     }
 
     body {
@@ -34,180 +35,180 @@
       min-height: 100vh;
     }
 
-    button, a {
-      font: inherit;
+    a {
+      color: inherit;
+      text-decoration: none;
     }
 
-    a {
-      text-decoration: none;
-      color: inherit;
+    button {
+      font: inherit;
+      cursor: pointer;
     }
 
     .navbar {
-      background: var(--white);
+      background: white;
       border-bottom: 1px solid var(--border);
-      padding: 15px 6%;
+      padding: 15px 5%;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 16px;
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      gap: 15px;
     }
 
     .brand {
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 17px;
+      font-size: 15px;
       font-weight: 800;
     }
 
     .brand-icon {
-      width: 39px;
-      height: 39px;
+      width: 40px;
+      height: 40px;
       border-radius: 12px;
       background: var(--light-green);
       color: var(--green);
       display: grid;
       place-items: center;
-      font-size: 21px;
+      font-size: 22px;
     }
 
-    .nav-right {
+    .nav-actions {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
     }
 
-    .user-info {
-      text-align: right;
+    .nav-link {
+      color: var(--green);
       font-size: 12px;
-    }
-
-    .user-info strong {
-      display: block;
-      font-size: 13px;
-      margin-bottom: 3px;
-    }
-
-    .user-info span {
-      color: var(--muted);
+      font-weight: 700;
     }
 
     .logout-btn {
+      background: white;
+      color: var(--red);
       border: 1px solid #f0dada;
-      background: #fff;
-      color: #c34c4c;
-      border-radius: 10px;
-      padding: 10px 14px;
+      padding: 9px 12px;
+      border-radius: 9px;
       font-size: 12px;
       font-weight: 700;
-      cursor: pointer;
-    }
-
-    .logout-btn:hover {
-      background: #fff5f5;
     }
 
     .container {
-      max-width: 1120px;
-      width: 90%;
-      margin: 32px auto 50px;
+      width: 92%;
+      max-width: 1100px;
+      margin: 30px auto 50px;
     }
 
     .welcome {
-      background: linear-gradient(120deg, #16845b, #36a779);
+      background: linear-gradient(135deg, #16845b, #35a979);
       color: white;
+      padding: 32px;
       border-radius: 20px;
-      padding: 30px;
+      margin-bottom: 25px;
       position: relative;
       overflow: hidden;
-      margin-bottom: 27px;
     }
 
     .welcome::after {
       content: "";
       position: absolute;
-      width: 210px;
-      height: 210px;
+      width: 190px;
+      height: 190px;
+      border: 30px solid rgba(255,255,255,.09);
       border-radius: 50%;
-      border: 35px solid rgba(255,255,255,.09);
       right: -40px;
-      top: -90px;
+      top: -65px;
     }
 
     .welcome-label {
       display: inline-block;
-      background: rgba(255,255,255,.17);
-      border-radius: 30px;
-      padding: 7px 12px;
+      padding: 7px 11px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.15);
       font-size: 11px;
-      margin-bottom: 17px;
+      font-weight: 700;
+      margin-bottom: 15px;
     }
 
     .welcome h1 {
-      font-size: clamp(23px, 4vw, 32px);
-      margin-bottom: 10px;
-      line-height: 1.4;
+      font-size: clamp(23px, 4vw, 31px);
+      line-height: 1.5;
+      margin-bottom: 8px;
       position: relative;
       z-index: 1;
     }
 
     .welcome p {
       font-size: 13px;
-      line-height: 1.8;
-      color: #e5fff0;
-      max-width: 570px;
+      line-height: 1.9;
+      color: rgba(255,255,255,.9);
+      max-width: 600px;
       position: relative;
       z-index: 1;
     }
 
-    .section-title {
-      font-size: 18px;
-      font-weight: 800;
-      margin-bottom: 7px;
+    .section {
+      margin-bottom: 30px;
     }
 
-    .section-description {
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 17px;
+    }
+
+    .section-heading h2 {
+      font-size: 19px;
+      margin-bottom: 6px;
+    }
+
+    .section-heading p {
       font-size: 12px;
       color: var(--muted);
-      line-height: 1.7;
-      margin-bottom: 18px;
+      line-height: 1.8;
+    }
+
+    .view-all {
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
     }
 
     .menu-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-      margin-bottom: 34px;
+      gap: 17px;
     }
 
     .menu-card {
       display: block;
-      background: var(--white);
+      background: white;
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 21px;
-      transition: .2s;
+      border-radius: 15px;
+      padding: 22px;
+      transition: transform .2s, box-shadow .2s;
     }
 
     .menu-card:hover {
       transform: translateY(-3px);
-      border-color: #a9d8bd;
-      box-shadow: 0 8px 24px rgba(31, 89, 58, .06);
+      box-shadow: 0 8px 25px rgba(30,70,45,.06);
     }
 
     .menu-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 13px;
+      width: 47px;
+      height: 47px;
       display: grid;
       place-items: center;
-      font-size: 22px;
       background: var(--light-green);
-      margin-bottom: 15px;
+      border-radius: 13px;
+      font-size: 23px;
+      margin-bottom: 17px;
     }
 
     .menu-card h3 {
@@ -219,10 +220,13 @@
       font-size: 12px;
       color: var(--muted);
       line-height: 1.8;
+      margin-bottom: 15px;
     }
 
-    .announcement-section {
-      margin-bottom: 30px;
+    .menu-arrow {
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 700;
     }
 
     .announcement-list {
@@ -234,92 +238,139 @@
       background: white;
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 19px;
+      padding: 20px;
     }
 
-    .announcement-date {
-      color: var(--green);
-      font-size: 11px;
-      font-weight: 700;
-      margin-bottom: 9px;
+    .announcement-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 10px;
     }
 
     .announcement-card h3 {
-      font-size: 15px;
-      margin-bottom: 8px;
+      font-size: 14px;
+      line-height: 1.7;
+      overflow-wrap: anywhere;
     }
 
-    .announcement-card p {
-      color: #65756b;
+    .badge {
+      background: var(--light-green);
+      color: var(--green);
+      border-radius: 20px;
+      padding: 5px 9px;
+      font-size: 10px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .announcement-date {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .announcement-content {
       font-size: 12px;
       line-height: 1.9;
+      color: #58695e;
       white-space: pre-wrap;
       overflow-wrap: anywhere;
     }
 
-    .empty-state {
+    .state-box {
       background: white;
-      border: 1px dashed #d6e5db;
+      border: 1px dashed #dce7df;
       border-radius: 14px;
-      padding: 25px;
-      color: var(--muted);
+      padding: 30px 20px;
       text-align: center;
+      color: var(--muted);
       font-size: 12px;
-      line-height: 1.8;
+      line-height: 1.9;
     }
 
-    .status {
+    .state-icon {
+      font-size: 29px;
+      margin-bottom: 10px;
+    }
+
+    .retry-btn {
+      background: var(--green);
+      color: white;
+      border: none;
+      border-radius: 9px;
+      padding: 10px 15px;
+      margin-top: 12px;
       font-size: 12px;
-      line-height: 1.8;
-      color: var(--muted);
+      font-weight: 700;
     }
 
     .footer {
       border-top: 1px solid var(--border);
+      background: white;
+      padding: 22px 15px;
       text-align: center;
-      padding: 23px 15px;
-      color: var(--muted);
       font-size: 11px;
+      color: var(--muted);
     }
 
-    @media (max-width: 700px) {
+    @media (max-width: 800px) {
+      .menu-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 550px) {
       .navbar {
-        padding: 13px 5%;
+        padding: 13px 4%;
       }
 
       .brand {
-        font-size: 14px;
+        font-size: 12px;
       }
 
-      .user-info {
-        display: none;
+      .brand-icon {
+        width: 35px;
+        height: 35px;
+      }
+
+      .nav-actions {
+        gap: 8px;
+      }
+
+      .nav-link {
+        font-size: 10px;
       }
 
       .logout-btn {
-        padding: 9px 11px;
+        padding: 8px;
+        font-size: 10px;
       }
 
       .container {
-        width: 92%;
         margin-top: 22px;
       }
 
       .welcome {
-        padding: 24px 21px;
-        border-radius: 16px;
+        padding: 24px;
+        border-radius: 15px;
       }
 
       .menu-grid {
         grid-template-columns: 1fr;
-        gap: 11px;
       }
 
       .menu-card {
+        padding: 19px;
+      }
+
+      .announcement-card {
         padding: 17px;
       }
 
-      .menu-icon {
-        margin-bottom: 11px;
+      .announcement-top {
+        flex-direction: column;
       }
     }
   </style>
@@ -333,66 +384,89 @@
       <span>Portal Warga RT</span>
     </a>
 
-    <div class="nav-right">
-      <div class="user-info">
-        <strong id="userName">Memuat akun...</strong>
-        <span>Warga RT</span>
-      </div>
-
-      <button class="logout-btn" id="logoutBtn">
-        Keluar ↗
-      </button>
+    <div class="nav-actions">
+      <a href="index.html" class="nav-link">Beranda</a>
+      <button id="logoutBtn" class="logout-btn">Keluar ↗</button>
     </div>
   </header>
 
   <main class="container">
 
+    <!-- Bagian sambutan -->
     <section class="welcome">
-      <span class="welcome-label">🏡 Portal Informasi Warga</span>
-      <h1 id="welcomeTitle">Selamat Datang!</h1>
+      <span class="welcome-label">DASHBOARD WARGA</span>
+
+      <h1>Selamat datang, <span id="userName">Warga</span>! 👋</h1>
+
       <p>
-        Temukan informasi lingkungan, baca pengumuman terbaru,
-        dan akses layanan warga dengan lebih mudah melalui portal RT.
+        Selamat datang di Portal Informasi dan Pelayanan Warga RT.
+        Temukan pengumuman terbaru dan akses informasi pelayanan
+        warga melalui menu yang tersedia.
       </p>
     </section>
 
-    <section>
-      <h2 class="section-title">Menu Layanan</h2>
-      <p class="section-description">
-        Pilih menu yang ingin kamu akses.
-      </p>
+    <!-- Menu utama -->
+    <section class="section">
+      <div class="section-heading">
+        <div>
+          <h2>Layanan Portal</h2>
+          <p>Pilih menu untuk melihat informasi dan pelayanan warga.</p>
+        </div>
+      </div>
 
       <div class="menu-grid">
 
         <a href="pengumuman.html" class="menu-card">
           <div class="menu-icon">📢</div>
           <h3>Pengumuman</h3>
-          <p>Lihat informasi dan pengumuman terbaru dari pengurus RT.</p>
+          <p>
+            Lihat informasi kegiatan, pemberitahuan,
+            dan pengumuman terbaru dari RT.
+          </p>
+          <span class="menu-arrow">Lihat pengumuman →</span>
         </a>
 
         <a href="pelayanan.html" class="menu-card">
           <div class="menu-icon">📝</div>
           <h3>Pelayanan Warga</h3>
-          <p>Jelajahi informasi layanan dan pengajuan administrasi warga.</p>
+          <p>
+            Akses informasi pelayanan dan kebutuhan
+            administrasi warga.
+          </p>
+          <span class="menu-arrow">Lihat pelayanan →</span>
         </a>
 
         <a href="index.html" class="menu-card">
-          <div class="menu-icon">🏠</div>
+          <div class="menu-icon">🏡</div>
           <h3>Beranda Portal</h3>
-          <p>Kembali ke halaman utama portal informasi lingkungan.</p>
+          <p>
+            Kembali ke halaman utama Portal Informasi
+            dan Pelayanan Warga RT.
+          </p>
+          <span class="menu-arrow">Kembali ke beranda →</span>
         </a>
 
       </div>
     </section>
 
-    <section class="announcement-section">
-      <h2 class="section-title">📢 Pengumuman Terbaru</h2>
-      <p class="section-description">
-        Informasi terbaru yang dibagikan oleh pengurus RT.
-      </p>
+    <!-- Pengumuman terbaru -->
+    <section class="section">
+      <div class="section-heading">
+        <div>
+          <h2>Pengumuman Terbaru</h2>
+          <p>Informasi aktif yang tersedia untuk warga.</p>
+        </div>
+
+        <a href="pengumuman.html" class="view-all">
+          Lihat semua →
+        </a>
+      </div>
 
       <div id="announcementList" class="announcement-list">
-        <div class="empty-state">Memuat pengumuman...</div>
+        <div class="state-box">
+          <div class="state-icon">⏳</div>
+          Memuat pengumuman...
+        </div>
       </div>
     </section>
 
@@ -412,11 +486,12 @@
 
     import {
       collection,
-      getDocs
+      getDocs,
+      query,
+      where
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const userName = document.getElementById("userName");
-    const welcomeTitle = document.getElementById("welcomeTitle");
     const announcementList = document.getElementById("announcementList");
     const logoutBtn = document.getElementById("logoutBtn");
 
@@ -424,8 +499,10 @@
       new Date().getFullYear();
 
     let currentUser = null;
+    let isLoading = false;
 
-    onAuthStateChanged(auth, async (user) => {
+    // Memeriksa status login pengguna
+    onAuthStateChanged(auth, (user) => {
       if (!user) {
         window.location.replace("login.html");
         return;
@@ -433,96 +510,153 @@
 
       currentUser = user;
 
-      const displayName =
+      // Menampilkan nama pengguna berdasarkan profil akun
+      userName.textContent =
         user.displayName ||
         (user.email ? user.email.split("@")[0] : "Warga");
 
-      userName.textContent = displayName;
-      welcomeTitle.textContent = `Selamat Datang, ${displayName}!`;
-
-      await loadAnnouncements();
+      loadAnnouncements();
     });
 
-    async function loadAnnouncements() {
+    // Menampilkan pesan status
+    function showState(icon, message, showRetry = false) {
       announcementList.replaceChildren();
 
-      const loading = document.createElement("div");
-      loading.className = "empty-state";
-      loading.textContent = "Memuat pengumuman...";
-      announcementList.appendChild(loading);
+      const box = document.createElement("div");
+      box.className = "state-box";
+
+      const iconElement = document.createElement("div");
+      iconElement.className = "state-icon";
+      iconElement.textContent = icon;
+
+      const messageElement = document.createElement("p");
+      messageElement.textContent = message;
+
+      box.append(iconElement, messageElement);
+
+      if (showRetry) {
+        const retryButton = document.createElement("button");
+        retryButton.className = "retry-btn";
+        retryButton.textContent = "Coba Lagi";
+
+        retryButton.addEventListener("click", loadAnnouncements);
+
+        box.appendChild(retryButton);
+      }
+
+      announcementList.appendChild(box);
+    }
+
+    // Mengambil pengumuman aktif dari Firestore
+    async function loadAnnouncements() {
+      if (!currentUser || isLoading) return;
+
+      isLoading = true;
+
+      showState("⏳", "Sedang mengambil pengumuman...");
 
       try {
-        const snapshot = await getDocs(collection(db, "pengumuman"));
+        const announcementQuery = query(
+          collection(db, "pengumuman"),
+          where("aktif", "==", true)
+        );
+
+        const snapshot = await getDocs(announcementQuery);
 
         const announcements = snapshot.docs
-          .map((doc) => ({ id: doc.id, ...doc.data() }))
-          .filter((item) => item.aktif === true)
-          .sort((a, b) =>
-            String(b.tanggal || "").localeCompare(String(a.tanggal || ""))
-          );
+          .map((document) => ({
+            id: document.id,
+            ...document.data()
+          }))
+          .sort((a, b) => {
+            return String(b.tanggal || "")
+              .localeCompare(String(a.tanggal || ""));
+          });
 
         announcementList.replaceChildren();
 
         if (announcements.length === 0) {
-          showEmpty("Belum ada pengumuman aktif saat ini.");
+          showState(
+            "📭",
+            "Belum ada pengumuman aktif saat ini."
+          );
           return;
         }
 
-        announcements.forEach((item) => {
-          const card = document.createElement("article");
-          card.className = "announcement-card";
-
-          const date = document.createElement("div");
-          date.className = "announcement-date";
-          date.textContent = item.tanggal || "Tanggal belum tersedia";
-
-          const title = document.createElement("h3");
-          title.textContent = item.judul || "Tanpa judul";
-
-          const content = document.createElement("p");
-          content.textContent = item.isi || "Tidak ada isi pengumuman.";
-
-          card.append(date, title, content);
-          announcementList.appendChild(card);
+        // Dashboard hanya menampilkan maksimal 3 pengumuman
+        announcements.slice(0, 3).forEach((item) => {
+          renderAnnouncement(item);
         });
 
       } catch (error) {
         console.error("Gagal memuat pengumuman:", error);
 
-        showEmpty(
-          "Pengumuman belum dapat dimuat. Periksa koneksi Firebase dan aturan akses Firestore."
+        showState(
+          "⚠️",
+          "Pengumuman belum dapat dimuat. Periksa koneksi internet dan aturan akses Firestore.",
+          true
         );
+
+      } finally {
+        isLoading = false;
       }
     }
 
-    function showEmpty(message) {
-      announcementList.replaceChildren();
+    // Membuat kartu pengumuman
+    function renderAnnouncement(item) {
+      const card = document.createElement("article");
+      card.className = "announcement-card";
 
-      const empty = document.createElement("div");
-      empty.className = "empty-state";
-      empty.textContent = message;
+      const top = document.createElement("div");
+      top.className = "announcement-top";
 
-      announcementList.appendChild(empty);
+      const title = document.createElement("h3");
+      title.textContent = item.judul || "Tanpa judul";
+
+      const badge = document.createElement("span");
+      badge.className = "badge";
+      badge.textContent = "Aktif";
+
+      top.append(title, badge);
+
+      const date = document.createElement("div");
+      date.className = "announcement-date";
+
+      if (item.tanggal) {
+        const parsedDate = new Date(`${item.tanggal}T00:00:00`);
+
+        date.textContent = Number.isNaN(parsedDate.getTime())
+          ? `Tanggal: ${item.tanggal}`
+          : `📅 ${parsedDate.toLocaleDateString("id-ID", {
+              day: "numeric",
+              month: "long",
+              year: "numeric"
+            })}`;
+      } else {
+        date.textContent = "📅 Tanggal belum ditentukan";
+      }
+
+      const content = document.createElement("p");
+      content.className = "announcement-content";
+      content.textContent = item.isi || "Tidak ada isi pengumuman.";
+
+      card.append(top, date, content);
+
+      announcementList.appendChild(card);
     }
 
+    // Logout
     logoutBtn.addEventListener("click", async () => {
-      if (!currentUser) return;
-
       const confirmed = confirm("Yakin ingin keluar dari akun?");
 
       if (!confirmed) return;
-
-      logoutBtn.disabled = true;
-      logoutBtn.textContent = "Keluar...";
 
       try {
         await signOut(auth);
         window.location.replace("login.html");
       } catch (error) {
         console.error("Gagal logout:", error);
-        alert("Belum berhasil keluar. Silakan coba lagi.");
-        logoutBtn.disabled = false;
-        logoutBtn.textContent = "Keluar ↗";
+        alert("Gagal keluar dari akun. Silakan coba lagi.");
       }
     });
   </script>
