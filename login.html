@@ -1,566 +1,404 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Login | Portal Warga RT</title>
-    <meta name="theme-color" content="#f3f7f4">
-    <meta name="description" content="Login Portal Informasi dan Pelayanan Warga RT">
+  <title>Login - Portal Warga RT</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
 
-    <style>
-        :root {
-            --primary: #28685a;
-            --primary-dark: #1d5147;
-            --heading: #203f39;
-            --text: #75868c;
-            --border: #dce5e2;
-            --background: #f3f7f4;
-            --white: #ffffff;
-        }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: linear-gradient(135deg, #e7f5ed, #c8e8d6);
+      color: #26352e;
+    }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    .login-container {
+      width: 100%;
+      max-width: 420px;
+      background: white;
+      padding: 35px;
+      border-radius: 18px;
+      box-shadow: 0 10px 35px rgba(23, 107, 77, 0.12);
+    }
 
-        body {
-            min-height: 100vh;
-            min-height: 100dvh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 24px 16px;
-            position: relative;
-            overflow-x: hidden;
-            background: var(--background);
-            color: var(--heading);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
+    .logo {
+      width: 65px;
+      height: 65px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 18px;
+      background: #d9f3e4;
+      border-radius: 18px;
+      font-size: 30px;
+    }
 
-        /* Dekorasi background minimalis */
-        .decoration {
-            position: fixed;
-            width: 230px;
-            height: 230px;
-            background: #e2eee6;
-            opacity: 0.7;
-            pointer-events: none;
-            z-index: 0;
-            border-radius: 50%;
-            filter: blur(1px);
-        }
+    h1 {
+      text-align: center;
+      font-size: 25px;
+      color: #176b4d;
+      margin-bottom: 8px;
+    }
 
-        .decoration-top {
-            top: -155px;
-            left: -115px;
-        }
+    .subtitle {
+      text-align: center;
+      color: #718078;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
 
-        .decoration-bottom {
-            right: -145px;
-            bottom: -155px;
-        }
+    .form-group {
+      margin-bottom: 18px;
+    }
 
-        /* Container utama */
-        .login-wrapper {
-            width: 100%;
-            max-width: 410px;
-            position: relative;
-            z-index: 1;
-        }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: bold;
+    }
 
-        /* Card login */
-        .login-card {
-            width: 100%;
-            padding: 32px 28px 27px;
-            background: var(--white);
-            border: 1px solid rgba(220, 229, 226, 0.7);
-            border-radius: 20px;
-            box-shadow: 0 12px 38px rgba(35, 76, 62, 0.07);
-        }
+    input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #d5e1d9;
+      border-radius: 9px;
+      outline: none;
+      font-size: 14px;
+    }
 
-        /* Logo rumah */
-        .logo-wrapper {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 12px;
-        }
+    input:focus {
+      border-color: #24865f;
+      box-shadow: 0 0 0 3px rgba(36, 134, 95, 0.1);
+    }
 
-        .logo {
-            width: 43px;
-            height: 43px;
-            display: block;
-        }
+    .password-wrapper {
+      position: relative;
+    }
 
-        .logo svg {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
+    .password-wrapper input {
+      padding-right: 65px;
+    }
 
-        /* Judul */
-        .login-header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: transparent;
+      color: #176b4d;
+      cursor: pointer;
+      font-size: 12px;
+    }
 
-        .login-header h1 {
-            color: var(--heading);
-            font-size: 25px;
-            line-height: 1.4;
-            font-weight: 800;
-            letter-spacing: -0.7px;
-            margin-bottom: 6px;
-        }
+    .login-button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 9px;
+      background: #176b4d;
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 5px;
+      transition: background 0.2s;
+    }
 
-        .login-header p {
-            color: var(--text);
-            font-size: 12px;
-            line-height: 1.7;
-        }
+    .login-button:hover {
+      background: #10583e;
+    }
 
-        /* Form */
-        .form-group {
-            margin-bottom: 17px;
-        }
+    .login-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
 
-        .form-group label {
-            display: block;
-            color: #304e48;
-            font-size: 12px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
+    .message {
+      display: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      line-height: 1.5;
+      margin-bottom: 16px;
+      overflow-wrap: anywhere;
+    }
 
-        .input-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
+    .message.error {
+      display: block;
+      background: #fce8e6;
+      color: #b42318;
+    }
 
-        .input-icon {
-            position: absolute;
-            left: 13px;
-            width: 18px;
-            height: 18px;
-            color: #82958e;
-            pointer-events: none;
-        }
+    .message.info {
+      display: block;
+      background: #e4f4eb;
+      color: #176b4d;
+    }
 
-        .input-wrapper input {
-            width: 100%;
-            height: 45px;
-            padding: 0 42px 0 40px;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            outline: none;
-            background: #ffffff;
-            color: var(--heading);
-            font-family: inherit;
-            font-size: 12px;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 22px;
+      color: #176b4d;
+      text-decoration: none;
+      font-size: 14px;
+    }
 
-        .input-wrapper input::placeholder {
-            color: #98a6a9;
-        }
+    .back-link:hover {
+      text-decoration: underline;
+    }
 
-        .input-wrapper input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(40, 104, 90, 0.08);
-        }
+    .footer {
+      margin-top: 25px;
+      text-align: center;
+      color: #89958e;
+      font-size: 12px;
+    }
 
-        /* Tombol lihat password */
-        .toggle-password {
-            position: absolute;
-            right: 11px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 4px;
-            border: none;
-            background: transparent;
-            color: #82958e;
-            cursor: pointer;
-        }
+    @media (max-width: 480px) {
+      .login-container {
+        padding: 25px 20px;
+      }
 
-        .toggle-password svg {
-            width: 18px;
-            height: 18px;
-        }
-
-        /* Tombol login */
-        .login-button {
-            width: 100%;
-            height: 45px;
-            margin-top: 3px;
-            border: none;
-            border-radius: 10px;
-            background: var(--primary);
-            color: #ffffff;
-            font-family: inherit;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.2s;
-        }
-
-        .login-button:hover {
-            background: var(--primary-dark);
-        }
-
-        .login-button:active {
-            transform: scale(0.99);
-        }
-
-        .login-button:disabled {
-            opacity: 0.65;
-            cursor: wait;
-        }
-
-        /* Pesan status */
-        .message {
-            min-height: 0;
-            margin-top: 10px;
-            text-align: center;
-            font-size: 11px;
-            line-height: 1.6;
-            overflow-wrap: anywhere;
-        }
-
-        .message:empty {
-            display: none;
-        }
-
-        /* Link kembali */
-        .back-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 7px;
-            margin-top: 22px;
-            color: var(--primary);
-            text-decoration: none;
-            font-size: 12px;
-            font-weight: 600;
-            transition: color 0.2s;
-        }
-
-        .back-link:hover {
-            color: var(--primary-dark);
-        }
-
-        .back-link span {
-            font-size: 16px;
-        }
-
-        /* Tampilan HP */
-        @media (max-width: 480px) {
-            body {
-                padding: 20px 16px;
-            }
-
-            .login-wrapper {
-                max-width: 360px;
-            }
-
-            .login-card {
-                padding: 28px 22px 24px;
-                border-radius: 17px;
-            }
-
-            .login-header h1 {
-                font-size: 23px;
-            }
-
-            .decoration {
-                width: 170px;
-                height: 170px;
-            }
-        }
-
-        /* Layar pendek */
-        @media (max-height: 600px) {
-            body {
-                align-items: flex-start;
-            }
-        }
-
-        /* Hormati preferensi gerakan pengguna */
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                transition: none !important;
-            }
-        }
-    </style>
+      h1 {
+        font-size: 23px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-    <div class="decoration decoration-top" aria-hidden="true"></div>
-    <div class="decoration decoration-bottom" aria-hidden="true"></div>
+  <main class="login-container">
 
-    <main class="login-wrapper">
-        <section class="login-card">
+    <div class="logo">🏡</div>
 
-            <!-- Logo rumah minimalis -->
-            <div class="logo-wrapper">
-                <div class="logo">
-                    <svg
-                        viewBox="0 0 100 100"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        role="img"
-                        aria-label="Logo Portal Warga RT"
-                    >
-                        <!-- Atap -->
-                        <path
-                            d="M12 43L50 12L88 43"
-                            stroke="#28685a"
-                            stroke-width="8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        />
+    <h1>Portal Warga RT</h1>
 
-                        <!-- Badan rumah -->
-                        <path
-                            d="M22 39V82H78V39"
-                            stroke="#28685a"
-                            stroke-width="7"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        />
+    <p class="subtitle">
+      Selamat datang!<br>
+      Silakan login untuk mengakses layanan warga.
+    </p>
 
-                        <!-- Jendela -->
-                        <rect x="37" y="45" width="10" height="10" rx="2" fill="#8FB6A1"/>
-                        <rect x="51" y="45" width="10" height="10" rx="2" fill="#8FB6A1"/>
-                        <rect x="37" y="59" width="10" height="10" rx="2" fill="#8FB6A1"/>
-                        <rect x="51" y="59" width="10" height="10" rx="2" fill="#8FB6A1"/>
+    <div
+      id="message"
+      class="message"
+      role="alert"
+      aria-live="polite"
+    ></div>
 
-                        <!-- Pintu -->
-                        <path
-                            d="M62 82V70C62 65 65 62 70 62C75 62 78 65 78 70V82"
-                            fill="#E6A17C"
-                        />
+    <form id="loginForm">
 
-                        <!-- Daun -->
-                        <path
-                            d="M72 27C72 15 82 8 93 8C93 21 86 29 72 31"
-                            fill="#8FB6A1"
-                        />
+      <div class="form-group">
+        <label for="email">Email</label>
 
-                        <path
-                            d="M72 29L84 16"
-                            stroke="#28685a"
-                            stroke-width="2.5"
-                            stroke-linecap="round"
-                        />
-                    </svg>
-                </div>
-            </div>
+        <input
+          type="email"
+          id="email"
+          placeholder="Masukkan email"
+          autocomplete="username"
+          required
+        >
+      </div>
 
-            <header class="login-header">
-                <h1>Selamat Datang</h1>
-                <p>Masuk ke Portal Informasi dan Pelayanan Warga RT</p>
-            </header>
+      <div class="form-group">
+        <label for="password">Password</label>
 
-            <form id="loginForm">
+        <div class="password-wrapper">
+          <input
+            type="password"
+            id="password"
+            placeholder="Masukkan password"
+            autocomplete="current-password"
+            required
+          >
 
-                <!-- Email -->
-                <div class="form-group">
-                    <label for="email">Email</label>
+          <button
+            type="button"
+            class="toggle-password"
+            id="togglePassword"
+          >
+            Lihat
+          </button>
+        </div>
+      </div>
 
-                    <div class="input-wrapper">
-                        <svg
-                            class="input-icon"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            aria-hidden="true"
-                        >
-                            <rect x="3" y="5" width="18" height="14" rx="2"/>
-                            <path d="M3 7L12 13L21 7"/>
-                        </svg>
+      <button
+        type="submit"
+        class="login-button"
+        id="loginButton"
+      >
+        Login
+      </button>
 
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            placeholder="Masukkan email"
-                            autocomplete="username"
-                            required
-                        >
-                    </div>
-                </div>
+    </form>
 
-                <!-- Password -->
-                <div class="form-group">
-                    <label for="password">Password</label>
+    <a href="index.html" class="back-link">
+      ← Kembali ke Beranda
+    </a>
 
-                    <div class="input-wrapper">
-                        <svg
-                            class="input-icon"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            aria-hidden="true"
-                        >
-                            <rect x="4" y="10" width="16" height="11" rx="2"/>
-                            <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
-                            <circle cx="12" cy="15" r="1"/>
-                            <path d="M12 16v2"/>
-                        </svg>
+    <div class="footer">
+      Portal Informasi dan Pelayanan Warga RT
+    </div>
 
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            placeholder="Masukkan password"
-                            autocomplete="current-password"
-                            required
-                        >
+  </main>
 
-                        <button
-                            type="button"
-                            class="toggle-password"
-                            id="togglePassword"
-                            aria-label="Tampilkan password"
-                            aria-pressed="false"
-                        >
-                            <svg
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.8"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                aria-hidden="true"
-                            >
-                                <path d="M2 12s3.5-7 10-7s10 7 10 7s-3.5 7-10 7S2 12 2 12Z"/>
-                                <circle cx="12" cy="12" r="3"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
+  <script type="module">
+    import { auth, db } from "./firebase.js";
 
-                <button type="submit" class="login-button" id="loginButton">
-                    Masuk
-                </button>
+    import {
+      signInWithEmailAndPassword,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-                <p
-                    class="message"
-                    id="message"
-                    role="status"
-                    aria-live="polite"
-                ></p>
+    import {
+      doc,
+      getDoc
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-            </form>
+    const loginForm = document.getElementById("loginForm");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const loginButton = document.getElementById("loginButton");
+    const messageBox = document.getElementById("message");
+    const togglePassword = document.getElementById("togglePassword");
 
-            <a href="index.html" class="back-link">
-                <span aria-hidden="true">←</span>
-                Kembali ke Beranda
-            </a>
+    let checkingSession = false;
 
-        </section>
-    </main>
+    function showMessage(message, type = "error") {
+      messageBox.textContent = message;
+      messageBox.className = "message " + type;
+    }
 
-    <script type="module">
-        import { auth } from "./firebase.js";
+    function hideMessage() {
+      messageBox.textContent = "";
+      messageBox.className = "message";
+    }
 
-        import {
-            signInWithEmailAndPassword
-        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    function setLoading(loading) {
+      loginButton.disabled = loading;
+      loginButton.textContent = loading
+        ? "Memeriksa akun..."
+        : "Login";
+    }
 
-        const form = document.getElementById("loginForm");
-        const emailInput = document.getElementById("email");
-        const passwordInput = document.getElementById("password");
-        const loginButton = document.getElementById("loginButton");
-        const message = document.getElementById("message");
-        const togglePassword = document.getElementById("togglePassword");
+    function getLoginErrorMessage(error) {
+      switch (error.code) {
+        case "auth/invalid-credential":
+        case "auth/wrong-password":
+        case "auth/user-not-found":
+          return "Email atau password tidak sesuai.";
 
-        // Menampilkan atau menyembunyikan password
-        togglePassword.addEventListener("click", () => {
-            const showPassword = passwordInput.type === "password";
+        case "auth/invalid-email":
+          return "Format email tidak valid.";
 
-            passwordInput.type = showPassword ? "text" : "password";
+        case "auth/too-many-requests":
+          return "Terlalu banyak percobaan. Coba lagi nanti.";
 
-            togglePassword.setAttribute(
-                "aria-label",
-                showPassword ? "Sembunyikan password" : "Tampilkan password"
-            );
+        case "auth/network-request-failed":
+          return "Koneksi internet bermasalah. Periksa koneksi kamu.";
 
-            togglePassword.setAttribute(
-                "aria-pressed",
-                String(showPassword)
-            );
-        });
+        case "auth/operation-not-allowed":
+          return "Login email/password belum diaktifkan di Firebase.";
 
-        // Login menggunakan Firebase Authentication
-        form.addEventListener("submit", async (event) => {
-            event.preventDefault();
+        default:
+          return "Login gagal. Silakan coba kembali.";
+      }
+    }
 
-            const email = emailInput.value.trim();
-            const password = passwordInput.value;
+    // Memeriksa apakah pengguna sudah login.
+    // Jika sudah, arahkan sesuai role.
+    async function redirectByRole(user) {
+      if (checkingSession) return;
 
-            loginButton.disabled = true;
-            loginButton.textContent = "Memproses...";
-            message.textContent = "";
-            message.style.color = "#b91c1c";
+      checkingSession = true;
+      setLoading(true);
 
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
+      try {
+        const roleRef = doc(db, "roles", user.uid);
+        const roleSnapshot = await getDoc(roleRef);
 
-                message.style.color = "#28685a";
-                message.textContent =
-                    "Login berhasil. Mengalihkan halaman...";
+        if (roleSnapshot.exists() &&
+            roleSnapshot.data().role === "admin") {
+          window.location.replace("admin.html");
+        } else {
+          window.location.replace("warga.html");
+        }
+      } catch (error) {
+        console.error("Pemeriksaan role gagal:", error);
 
-                setTimeout(() => {
-                    window.location.href = "warga.html";
-                }, 800);
+        checkingSession = false;
+        setLoading(false);
 
-            } catch (error) {
-                console.error("Login error:", error.code);
+        showMessage(
+          "Gagal memeriksa hak akses akun. Periksa Firestore Rules dan coba lagi."
+        );
+      }
+    }
 
-                if (
-                    error.code === "auth/invalid-credential" ||
-                    error.code === "auth/wrong-password" ||
-                    error.code === "auth/user-not-found"
-                ) {
-                    message.textContent =
-                        "Email atau password tidak sesuai.";
+    // Jika sudah login dan membuka login.html,
+    // arahkan langsung sesuai role.
+    onAuthStateChanged(auth, (user) => {
+      if (user && !checkingSession) {
+        redirectByRole(user);
+      }
+    });
 
-                } else if (error.code === "auth/too-many-requests") {
-                    message.textContent =
-                        "Terlalu banyak percobaan. Coba lagi nanti.";
+    // Proses login.
+    loginForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
 
-                } else if (error.code === "auth/network-request-failed") {
-                    message.textContent =
-                        "Koneksi bermasalah. Periksa internet kamu.";
+      if (checkingSession) return;
 
-                } else {
-                    message.textContent =
-                        "Login gagal. Periksa konfigurasi Firebase.";
-                }
+      hideMessage();
+      setLoading(true);
 
-            } finally {
-                loginButton.disabled = false;
-                loginButton.textContent = "Masuk";
-            }
-        });
-    </script>
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      try {
+        const credential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+
+        // Pemeriksaan role dilakukan setelah login berhasil.
+        await redirectByRole(credential.user);
+
+      } catch (error) {
+        console.error("Login gagal:", error);
+
+        checkingSession = false;
+        setLoading(false);
+
+        showMessage(getLoginErrorMessage(error));
+      }
+    });
+
+    // Tombol untuk melihat/menyembunyikan password.
+    togglePassword.addEventListener("click", () => {
+      const isPassword = passwordInput.type === "password";
+
+      passwordInput.type = isPassword ? "text" : "password";
+      togglePassword.textContent = isPassword ? "Sembunyikan" : "Lihat";
+    });
+  </script>
 
 </body>
 </html>
