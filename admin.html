@@ -3,401 +3,284 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Admin | Portal RT</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Admin - Portal Warga RT</title>
 
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-    }
-
-    :root {
-      --green: #16845b;
-      --dark-green: #106b49;
-      --light-green: #e9f7ef;
-      --background: #f6f9f7;
-      --text: #24352c;
-      --muted: #7c8b81;
-      --border: #e7eee9;
-      --white: #ffffff;
-      --red: #c74646;
+      font-family: Arial, sans-serif;
     }
 
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: var(--background);
-      color: var(--text);
-      min-height: 100vh;
+      background: #f3f7f5;
+      color: #26352e;
     }
 
-    button, input, textarea {
-      font: inherit;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .navbar {
-      background: white;
-      border-bottom: 1px solid var(--border);
-      padding: 15px 5%;
+    header {
+      background: #176b4d;
+      color: white;
+      padding: 20px 7%;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 15px;
+      flex-wrap: wrap;
     }
 
-    .brand {
+    header h1 {
+      font-size: 23px;
+    }
+
+    header p {
+      font-size: 13px;
+      margin-top: 6px;
+      opacity: 0.9;
+    }
+
+    .header-buttons {
       display: flex;
-      align-items: center;
       gap: 10px;
-      font-size: 16px;
-      font-weight: 800;
+      flex-wrap: wrap;
     }
 
-    .brand-icon {
-      width: 39px;
-      height: 39px;
-      border-radius: 12px;
-      background: var(--light-green);
-      color: var(--green);
-      display: grid;
-      place-items: center;
-      font-size: 22px;
-    }
-
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .nav-link {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--green);
-    }
-
-    .logout-btn {
-      background: white;
-      color: var(--red);
-      border: 1px solid #f0dada;
-      padding: 9px 12px;
-      border-radius: 9px;
-      font-size: 12px;
-      font-weight: 700;
+    button, .btn {
+      border: none;
+      border-radius: 8px;
+      padding: 11px 15px;
       cursor: pointer;
+      font-size: 14px;
+      text-decoration: none;
+      display: inline-block;
     }
 
-    .container {
-      width: 92%;
+    .btn-light {
+      background: white;
+      color: #176b4d;
+    }
+
+    .btn-logout {
+      background: #d9534f;
+      color: white;
+    }
+
+    main {
       max-width: 1100px;
-      margin: 30px auto 50px;
+      margin: 35px auto;
+      padding: 0 20px;
     }
 
-    .page-heading {
-      margin-bottom: 24px;
+    .welcome {
+      margin-bottom: 25px;
     }
 
-    .page-heading h1 {
-      font-size: clamp(23px, 4vw, 30px);
+    .welcome h2 {
+      font-size: 26px;
       margin-bottom: 8px;
     }
 
-    .page-heading p {
-      font-size: 13px;
-      line-height: 1.8;
-      color: var(--muted);
-    }
-
-    .notice {
-      padding: 13px 15px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      font-size: 12px;
-      line-height: 1.8;
-      display: none;
-    }
-
-    .notice.error {
-      display: block;
-      background: #fff0f0;
-      color: #a42f2f;
-      border: 1px solid #f2cccc;
-    }
-
-    .notice.success {
-      display: block;
-      background: var(--light-green);
-      color: var(--dark-green);
-      border: 1px solid #cce9d7;
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns: 340px minmax(0, 1fr);
-      gap: 22px;
-      align-items: start;
+    .welcome p {
+      color: #65746b;
+      line-height: 1.6;
     }
 
     .panel {
       background: white;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 23px;
-      min-width: 0;
+      border-radius: 14px;
+      padding: 25px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     }
 
-    .panel h2 {
-      font-size: 16px;
-      margin-bottom: 7px;
-    }
-
-    .panel-description {
-      font-size: 12px;
-      line-height: 1.8;
-      color: var(--muted);
-      margin-bottom: 21px;
+    .panel h3 {
+      margin-bottom: 20px;
+      color: #176b4d;
     }
 
     .form-group {
-      margin-bottom: 16px;
+      margin-bottom: 17px;
     }
 
-    .form-group label {
+    label {
       display: block;
-      font-size: 12px;
-      font-weight: 700;
-      margin-bottom: 8px;
+      margin-bottom: 7px;
+      font-size: 14px;
+      font-weight: bold;
     }
 
-    .form-group input,
-    .form-group textarea {
+    input, textarea {
       width: 100%;
-      border: 1px solid #dfe8e2;
-      border-radius: 9px;
       padding: 12px;
-      background: #fcfdfc;
-      font-size: 12px;
+      border: 1px solid #d4ded8;
+      border-radius: 8px;
+      font-size: 14px;
       outline: none;
-      color: var(--text);
     }
 
-    .form-group input:focus,
-    .form-group textarea:focus {
-      border-color: var(--green);
-      box-shadow: 0 0 0 3px rgba(22,132,91,.08);
+    input:focus, textarea:focus {
+      border-color: #176b4d;
     }
 
-    .form-group textarea {
-      min-height: 115px;
+    textarea {
+      min-height: 120px;
       resize: vertical;
-      line-height: 1.7;
     }
 
-    .checkbox-row {
+    .checkbox-group {
       display: flex;
       align-items: center;
       gap: 9px;
-      font-size: 12px;
       margin-bottom: 20px;
     }
 
-    .checkbox-row input {
-      accent-color: var(--green);
-      width: 15px;
-      height: 15px;
+    .checkbox-group input {
+      width: auto;
     }
 
-    .button-row {
-      display: flex;
-      gap: 9px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      border: 0;
-      border-radius: 9px;
-      padding: 11px 14px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .btn:disabled {
-      opacity: .55;
-      cursor: not-allowed;
+    .checkbox-group label {
+      margin: 0;
+      font-weight: normal;
     }
 
     .btn-primary {
-      background: var(--green);
+      background: #176b4d;
       color: white;
     }
 
-    .btn-primary:hover:not(:disabled) {
-      background: var(--dark-green);
-    }
-
     .btn-secondary {
-      background: #edf2ee;
-      color: #526259;
+      background: #e5ece8;
+      color: #26352e;
     }
 
     .btn-edit {
-      background: #e9f3ff;
-      color: #2864a5;
+      background: #f0b429;
+      color: #26352e;
     }
 
     .btn-delete {
-      background: #fff0f0;
-      color: var(--red);
+      background: #d9534f;
+      color: white;
     }
 
-    .list-heading {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 18px;
+    .btn-status {
+      background: #dcefe5;
+      color: #176b4d;
     }
 
-    .count {
-      background: var(--light-green);
-      color: var(--green);
-      border-radius: 20px;
-      padding: 6px 10px;
-      font-size: 11px;
-      font-weight: 700;
-      white-space: nowrap;
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
 
     .announcement-list {
       display: grid;
-      gap: 13px;
+      gap: 15px;
     }
 
-    .announcement {
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 17px;
-      overflow-wrap: anywhere;
+    .announcement-card {
+      border: 1px solid #e0e8e3;
+      border-radius: 10px;
+      padding: 20px;
     }
 
-    .announcement-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
+    .announcement-card h4 {
+      font-size: 18px;
       margin-bottom: 10px;
     }
 
-    .announcement h3 {
-      font-size: 14px;
-      line-height: 1.7;
+    .announcement-card p {
+      line-height: 1.6;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .announcement-date {
+      font-size: 13px;
+      color: #68766e;
+      margin-bottom: 12px;
     }
 
     .badge {
       display: inline-block;
+      margin-top: 12px;
+      padding: 5px 10px;
       border-radius: 20px;
-      padding: 5px 8px;
-      font-size: 10px;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-    .badge-active {
-      background: var(--light-green);
-      color: var(--green);
-    }
-
-    .badge-inactive {
-      background: #f1f2f1;
-      color: #68736c;
-    }
-
-    .announcement-date {
-      color: var(--muted);
-      font-size: 11px;
-      margin-bottom: 9px;
-    }
-
-    .announcement-content {
-      color: #65756b;
       font-size: 12px;
-      line-height: 1.8;
-      white-space: pre-wrap;
-      margin-bottom: 15px;
     }
 
-    .announcement-actions {
+    .active {
+      background: #d9f3e4;
+      color: #176b4d;
+    }
+
+    .inactive {
+      background: #fce5e5;
+      color: #b42318;
+    }
+
+    .card-actions {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
+      margin-top: 16px;
     }
 
-    .announcement-actions .btn {
-      padding: 8px 11px;
-      font-size: 11px;
+    .card-actions button {
+      padding: 9px 12px;
     }
 
-    .state-box {
+    .message {
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      display: none;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .message-success {
+      background: #d9f3e4;
+      color: #176b4d;
+    }
+
+    .message-error {
+      background: #fce5e5;
+      color: #b42318;
+    }
+
+    .loading {
+      color: #65746b;
+      padding: 15px 0;
+    }
+
+    footer {
       text-align: center;
+      color: #718078;
+      font-size: 13px;
       padding: 25px 15px;
-      background: #fafcfb;
-      border: 1px dashed #dce7df;
-      border-radius: 12px;
-      font-size: 12px;
-      line-height: 1.8;
-      color: var(--muted);
     }
 
-    .footer {
-      border-top: 1px solid var(--border);
-      padding: 22px 15px;
-      text-align: center;
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    @media (max-width: 850px) {
-      .layout {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 500px) {
-      .navbar {
-        padding: 13px 4%;
+    @media (max-width: 600px) {
+      header {
+        padding: 20px;
       }
 
-      .brand {
-        font-size: 13px;
+      header h1 {
+        font-size: 20px;
       }
 
-      .nav-actions {
-        gap: 8px;
-      }
-
-      .nav-link {
-        font-size: 11px;
-      }
-
-      .logout-btn {
-        padding: 8px;
+      main {
+        margin-top: 25px;
+        padding: 0 14px;
       }
 
       .panel {
         padding: 18px;
       }
 
-      .announcement-top {
-        flex-direction: column;
+      .welcome h2 {
+        font-size: 22px;
       }
     }
   </style>
@@ -405,103 +288,93 @@
 
 <body>
 
-  <header class="navbar">
-    <a href="index.html" class="brand">
-      <div class="brand-icon">⌂</div>
-      <span>Portal Warga RT</span>
-    </a>
+  <header>
+    <div>
+      <h1>Portal Warga RT</h1>
+      <p>Halaman Pengelolaan Admin</p>
+    </div>
 
-    <div class="nav-actions">
-      <a href="warga.html" class="nav-link">Dashboard Warga</a>
-      <button id="logoutBtn" class="logout-btn">Keluar ↗</button>
+    <div class="header-buttons">
+      <a href="warga.html" class="btn btn-light">Dashboard Warga</a>
+      <button type="button" class="btn btn-logout" id="logoutBtn">
+        Keluar
+      </button>
     </div>
   </header>
 
-  <main class="container">
+  <main>
+    <section class="welcome">
+      <h2>Dashboard Admin</h2>
+      <p id="adminInfo">Memeriksa akses akun...</p>
+    </section>
 
-    <div class="page-heading">
-      <h1>Dashboard Admin</h1>
-      <p>Kelola pengumuman agar warga selalu mendapatkan informasi terbaru.</p>
-    </div>
+    <div id="pageMessage" class="message" role="status"></div>
 
-    <div id="notice" class="notice" role="status" aria-live="polite"></div>
+    <section class="panel">
+      <h3 id="formTitle">Tambah Pengumuman</h3>
 
-    <div class="layout">
+      <div id="formMessage" class="message" role="status"></div>
 
-      <section class="panel">
-        <h2 id="formTitle">Tambah Pengumuman</h2>
-        <p class="panel-description">
-          Isi informasi pengumuman yang akan disampaikan kepada warga.
-        </p>
-
-        <form id="announcementForm">
-          <input type="hidden" id="announcementId">
-
-          <div class="form-group">
-            <label for="judul">Judul Pengumuman</label>
-            <input
-              type="text"
-              id="judul"
-              maxlength="120"
-              placeholder="Contoh: Kerja Bakti Warga"
-              required
-            >
-          </div>
-
-          <div class="form-group">
-            <label for="tanggal">Tanggal Pengumuman</label>
-            <input type="date" id="tanggal" required>
-          </div>
-
-          <div class="form-group">
-            <label for="isi">Isi Pengumuman</label>
-            <textarea
-              id="isi"
-              maxlength="5000"
-              placeholder="Tuliskan informasi untuk warga..."
-              required
-            ></textarea>
-          </div>
-
-          <label class="checkbox-row">
-            <input type="checkbox" id="aktif" checked>
-            Tampilkan kepada warga
-          </label>
-
-          <div class="button-row">
-            <button type="submit" id="saveBtn" class="btn btn-primary">
-              Simpan Pengumuman
-            </button>
-
-            <button type="button" id="cancelBtn" class="btn btn-secondary" hidden>
-              Batal Edit
-            </button>
-          </div>
-        </form>
-      </section>
-
-      <section class="panel">
-        <div class="list-heading">
-          <div>
-            <h2>Daftar Pengumuman</h2>
-            <p class="panel-description" style="margin:7px 0 0">
-              Pengumuman yang tersimpan di Firebase.
-            </p>
-          </div>
-
-          <span id="announcementCount" class="count">0 data</span>
+      <form id="announcementForm">
+        <div class="form-group">
+          <label for="judul">Judul Pengumuman</label>
+          <input
+            type="text"
+            id="judul"
+            placeholder="Contoh: Kerja Bakti Warga"
+            maxlength="150"
+            required
+          >
         </div>
 
-        <div id="announcementList" class="announcement-list">
-          <div class="state-box">Memuat pengumuman...</div>
+        <div class="form-group">
+          <label for="isi">Isi Pengumuman</label>
+          <textarea
+            id="isi"
+            placeholder="Tulis informasi pengumuman..."
+            maxlength="10000"
+            required
+          ></textarea>
         </div>
-      </section>
 
-    </div>
+        <div class="form-group">
+          <label for="tanggal">Tanggal Kegiatan</label>
+          <input type="date" id="tanggal" required>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="aktif" checked>
+          <label for="aktif">Tampilkan pengumuman kepada warga</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="saveBtn">
+          Simpan Pengumuman
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-secondary"
+          id="cancelBtn"
+          hidden
+        >
+          Batal Edit
+        </button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h3>Daftar Pengumuman</h3>
+
+      <div id="listMessage" class="message" role="status"></div>
+
+      <div id="announcementList" class="announcement-list">
+        <p class="loading">Memuat pengumuman...</p>
+      </div>
+    </section>
   </main>
 
-  <footer class="footer">
-    © <span id="year"></span> Portal Informasi dan Pelayanan Warga RT
+  <footer>
+    Portal Informasi dan Pelayanan Warga RT
   </footer>
 
   <script type="module">
@@ -516,6 +389,7 @@
       collection,
       addDoc,
       getDocs,
+      getDoc,
       doc,
       updateDoc,
       deleteDoc,
@@ -523,179 +397,267 @@
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const form = document.getElementById("announcementForm");
-    const announcementId = document.getElementById("announcementId");
-    const judul = document.getElementById("judul");
-    const tanggal = document.getElementById("tanggal");
-    const isi = document.getElementById("isi");
-    const aktif = document.getElementById("aktif");
+    const judulInput = document.getElementById("judul");
+    const isiInput = document.getElementById("isi");
+    const tanggalInput = document.getElementById("tanggal");
+    const aktifInput = document.getElementById("aktif");
+
     const saveBtn = document.getElementById("saveBtn");
     const cancelBtn = document.getElementById("cancelBtn");
-    const formTitle = document.getElementById("formTitle");
-    const announcementList = document.getElementById("announcementList");
-    const announcementCount = document.getElementById("announcementCount");
-    const notice = document.getElementById("notice");
     const logoutBtn = document.getElementById("logoutBtn");
 
-    document.getElementById("year").textContent = new Date().getFullYear();
+    const formTitle = document.getElementById("formTitle");
+    const adminInfo = document.getElementById("adminInfo");
+    const announcementList = document.getElementById("announcementList");
+
+    const pageMessage = document.getElementById("pageMessage");
+    const formMessage = document.getElementById("formMessage");
+    const listMessage = document.getElementById("listMessage");
 
     let currentUser = null;
+    let editingId = null;
+    let announcements = [];
+    let isAdminVerified = false;
     let busy = false;
 
-    function showNotice(message, type = "success") {
-      notice.textContent = message;
-      notice.className = `notice ${type}`;
+    function showMessage(element, message, type = "success") {
+      element.textContent = message;
+      element.className = "message " +
+        (type === "error" ? "message-error" : "message-success");
+      element.style.display = "block";
     }
 
-    function clearNotice() {
-      notice.textContent = "";
-      notice.className = "notice";
+    function hideMessage(element) {
+      element.textContent = "";
+      element.style.display = "none";
     }
 
     function setBusy(value) {
       busy = value;
       saveBtn.disabled = value;
-      saveBtn.textContent = value
-        ? "Menyimpan..."
-        : (announcementId.value ? "Simpan Perubahan" : "Simpan Pengumuman");
+      logoutBtn.disabled = value;
     }
 
+    // Memeriksa login dan role admin sebelum mengizinkan akses.
     onAuthStateChanged(auth, async (user) => {
+      isAdminVerified = false;
+
       if (!user) {
         window.location.replace("login.html");
         return;
       }
 
-      currentUser = user;
-      await loadAnnouncements();
-    });
-
-    async function loadAnnouncements() {
-      announcementList.replaceChildren();
-
-      const loading = document.createElement("div");
-      loading.className = "state-box";
-      loading.textContent = "Memuat data...";
-      announcementList.appendChild(loading);
+      adminInfo.textContent = "Memeriksa hak akses admin...";
 
       try {
-        const snapshot = await getDocs(collection(db, "pengumuman"));
+        // Ambil dokumen roles dengan Document ID = UID pengguna.
+        const roleRef = doc(db, "roles", user.uid);
+        const roleSnapshot = await getDoc(roleRef);
 
-        const announcements = snapshot.docs
-          .map((item) => ({ id: item.id, ...item.data() }))
-          .sort((a, b) =>
-            String(b.tanggal || "").localeCompare(String(a.tanggal || ""))
-          );
-
-        announcementList.replaceChildren();
-        announcementCount.textContent = `${announcements.length} data`;
-
-        if (announcements.length === 0) {
-          const empty = document.createElement("div");
-          empty.className = "state-box";
-          empty.textContent = "Belum ada pengumuman. Tambahkan melalui formulir.";
-          announcementList.appendChild(empty);
+        if (!roleSnapshot.exists() ||
+            roleSnapshot.data().role !== "admin") {
+          window.location.replace("warga.html");
           return;
         }
 
-        announcements.forEach(renderAnnouncement);
+        currentUser = user;
+        isAdminVerified = true;
+
+        adminInfo.textContent =
+          "Login sebagai admin: " + (user.email || user.uid);
+
+        await loadAnnouncements();
+
+      } catch (error) {
+        console.error("Pengecekan admin gagal:", error);
+
+        adminInfo.textContent =
+          "Tidak dapat memverifikasi akses admin.";
+
+        showMessage(
+          pageMessage,
+          "Gagal memeriksa role admin. Periksa Firestore Rules dan koneksi internet. Detail: " +
+            error.message,
+          "error"
+        );
+      }
+    });
+
+    // Mengambil daftar pengumuman.
+    async function loadAnnouncements() {
+      if (!isAdminVerified) return;
+
+      announcementList.innerHTML =
+        '<p class="loading">Memuat pengumuman...</p>';
+
+      hideMessage(listMessage);
+
+      try {
+        const snapshot = await getDocs(
+          collection(db, "pengumuman")
+        );
+
+        announcements = snapshot.docs.map((item) => ({
+          id: item.id,
+          ...item.data()
+        }));
+
+        announcements.sort((a, b) => {
+          const dateA = String(a.tanggal || "");
+          const dateB = String(b.tanggal || "");
+          return dateB.localeCompare(dateA);
+        });
+
+        renderAnnouncements();
 
       } catch (error) {
         console.error("Gagal memuat pengumuman:", error);
-        showNotice(
-          "Data tidak dapat dimuat. Pastikan akun memiliki izin admin di Firestore.",
+
+        announcementList.innerHTML = "";
+        showMessage(
+          listMessage,
+          "Gagal memuat pengumuman: " + error.message,
           "error"
         );
-
-        announcementList.replaceChildren();
-        const errorBox = document.createElement("div");
-        errorBox.className = "state-box";
-        errorBox.textContent = "Gagal memuat data. Periksa aturan akses Firestore.";
-        announcementList.appendChild(errorBox);
       }
     }
 
-    function renderAnnouncement(item) {
-      const card = document.createElement("article");
-      card.className = "announcement";
+    // Menampilkan daftar pengumuman.
+    function renderAnnouncements() {
+      announcementList.innerHTML = "";
 
-      const top = document.createElement("div");
-      top.className = "announcement-top";
+      if (announcements.length === 0) {
+        announcementList.innerHTML =
+          '<p class="loading">Belum ada pengumuman.</p>';
+        return;
+      }
 
-      const title = document.createElement("h3");
-      title.textContent = item.judul || "Tanpa judul";
+      announcements.forEach((item) => {
+        const card = document.createElement("article");
+        card.className = "announcement-card";
 
-      const badge = document.createElement("span");
-      badge.className = `badge ${item.aktif === true ? "badge-active" : "badge-inactive"}`;
-      badge.textContent = item.aktif === true ? "Aktif" : "Nonaktif";
+        const title = document.createElement("h4");
+        title.textContent = item.judul || "Tanpa judul";
 
-      top.append(title, badge);
+        const date = document.createElement("div");
+        date.className = "announcement-date";
+        date.textContent = "Tanggal kegiatan: " +
+          (item.tanggal || "-");
 
-      const date = document.createElement("div");
-      date.className = "announcement-date";
-      date.textContent = `Tanggal: ${item.tanggal || "Belum ditentukan"}`;
+        const content = document.createElement("p");
+        content.textContent = item.isi || "";
 
-      const content = document.createElement("p");
-      content.className = "announcement-content";
-      content.textContent = item.isi || "Tidak ada isi pengumuman.";
+        const badge = document.createElement("span");
+        const isActive = item.aktif === true;
 
-      const actions = document.createElement("div");
-      actions.className = "announcement-actions";
+        badge.className = "badge " +
+          (isActive ? "active" : "inactive");
 
-      const editBtn = document.createElement("button");
-      editBtn.className = "btn btn-edit";
-      editBtn.textContent = "✏️ Edit";
-      editBtn.addEventListener("click", () => startEdit(item));
+        badge.textContent = isActive
+          ? "Aktif — tampil untuk warga"
+          : "Nonaktif — tidak tampil untuk warga";
 
-      const toggleBtn = document.createElement("button");
-      toggleBtn.className = "btn btn-secondary";
-      toggleBtn.textContent = item.aktif === true ? "Nonaktifkan" : "Aktifkan";
-      toggleBtn.addEventListener("click", () => toggleAnnouncement(item));
+        const actions = document.createElement("div");
+        actions.className = "card-actions";
 
-      const deleteBtn = document.createElement("button");
-      deleteBtn.className = "btn btn-delete";
-      deleteBtn.textContent = "🗑️ Hapus";
-      deleteBtn.addEventListener("click", () => removeAnnouncement(item));
+        const editBtn = document.createElement("button");
+        editBtn.type = "button";
+        editBtn.className = "btn btn-edit";
+        editBtn.textContent = "Edit";
 
-      actions.append(editBtn, toggleBtn, deleteBtn);
-      card.append(top, date, content, actions);
-      announcementList.appendChild(card);
+        editBtn.addEventListener("click", () => {
+          startEdit(item.id);
+        });
+
+        const statusBtn = document.createElement("button");
+        statusBtn.type = "button";
+        statusBtn.className = "btn btn-status";
+        statusBtn.textContent = isActive
+          ? "Nonaktifkan"
+          : "Aktifkan";
+
+        statusBtn.addEventListener("click", () => {
+          toggleStatus(item.id, isActive);
+        });
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.type = "button";
+        deleteBtn.className = "btn btn-delete";
+        deleteBtn.textContent = "Hapus";
+
+        deleteBtn.addEventListener("click", () => {
+          removeAnnouncement(item.id);
+        });
+
+        actions.append(editBtn, statusBtn, deleteBtn);
+        card.append(title, date, content, badge, actions);
+        announcementList.appendChild(card);
+      });
     }
 
+    // Menambah atau menyimpan perubahan pengumuman.
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
-      clearNotice();
 
-      if (!currentUser || busy) return;
+      if (!isAdminVerified || !currentUser) {
+        showMessage(
+          formMessage,
+          "Akses admin belum terverifikasi.",
+          "error"
+        );
+        return;
+      }
 
-      const data = {
-        judul: judul.value.trim(),
-        isi: isi.value.trim(),
-        tanggal: tanggal.value,
-        aktif: aktif.checked,
-        diperbaruiPada: serverTimestamp()
-      };
+      if (busy) return;
 
-      if (!data.judul || !data.isi || !data.tanggal) {
-        showNotice("Lengkapi semua kolom terlebih dahulu.", "error");
+      const title = judulInput.value.trim();
+      const content = isiInput.value.trim();
+      const date = tanggalInput.value;
+      const isActive = aktifInput.checked;
+
+      if (!title || !content || !date) {
+        showMessage(
+          formMessage,
+          "Semua kolom wajib diisi.",
+          "error"
+        );
         return;
       }
 
       setBusy(true);
+      hideMessage(formMessage);
 
       try {
-        if (announcementId.value) {
+        const data = {
+          judul: title,
+          isi: content,
+          tanggal: date,
+          aktif: isActive,
+          updatedAt: serverTimestamp()
+        };
+
+        if (editingId) {
           await updateDoc(
-            doc(db, "pengumuman", announcementId.value),
+            doc(db, "pengumuman", editingId),
             data
           );
-          showNotice("Pengumuman berhasil diperbarui.");
+
+          showMessage(
+            formMessage,
+            "Pengumuman berhasil diperbarui."
+          );
         } else {
-          await addDoc(collection(db, "pengumuman"), {
-            ...data,
-            dibuatPada: serverTimestamp(),
-            dibuatOleh: currentUser.uid
-          });
-          showNotice("Pengumuman berhasil ditambahkan.");
+          data.createdAt = serverTimestamp();
+
+          await addDoc(
+            collection(db, "pengumuman"),
+            data
+          );
+
+          showMessage(
+            formMessage,
+            "Pengumuman berhasil ditambahkan."
+          );
         }
 
         resetForm();
@@ -703,8 +665,10 @@
 
       } catch (error) {
         console.error("Gagal menyimpan pengumuman:", error);
-        showNotice(
-          "Gagal menyimpan. Periksa aturan akses Firestore untuk admin.",
+
+        showMessage(
+          formMessage,
+          "Gagal menyimpan pengumuman: " + error.message,
           "error"
         );
       } finally {
@@ -712,74 +676,40 @@
       }
     });
 
-    function startEdit(item) {
-      clearNotice();
+    // Memasukkan data ke form untuk diedit.
+    function startEdit(id) {
+      if (!isAdminVerified) return;
 
-      announcementId.value = item.id;
-      judul.value = item.judul || "";
-      tanggal.value = item.tanggal || "";
-      isi.value = item.isi || "";
-      aktif.checked = item.aktif === true;
+      const item = announcements.find((entry) => entry.id === id);
+
+      if (!item) return;
+
+      editingId = id;
+
+      judulInput.value = item.judul || "";
+      isiInput.value = item.isi || "";
+      tanggalInput.value = item.tanggal || "";
+      aktifInput.checked = item.aktif === true;
 
       formTitle.textContent = "Edit Pengumuman";
       saveBtn.textContent = "Simpan Perubahan";
       cancelBtn.hidden = false;
 
-      form.scrollIntoView({ behavior: "smooth", block: "start" });
-      judul.focus();
+      hideMessage(formMessage);
+
+      form.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
     }
 
-    async function toggleAnnouncement(item) {
-      clearNotice();
-
-      if (!currentUser || busy) return;
-
-      try {
-        await updateDoc(doc(db, "pengumuman", item.id), {
-          aktif: item.aktif !== true,
-          diperbaruiPada: serverTimestamp()
-        });
-
-        showNotice("Status pengumuman berhasil diubah.");
-        await loadAnnouncements();
-
-      } catch (error) {
-        console.error("Gagal mengubah status:", error);
-        showNotice("Gagal mengubah status. Periksa izin admin.", "error");
-      }
-    }
-
-    async function removeAnnouncement(item) {
-      if (!currentUser || busy) return;
-
-      const confirmed = confirm(
-        `Hapus pengumuman "${item.judul || "Tanpa judul"}"? Tindakan ini tidak dapat dibatalkan.`
-      );
-
-      if (!confirmed) return;
-
-      clearNotice();
-
-      try {
-        await deleteDoc(doc(db, "pengumuman", item.id));
-
-        if (announcementId.value === item.id) {
-          resetForm();
-        }
-
-        showNotice("Pengumuman berhasil dihapus.");
-        await loadAnnouncements();
-
-      } catch (error) {
-        console.error("Gagal menghapus pengumuman:", error);
-        showNotice("Gagal menghapus. Periksa izin admin.", "error");
-      }
-    }
-
+    // Membatalkan proses edit.
     function resetForm() {
+      editingId = null;
       form.reset();
-      announcementId.value = "";
-      aktif.checked = true;
+
+      aktifInput.checked = true;
+
       formTitle.textContent = "Tambah Pengumuman";
       saveBtn.textContent = "Simpan Pengumuman";
       cancelBtn.hidden = true;
@@ -787,18 +717,100 @@
 
     cancelBtn.addEventListener("click", () => {
       resetForm();
-      clearNotice();
+      hideMessage(formMessage);
     });
 
-    logoutBtn.addEventListener("click", async () => {
-      if (!confirm("Yakin ingin keluar dari akun?")) return;
+    // Mengaktifkan atau menonaktifkan pengumuman.
+    async function toggleStatus(id, currentStatus) {
+      if (!isAdminVerified || busy) return;
 
+      setBusy(true);
+      hideMessage(listMessage);
+
+      try {
+        await updateDoc(
+          doc(db, "pengumuman", id),
+          {
+            aktif: !currentStatus,
+            updatedAt: serverTimestamp()
+          }
+        );
+
+        showMessage(
+          listMessage,
+          currentStatus
+            ? "Pengumuman berhasil dinonaktifkan."
+            : "Pengumuman berhasil diaktifkan."
+        );
+
+        await loadAnnouncements();
+
+      } catch (error) {
+        console.error("Gagal mengubah status:", error);
+
+        showMessage(
+          listMessage,
+          "Gagal mengubah status: " + error.message,
+          "error"
+        );
+      } finally {
+        setBusy(false);
+      }
+    }
+
+    // Menghapus pengumuman.
+    async function removeAnnouncement(id) {
+      if (!isAdminVerified || busy) return;
+
+      const confirmed = window.confirm(
+        "Yakin ingin menghapus pengumuman ini?"
+      );
+
+      if (!confirmed) return;
+
+      setBusy(true);
+      hideMessage(listMessage);
+
+      try {
+        await deleteDoc(doc(db, "pengumuman", id));
+
+        if (editingId === id) {
+          resetForm();
+        }
+
+        showMessage(
+          listMessage,
+          "Pengumuman berhasil dihapus."
+        );
+
+        await loadAnnouncements();
+
+      } catch (error) {
+        console.error("Gagal menghapus pengumuman:", error);
+
+        showMessage(
+          listMessage,
+          "Gagal menghapus pengumuman: " + error.message,
+          "error"
+        );
+      } finally {
+        setBusy(false);
+      }
+    }
+
+    // Logout.
+    logoutBtn.addEventListener("click", async () => {
       try {
         await signOut(auth);
         window.location.replace("login.html");
       } catch (error) {
-        console.error("Gagal logout:", error);
-        showNotice("Gagal keluar dari akun. Silakan coba lagi.", "error");
+        console.error("Logout gagal:", error);
+
+        showMessage(
+          pageMessage,
+          "Gagal logout: " + error.message,
+          "error"
+        );
       }
     });
   </script>
