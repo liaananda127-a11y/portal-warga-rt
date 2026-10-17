@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#168b88">
+  <meta name="description" content="Portal informasi dan pelayanan warga RT.">
+  <title>Portal Warga RT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal: #168b88;
+      --teal-dark: #116d6b;
+      --ink: #1d3b40;
+      --muted: #718184;
+      --paper: #f5f7f6;
+      --white: #ffffff;
+      --line: #e6ecea;
+      --shadow: 0 12px 35px rgba(24, 58, 60, .07);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "DM Sans", Arial, sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    .container { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+    .topbar {
+      background: var(--white);
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+    .nav-wrap { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { display: flex; align-items: center; gap: 11px; font-weight: 800; letter-spacing: -.4px; }
+    .brand-mark {
+      width: 42px; height: 42px; display: grid; place-items: center;
+      border-radius: 13px; background: var(--teal); color: white; font-size: 21px;
+    }
+    .brand small { display: block; margin-top: 2px; color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: .6px; }
+    .nav-links { display: flex; align-items: center; gap: 24px; color: #52686a; font-size: 13px; font-weight: 700; }
+    .nav-links a:hover { color: var(--teal); }
+    .login-btn, .primary-btn {
+      display: inline-flex; justify-content: center; align-items: center; gap: 8px;
+      border: 0; border-radius: 12px; padding: 12px 17px; background: var(--teal);
+      color: white; font-weight: 700; font-size: 13px; cursor: pointer;
+      transition: transform .2s, background .2s;
+    }
+    .login-btn:hover, .primary-btn:hover { background: var(--teal-dark); transform: translateY(-1px); }
+    .hero { padding: 62px 0 34px; }
+    .hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; align-items: center; gap: 46px; }
+    .eyebrow { color: var(--teal); font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
+    h1 { margin: 13px 0 16px; max-width: 620px; font-size: clamp(32px, 4.5vw, 51px); line-height: 1.12; letter-spacing: -1.7px; }
+    .hero p { max-width: 570px; color: var(--muted); line-height: 1.8; font-size: 15px; margin: 0 0 24px; }
+    .hero-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .secondary-btn { display: inline-flex; justify-content: center; align-items: center; border: 1px solid #d9e5e2; border-radius: 12px; padding: 12px 17px; color: var(--ink); background: white; font-size: 13px; font-weight: 700; }
+    .hero-art {
+      min-height: 285px; position: relative; overflow: hidden; border-radius: 26px;
+      background: linear-gradient(145deg, #d9f0eb, #edf5f1 65%, #d4e9e4);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-art::before, .hero-art::after { content: ""; position: absolute; border-radius: 50%; background: rgba(22,139,136,.10); }
+    .hero-art::before { width: 260px; height: 260px; top: -100px; right: -45px; }
+    .hero-art::after { width: 190px; height: 190px; bottom: -95px; left: -40px; }
+    .welcome-card { position: relative; z-index: 1; width: min(280px, 80%); padding: 24px; background: rgba(255,255,255,.92); border: 1px solid rgba(255,255,255,.9); border-radius: 20px; box-shadow: var(--shadow); }
+    .welcome-icon { width: 49px; height: 49px; display: grid; place-items: center; border-radius: 15px; background: #e2f4ef; font-size: 25px; margin-bottom: 16px; }
+    .welcome-card strong { display: block; font-size: 17px; margin-bottom: 7px; }
+    .welcome-card span { color: var(--muted); font-size: 12px; line-height: 1.6; }
+    .section { padding: 30px 0 48px; }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin-bottom: 22px; }
+    .section-head h2 { font-size: 25px; letter-spacing: -.7px; margin: 7px 0 0; }
+    .section-head p { margin: 0; color: var(--muted); font-size: 13px; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .stat-card { display: flex; align-items: center; gap: 15px; background: white; padding: 20px; border: 1px solid var(--line); border-radius: 17px; }
+    .stat-icon { width: 46px; height: 46px; flex: 0 0 46px; display: grid; place-items: center; border-radius: 14px; background: #e6f4f0; font-size: 21px; }
+    .stat-card strong { display: block; font-size: 22px; margin-bottom: 3px; }
+    .stat-card span { color: var(--muted); font-size: 12px; }
+    .menu-section { padding-top: 15px; }
+    .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .menu-card {
+      min-height: 170px; background: white; border: 1px solid var(--line); border-radius: 18px;
+      padding: 22px; box-shadow: 0 4px 15px rgba(24,58,60,.025);
+      display: flex; flex-direction: column; align-items: flex-start;
+      transition: transform .2s, box-shadow .2s, border-color .2s;
+    }
+    .menu-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: #b8dfd6; }
+    .menu-icon { width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; background: #e7f4f0; font-size: 23px; margin-bottom: 16px; }
+    .menu-card h3 { margin: 0 0 7px; font-size: 16px; }
+    .menu-card p { color: var(--muted); font-size: 12px; line-height: 1.65; margin: 0 0 14px; }
+    .menu-card .arrow { color: var(--teal); font-size: 12px; font-weight: 800; margin-top: auto; }
+    .updates { display: grid; grid-template-columns: 1.2fr .8fr; gap: 18px; }
+    .panel { padding: 23px; background: white; border: 1px solid var(--line); border-radius: 18px; }
+    .panel h3 { margin: 0 0 18px; font-size: 17px; }
+    .announcement { display: flex; gap: 13px; padding: 13px 0; border-top: 1px solid var(--line); }
+    .announcement:first-of-type { border-top: 0; padding-top: 0; }
+    .date-badge { width: 49px; flex: 0 0 49px; height: 49px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 12px; background: #e7f4f0; color: var(--teal-dark); }
+    .date-badge b { font-size: 17px; line-height: 1; }
+    .date-badge span { font-size: 9px; font-weight: 800; text-transform: uppercase; margin-top: 4px; }
+    .announcement strong { font-size: 13px; display: block; margin: 2px 0 5px; }
+    .announcement p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+    .activity-item { display: flex; align-items: flex-start; gap: 11px; padding: 11px 0; border-top: 1px solid var(--line); }
+    .activity-item:first-of-type { border-top: 0; padding-top: 0; }
+    .activity-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--teal); margin-top: 5px; flex: 0 0 9px; }
+    .activity-item strong { display: block; font-size: 13px; margin-bottom: 4px; }
+    .activity-item span { color: var(--muted); font-size: 11px; line-height: 1.5; }
+    .cta { margin: 5px 0 55px; padding: 27px 30px; border-radius: 20px; background: var(--ink); color: white; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .cta h2 { margin: 0 0 7px; font-size: 22px; }
+    .cta p { margin: 0; color: #c6d8d7; font-size: 13px; line-height: 1.6; }
+    .cta .primary-btn { background: #28aaa3; flex-shrink: 0; }
+    footer { padding: 22px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    @media (max-width: 850px) {
+      .nav-links { gap: 13px; }
+      .hero-grid { gap: 25px; }
+      .menu-grid { grid-template-columns: repeat(2, 1fr); }
+      .updates { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 650px) {
+      .container { width: min(100% - 28px, 520px); }
+      .nav-wrap { min-height: 67px; }
+      .nav-links { display: none; }
+      .login-btn { padding: 10px 12px; font-size: 12px; }
+      .hero { padding: 39px 0 24px; }
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-art { min-height: 220px; }
+      .section { padding: 24px 0 34px; }
+      .section-head { align-items: flex-start; flex-direction: column; gap: 8px; }
+      .section-head h2 { font-size: 22px; }
+      .stats { grid-template-columns: 1fr; gap: 10px; }
+      .stat-card { padding: 15px; }
+      .menu-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .menu-card { min-height: 175px; padding: 16px; }
+      .menu-card h3 { font-size: 14px; }
+      .menu-card p { font-size: 11px; }
+      .menu-icon { width: 42px; height: 42px; font-size: 20px; margin-bottom: 13px; }
+      .cta { align-items: flex-start; flex-direction: column; padding: 23px; margin-bottom: 35px; }
+      .footer-inner { align-items: flex-start; flex-direction: column; }
+    }
+    @media (max-width: 360px) { .menu-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container nav-wrap">
+      <a class="brand" href="#beranda" aria-label="Portal Warga RT - Beranda">
+        <span class="brand-mark">⌂</span>
+        <span>Portal Warga RT<small>INFORMASI & PELAYANAN WARGA</small></span>
+      </a>
+      <nav class="nav-links" aria-label="Navigasi utama">
+        <a href="#beranda">Beranda</a>
+        <a href="#menu">Layanan</a>
+        <a href="#informasi">Informasi RT</a>
+      </nav>
+      <a class="login-btn" href="login.html">↪ Login Pengguna</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="beranda">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">Portal Informasi dan Pelayanan RT</div>
+          <h1>Urusan warga jadi lebih <span style="color:var(--teal)">mudah & terhubung.</span></h1>
+          <p>Selamat datang di portal warga. Temukan informasi lingkungan, ikuti kegiatan RT, sampaikan pengaduan, dan akses layanan warga dari satu tempat.</p>
+          <div class="hero-actions">
+            <a class="primary-btn" href="#menu">Jelajahi Layanan <span aria-hidden="true">→</span></a>
+            <a class="secondary-btn" href="#informasi">Lihat Informasi RT</a>
+          </div>
+        </div>
+        <div class="hero-art" aria-label="Kartu sambutan portal warga">
+          <div class="welcome-card">
+            <div class="welcome-icon">🏡</div>
+            <strong>Halo, Warga!</strong>
+            <span>Semua informasi dan pelayanan RT dalam satu portal yang mudah diakses.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <div><div class="eyebrow">Sekilas lingkungan</div><h2>Ringkasan RT</h2></div>
+          <p>Informasi singkat untuk warga</p>
+        </div>
+        <div class="stats">
+          <div class="stat-card"><div class="stat-icon">👥</div><div><strong>—</strong><span>Jumlah warga</span></div></div>
+          <div class="stat-card"><div class="stat-icon">📢</div><div><strong>—</strong><span>Pengumuman aktif</span></div></div>
+          <div class="stat-card"><div class="stat-icon">🗓️</div><div><strong>—</strong><span>Kegiatan mendatang</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section menu-section" id="menu">
+      <div class="container">
+        <div class="section-head">
+          <div><div class="eyebrow">Akses cepat</div><h2>Layanan Portal Warga</h2></div>
+          <p>Pilih layanan yang dibutuhkan</p>
+        </div>
+        <div class="menu-grid">
+          <a class="menu-card" href="login.html">
+            <div class="menu-icon">👥</div><h3>Data Warga</h3>
+            <p>Pendataan dan pengelolaan informasi warga secara teratur.</p><span class="arrow">Buka layanan →</span>
+          </a>
+          <a class="menu-card" href="login.html">
+            <div class="menu-icon">💬</div><h3>Pengaduan</h3>
+            <p>Sampaikan keluhan atau aspirasi dan pantau tindak lanjutnya.</p><span class="arrow">Buka layanan →</span>
+          </a>
+          <a class="menu-card" href="#informasi">
+            <div class="menu-icon">📢</div><h3>Informasi & Kegiatan RT</h3>
+            <p>Lihat pengumuman, agenda, dan kegiatan lingkungan.</p><span class="arrow">Lihat informasi →</span>
+          </a>
+          <a class="menu-card" href="login.html">
+            <div class="menu-icon">🔑</div><h3>Peminjaman</h3>
+            <p>Ajukan peminjaman fasilitas atau barang milik RT.</p><span class="arrow">Buka layanan →</span>
+          </a>
+          <a class="menu-card" href="login.html">
+            <div class="menu-icon">📄</div><h3>Layanan Warga</h3>
+            <p>Ajukan kebutuhan administrasi dan laporkan warga baru atau pindah.</p><span class="arrow">Buka layanan →</span>
+          </a>
+          <a class="menu-card" href="login.html">
+            <div class="menu-icon">🔐</div><h3>Login Pengguna</h3>
+            <p>Masuk untuk mengakses layanan sesuai hak akses akun.</p><span class="arrow">Login sekarang →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="informasi">
+      <div class="container">
+        <div class="section-head">
+          <div><div class="eyebrow">Tetap terhubung</div><h2>Informasi & Kegiatan RT</h2></div>
+          <p>Contoh tampilan informasi publik</p>
+        </div>
+        <div class="updates">
+          <div class="panel">
+            <h3>📢 Pengumuman Terbaru</h3>
+            <article class="announcement">
+              <div class="date-badge"><b>—</b><span>Tanggal</span></div>
+              <div><strong>Belum ada pengumuman</strong><p>Pengumuman terbaru dari pengurus RT akan ditampilkan di bagian ini.</p></div>
+            </article>
+            <article class="announcement">
+              <div class="date-badge"><b>—</b><span>Tanggal</span></div>
+              <div><strong>Informasi untuk warga</strong><p>Bagian ini nantinya terhubung dengan data pengumuman yang dikelola admin.</p></div>
+            </article>
+          </div>
+          <div class="panel">
+            <h3>🗓️ Agenda Mendatang</h3>
+            <div class="activity-item"><span class="activity-dot"></span><div><strong>Belum ada agenda</strong><span>Jadwal kegiatan RT akan ditampilkan di sini.</span></div></div>
+            <div class="activity-item"><span class="activity-dot"></span><div><strong>Kegiatan lingkungan</strong><span>Admin dapat menambahkan tanggal, waktu, dan lokasi kegiatan.</span></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="cta">
+        <div><h2>Ada yang perlu disampaikan?</h2><p>Gunakan portal ini untuk mengakses layanan dan menyampaikan kebutuhan kepada pengurus RT.</p></div>
+        <a class="primary-btn" href="login.html">Akses Layanan →</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>© <span id="year"></span> Portal Warga RT</span>
+      <span>Satu media terpusat untuk RT dan warga</span>
+    </div>
+  </footer>
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
