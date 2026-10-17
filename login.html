@@ -1,208 +1,501 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login | Portal Warga RT</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+    <title>Login | Portal Warga RT</title>
 
-    body {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #f1f5f9;
-      padding: 20px;
-    }
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    .login-card {
-      width: 100%;
-      max-width: 400px;
-      background: white;
-      padding: 32px;
-      border-radius: 16px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-    }
+    <style>
+        :root {
+            --primary: #28685a;
+            --primary-dark: #1d5147;
+            --heading: #173f39;
+            --text: #71838c;
+            --border: #d5e0e3;
+            --background: #f0f6f3;
+            --white: #ffffff;
+        }
 
-    .logo {
-      text-align: center;
-      font-size: 42px;
-      margin-bottom: 12px;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    h1 {
-      text-align: center;
-      color: #163b35;
-      font-size: 25px;
-      margin-bottom: 8px;
-    }
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            position: relative;
+            overflow-x: hidden;
+            background: var(--background);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--heading);
+        }
 
-    .subtitle {
-      text-align: center;
-      color: #64748b;
-      font-size: 14px;
-      margin-bottom: 28px;
-      line-height: 1.5;
-    }
+        /* Dekorasi background */
+        .decoration {
+            position: fixed;
+            width: 320px;
+            height: 320px;
+            background: #dcebe3;
+            opacity: 0.65;
+            pointer-events: none;
+            z-index: 0;
+        }
 
-    label {
-      display: block;
-      font-size: 14px;
-      font-weight: bold;
-      margin-bottom: 8px;
-      color: #334155;
-    }
+        .decoration-top {
+            top: -190px;
+            left: -100px;
+            border-radius: 45% 55% 65% 35%;
+            transform: rotate(-25deg);
+        }
 
-    input {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      margin-bottom: 18px;
-      font-size: 14px;
-    }
+        .decoration-bottom {
+            bottom: -210px;
+            right: -100px;
+            border-radius: 60% 40% 30% 70%;
+            transform: rotate(30deg);
+        }
 
-    input:focus {
-      outline: 2px solid #b7d9cf;
-      border-color: #28685a;
-    }
+        .login-wrapper {
+            width: 100%;
+            max-width: 650px;
+            position: relative;
+            z-index: 1;
+        }
 
-    button {
-      width: 100%;
-      padding: 13px;
-      border: none;
-      border-radius: 8px;
-      background: #28685a;
-      color: white;
-      font-size: 15px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+        .login-card {
+            background: rgba(255, 255, 255, 0.96);
+            padding: 54px 48px 46px;
+            border-radius: 28px;
+            box-shadow: 0 20px 65px rgba(35, 76, 62, 0.09);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+        }
 
-    button:disabled {
-      opacity: 0.6;
-      cursor: wait;
-    }
+        /* Logo rumah minimalis */
+        .logo-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 22px;
+        }
 
-    #message {
-      margin-top: 16px;
-      font-size: 14px;
-      line-height: 1.5;
-      text-align: center;
-    }
+        .logo {
+            width: 88px;
+            height: 88px;
+        }
 
-    .back-link {
-      display: block;
-      margin-top: 22px;
-      text-align: center;
-      color: #28685a;
-      text-decoration: none;
-      font-size: 14px;
-    }
-  </style>
+        .logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 38px;
+        }
+
+        .login-header h1 {
+            font-size: clamp(27px, 5vw, 36px);
+            font-weight: 800;
+            letter-spacing: -1.2px;
+            margin-bottom: 13px;
+            color: var(--heading);
+        }
+
+        .login-header p {
+            color: var(--text);
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .form-group {
+            margin-bottom: 23px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #294d49;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 17px;
+            width: 21px;
+            height: 21px;
+            color: #82959c;
+            pointer-events: none;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            height: 59px;
+            padding: 0 48px 0 55px;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            outline: none;
+            font-family: inherit;
+            font-size: 14px;
+            color: var(--heading);
+            background: #fff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .input-wrapper input::placeholder {
+            color: #8a9aa2;
+        }
+
+        .input-wrapper input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(40, 104, 90, 0.09);
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            color: #82959c;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .toggle-password svg {
+            width: 21px;
+            height: 21px;
+        }
+
+        .login-button {
+            width: 100%;
+            height: 59px;
+            margin-top: 5px;
+            border: none;
+            border-radius: 15px;
+            background: var(--primary);
+            color: white;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .login-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .login-button:disabled {
+            opacity: 0.65;
+            cursor: wait;
+            transform: none;
+        }
+
+        .message {
+            min-height: 20px;
+            margin-top: 15px;
+            text-align: center;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 31px;
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--primary-dark);
+        }
+
+        .back-link span {
+            font-size: 20px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 22px 15px;
+            }
+
+            .login-card {
+                padding: 38px 24px 32px;
+                border-radius: 22px;
+            }
+
+            .logo {
+                width: 74px;
+                height: 74px;
+            }
+
+            .login-header {
+                margin-bottom: 30px;
+            }
+
+            .login-header p {
+                font-size: 13px;
+            }
+
+            .input-wrapper input {
+                height: 55px;
+            }
+
+            .login-button {
+                height: 55px;
+            }
+        }
+    </style>
 </head>
 
 <body>
-  <main class="login-card">
-    <div class="logo">🏡</div>
 
-    <h1>Selamat Datang</h1>
+    <div class="decoration decoration-top"></div>
+    <div class="decoration decoration-bottom"></div>
 
-    <p class="subtitle">
-      Masuk ke Portal Informasi dan Pelayanan Warga RT
-    </p>
+    <main class="login-wrapper">
+        <section class="login-card">
 
-    <form id="loginForm">
-      <label for="email">Email</label>
-      <input
-        type="email"
-        id="email"
-        placeholder="Masukkan email"
-        autocomplete="email"
-        required
-      >
+            <!-- Logo rumah minimalis -->
+            <div class="logo-wrapper">
+                <div class="logo">
+                    <svg
+                        viewBox="0 0 100 100"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        role="img"
+                        aria-label="Logo Portal Warga RT"
+                    >
+                        <!-- Atap rumah -->
+                        <path
+                            d="M12 43L50 12L88 43"
+                            stroke="#28685a"
+                            stroke-width="8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
 
-      <label for="password">Password</label>
-      <input
-        type="password"
-        id="password"
-        placeholder="Masukkan password"
-        autocomplete="current-password"
-        required
-      >
+                        <!-- Badan rumah -->
+                        <path
+                            d="M22 39V82H78V39"
+                            stroke="#28685a"
+                            stroke-width="7"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
 
-      <button type="submit" id="loginButton">Masuk</button>
+                        <!-- Jendela -->
+                        <rect x="37" y="45" width="10" height="10" rx="2" fill="#8FB6A1"/>
+                        <rect x="51" y="45" width="10" height="10" rx="2" fill="#8FB6A1"/>
+                        <rect x="37" y="59" width="10" height="10" rx="2" fill="#8FB6A1"/>
+                        <rect x="51" y="59" width="10" height="10" rx="2" fill="#8FB6A1"/>
 
-      <p id="message" role="status" aria-live="polite"></p>
-    </form>
+                        <!-- Pintu -->
+                        <path
+                            d="M62 82V70C62 65 65 62 70 62C75 62 78 65 78 70V82"
+                            fill="#E6A17C"
+                        />
 
-    <a href="index.html" class="back-link">← Kembali ke Beranda</a>
-  </main>
+                        <!-- Daun -->
+                        <path
+                            d="M72 27C72 15 82 8 93 8C93 21 86 29 72 31"
+                            fill="#8FB6A1"
+                        />
 
-  <script type="module">
-    import { auth } from "./firebase.js";
-    import { signInWithEmailAndPassword } from
-      "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+                        <path
+                            d="M72 29L84 16"
+                            stroke="#28685a"
+                            stroke-width="2.5"
+                            stroke-linecap="round"
+                        />
+                    </svg>
+                </div>
+            </div>
 
-    const form = document.getElementById("loginForm");
-    const message = document.getElementById("message");
-    const button = document.getElementById("loginButton");
+            <header class="login-header">
+                <h1>Selamat Datang</h1>
+                <p>Masuk ke Portal Informasi dan Pelayanan Warga RT</p>
+            </header>
 
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
+            <form id="loginForm">
 
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
+                <div class="form-group">
+                    <label for="email">Email</label>
 
-      button.disabled = true;
-      button.textContent = "Memproses...";
-      message.textContent = "";
+                    <div class="input-wrapper">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1.8"
+                            stroke-linecap="round" stroke-linejoin="round"
+                            aria-hidden="true">
+                            <rect x="3" y="5" width="18" height="14" rx="2"/>
+                            <path d="M3 7L12 13L21 7"/>
+                        </svg>
 
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Masukkan email"
+                            autocomplete="email"
+                            required
+                        >
+                    </div>
+                </div>
 
-        message.style.color = "#166534";
-        message.textContent = "Login berhasil! Mengalihkan halaman...";
+                <div class="form-group">
+                    <label for="password">Password</label>
 
-        // Sementara diarahkan ke halaman warga.
-        // Hak akses admin akan kita atur secara terpisah.
-        setTimeout(() => {
-          window.location.href = "warga.html";
-        }, 1000);
+                    <div class="input-wrapper">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1.8"
+                            stroke-linecap="round" stroke-linejoin="round"
+                            aria-hidden="true">
+                            <rect x="4" y="10" width="16" height="11" rx="2"/>
+                            <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+                            <circle cx="12" cy="15" r="1"/>
+                            <path d="M12 16v2"/>
+                        </svg>
 
-      } catch (error) {
-        message.style.color = "#b91c1c";
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Masukkan password"
+                            autocomplete="current-password"
+                            required
+                        >
 
-        if (
-          error.code === "auth/invalid-credential" ||
-          error.code === "auth/wrong-password" ||
-          error.code === "auth/user-not-found"
-        ) {
-          message.textContent = "Email atau password tidak sesuai.";
-        } else if (error.code === "auth/too-many-requests") {
-          message.textContent =
-            "Terlalu banyak percobaan. Coba lagi nanti.";
-        } else if (error.code === "auth/network-request-failed") {
-          message.textContent =
-            "Koneksi bermasalah. Periksa internet kamu.";
-        } else {
-          message.textContent =
-            "Login gagal. Periksa konfigurasi Firebase dan coba lagi.";
-          console.error("Login error:", error.code, error.message);
-        }
+                        <button
+                            type="button"
+                            class="toggle-password"
+                            id="togglePassword"
+                            aria-label="Tampilkan password"
+                        >
+                            <svg viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="1.8"
+                                stroke-linecap="round" stroke-linejoin="round"
+                                aria-hidden="true">
+                                <path d="M2 12s3.5-7 10-7s10 7 10 7s-3.5 7-10 7S2 12 2 12Z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
 
-      } finally {
-        button.disabled = false;
-        button.textContent = "Masuk";
-      }
-    });
-  </script>
+                <button type="submit" class="login-button" id="loginButton">
+                    Masuk
+                </button>
+
+                <p class="message" id="message" role="status" aria-live="polite"></p>
+            </form>
+
+            <a href="index.html" class="back-link">
+                <span aria-hidden="true">←</span>
+                Kembali ke Beranda
+            </a>
+
+        </section>
+    </main>
+
+    <script type="module">
+        import { auth } from "./firebase.js";
+
+        import {
+            signInWithEmailAndPassword
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const form = document.getElementById("loginForm");
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+        const loginButton = document.getElementById("loginButton");
+        const message = document.getElementById("message");
+        const togglePassword = document.getElementById("togglePassword");
+
+        // Menampilkan atau menyembunyikan password
+        togglePassword.addEventListener("click", () => {
+            const isPassword = passwordInput.type === "password";
+
+            passwordInput.type = isPassword ? "text" : "password";
+
+            togglePassword.setAttribute(
+                "aria-label",
+                isPassword ? "Sembunyikan password" : "Tampilkan password"
+            );
+        });
+
+        // Proses login Firebase
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+
+            loginButton.disabled = true;
+            loginButton.textContent = "Memproses...";
+            message.textContent = "";
+            message.style.color = "#b91c1c";
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+
+                message.style.color = "#28685a";
+                message.textContent = "Login berhasil. Mengalihkan halaman...";
+
+                setTimeout(() => {
+                    window.location.href = "warga.html";
+                }, 800);
+
+            } catch (error) {
+                console.error("Login error:", error.code);
+
+                if (
+                    error.code === "auth/invalid-credential" ||
+                    error.code === "auth/wrong-password" ||
+                    error.code === "auth/user-not-found"
+                ) {
+                    message.textContent = "Email atau password tidak sesuai.";
+                } else if (error.code === "auth/too-many-requests") {
+                    message.textContent =
+                        "Terlalu banyak percobaan. Coba lagi nanti.";
+                } else if (error.code === "auth/network-request-failed") {
+                    message.textContent =
+                        "Koneksi bermasalah. Periksa internet kamu.";
+                } else {
+                    message.textContent =
+                        "Login gagal. Periksa konfigurasi Firebase.";
+                }
+
+            } finally {
+                loginButton.disabled = false;
+                loginButton.textContent = "Masuk";
+            }
+        });
+    </script>
+
 </body>
 </html>
