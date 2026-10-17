@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Login | Portal Warga RT</title>
+    <meta name="theme-color" content="#f3f7f4">
+    <meta name="description" content="Login Portal Informasi dan Pelayanan Warga RT">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,10 +16,10 @@
         :root {
             --primary: #28685a;
             --primary-dark: #1d5147;
-            --heading: #173f39;
-            --text: #71838c;
-            --border: #d5e0e3;
-            --background: #f0f6f3;
+            --heading: #203f39;
+            --text: #75868c;
+            --border: #dce5e2;
+            --background: #f3f7f4;
             --white: #ffffff;
         }
 
@@ -29,103 +31,110 @@
 
         body {
             min-height: 100vh;
+            min-height: 100dvh;
             display: flex;
-            justify-content: center;
             align-items: center;
-            padding: 40px 20px;
+            justify-content: center;
+            padding: 24px 16px;
             position: relative;
             overflow-x: hidden;
             background: var(--background);
-            font-family: 'Plus Jakarta Sans', sans-serif;
             color: var(--heading);
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
-        /* Dekorasi background */
+        /* Dekorasi background minimalis */
         .decoration {
             position: fixed;
-            width: 320px;
-            height: 320px;
-            background: #dcebe3;
-            opacity: 0.65;
+            width: 230px;
+            height: 230px;
+            background: #e2eee6;
+            opacity: 0.7;
             pointer-events: none;
             z-index: 0;
+            border-radius: 50%;
+            filter: blur(1px);
         }
 
         .decoration-top {
-            top: -190px;
-            left: -100px;
-            border-radius: 45% 55% 65% 35%;
-            transform: rotate(-25deg);
+            top: -155px;
+            left: -115px;
         }
 
         .decoration-bottom {
-            bottom: -210px;
-            right: -100px;
-            border-radius: 60% 40% 30% 70%;
-            transform: rotate(30deg);
+            right: -145px;
+            bottom: -155px;
         }
 
+        /* Container utama */
         .login-wrapper {
             width: 100%;
-            max-width: 650px;
+            max-width: 410px;
             position: relative;
             z-index: 1;
         }
 
+        /* Card login */
         .login-card {
-            background: rgba(255, 255, 255, 0.96);
-            padding: 54px 48px 46px;
-            border-radius: 28px;
-            box-shadow: 0 20px 65px rgba(35, 76, 62, 0.09);
-            border: 1px solid rgba(255, 255, 255, 0.9);
+            width: 100%;
+            padding: 32px 28px 27px;
+            background: var(--white);
+            border: 1px solid rgba(220, 229, 226, 0.7);
+            border-radius: 20px;
+            box-shadow: 0 12px 38px rgba(35, 76, 62, 0.07);
         }
 
-        /* Logo rumah minimalis */
+        /* Logo rumah */
         .logo-wrapper {
             display: flex;
             justify-content: center;
-            margin-bottom: 22px;
+            margin-bottom: 12px;
         }
 
         .logo {
-            width: 48px;
-            height: 48px;
+            width: 43px;
+            height: 43px;
+            display: block;
         }
 
         .logo svg {
             width: 100%;
             height: 100%;
+            display: block;
         }
 
+        /* Judul */
         .login-header {
             text-align: center;
-            margin-bottom: 38px;
+            margin-bottom: 25px;
         }
 
         .login-header h1 {
-            font-size: clamp(27px, 5vw, 36px);
-            font-weight: 800;
-            letter-spacing: -1.2px;
-            margin-bottom: 13px;
             color: var(--heading);
+            font-size: 25px;
+            line-height: 1.4;
+            font-weight: 800;
+            letter-spacing: -0.7px;
+            margin-bottom: 6px;
         }
 
         .login-header p {
             color: var(--text);
-            font-size: 15px;
-            line-height: 1.8;
+            font-size: 12px;
+            line-height: 1.7;
         }
 
+        /* Form */
         .form-group {
-            margin-bottom: 23px;
+            margin-bottom: 17px;
         }
 
         .form-group label {
             display: block;
-            font-size: 15px;
+            color: #304e48;
+            font-size: 12px;
             font-weight: 700;
-            margin-bottom: 10px;
-            color: #294d49;
+            margin-bottom: 8px;
         }
 
         .input-wrapper {
@@ -136,64 +145,66 @@
 
         .input-icon {
             position: absolute;
-            left: 17px;
-            width: 21px;
-            height: 21px;
-            color: #82959c;
+            left: 13px;
+            width: 18px;
+            height: 18px;
+            color: #82958e;
             pointer-events: none;
         }
 
         .input-wrapper input {
             width: 100%;
-            height: 59px;
-            padding: 0 48px 0 55px;
+            height: 45px;
+            padding: 0 42px 0 40px;
             border: 1px solid var(--border);
-            border-radius: 15px;
+            border-radius: 10px;
             outline: none;
-            font-family: inherit;
-            font-size: 14px;
+            background: #ffffff;
             color: var(--heading);
-            background: #fff;
+            font-family: inherit;
+            font-size: 12px;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
 
         .input-wrapper input::placeholder {
-            color: #8a9aa2;
+            color: #98a6a9;
         }
 
         .input-wrapper input:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(40, 104, 90, 0.09);
+            box-shadow: 0 0 0 3px rgba(40, 104, 90, 0.08);
         }
 
+        /* Tombol lihat password */
         .toggle-password {
             position: absolute;
-            right: 15px;
+            right: 11px;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 4px;
             border: none;
             background: transparent;
-            color: #82959c;
+            color: #82958e;
             cursor: pointer;
-            padding: 5px;
         }
 
         .toggle-password svg {
-            width: 21px;
-            height: 21px;
+            width: 18px;
+            height: 18px;
         }
 
+        /* Tombol login */
         .login-button {
             width: 100%;
-            height: 59px;
-            margin-top: 5px;
+            height: 45px;
+            margin-top: 3px;
             border: none;
-            border-radius: 15px;
+            border-radius: 10px;
             background: var(--primary);
-            color: white;
+            color: #ffffff;
             font-family: inherit;
-            font-size: 16px;
+            font-size: 13px;
             font-weight: 700;
             cursor: pointer;
             transition: background 0.2s, transform 0.2s;
@@ -201,33 +212,42 @@
 
         .login-button:hover {
             background: var(--primary-dark);
-            transform: translateY(-1px);
+        }
+
+        .login-button:active {
+            transform: scale(0.99);
         }
 
         .login-button:disabled {
             opacity: 0.65;
             cursor: wait;
-            transform: none;
         }
 
+        /* Pesan status */
         .message {
-            min-height: 20px;
-            margin-top: 15px;
+            min-height: 0;
+            margin-top: 10px;
             text-align: center;
-            font-size: 13px;
+            font-size: 11px;
             line-height: 1.6;
+            overflow-wrap: anywhere;
         }
 
+        .message:empty {
+            display: none;
+        }
+
+        /* Link kembali */
         .back-link {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            margin-top: 31px;
+            gap: 7px;
+            margin-top: 22px;
             color: var(--primary);
             text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
+            font-size: 12px;
+            font-weight: 600;
             transition: color 0.2s;
         }
 
@@ -236,38 +256,47 @@
         }
 
         .back-link span {
-            font-size: 20px;
+            font-size: 16px;
         }
 
-        @media (max-width: 600px) {
+        /* Tampilan HP */
+        @media (max-width: 480px) {
             body {
-                padding: 22px 15px;
+                padding: 20px 16px;
+            }
+
+            .login-wrapper {
+                max-width: 360px;
             }
 
             .login-card {
-                padding: 38px 24px 32px;
-                border-radius: 22px;
+                padding: 28px 22px 24px;
+                border-radius: 17px;
             }
 
-            .logo {
-                width: 74px;
-                height: 74px;
+            .login-header h1 {
+                font-size: 23px;
             }
 
-            .login-header {
-                margin-bottom: 30px;
+            .decoration {
+                width: 170px;
+                height: 170px;
             }
+        }
 
-            .login-header p {
-                font-size: 13px;
+        /* Layar pendek */
+        @media (max-height: 600px) {
+            body {
+                align-items: flex-start;
             }
+        }
 
-            .input-wrapper input {
-                height: 55px;
-            }
-
-            .login-button {
-                height: 55px;
+        /* Hormati preferensi gerakan pengguna */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                transition: none !important;
             }
         }
     </style>
@@ -275,8 +304,8 @@
 
 <body>
 
-    <div class="decoration decoration-top"></div>
-    <div class="decoration decoration-bottom"></div>
+    <div class="decoration decoration-top" aria-hidden="true"></div>
+    <div class="decoration decoration-bottom" aria-hidden="true"></div>
 
     <main class="login-wrapper">
         <section class="login-card">
@@ -291,7 +320,7 @@
                         role="img"
                         aria-label="Logo Portal Warga RT"
                     >
-                        <!-- Atap rumah -->
+                        <!-- Atap -->
                         <path
                             d="M12 43L50 12L88 43"
                             stroke="#28685a"
@@ -344,14 +373,21 @@
 
             <form id="loginForm">
 
+                <!-- Email -->
                 <div class="form-group">
                     <label for="email">Email</label>
 
                     <div class="input-wrapper">
-                        <svg class="input-icon" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="1.8"
-                            stroke-linecap="round" stroke-linejoin="round"
-                            aria-hidden="true">
+                        <svg
+                            class="input-icon"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true"
+                        >
                             <rect x="3" y="5" width="18" height="14" rx="2"/>
                             <path d="M3 7L12 13L21 7"/>
                         </svg>
@@ -361,20 +397,27 @@
                             id="email"
                             name="email"
                             placeholder="Masukkan email"
-                            autocomplete="email"
+                            autocomplete="username"
                             required
                         >
                     </div>
                 </div>
 
+                <!-- Password -->
                 <div class="form-group">
                     <label for="password">Password</label>
 
                     <div class="input-wrapper">
-                        <svg class="input-icon" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="1.8"
-                            stroke-linecap="round" stroke-linejoin="round"
-                            aria-hidden="true">
+                        <svg
+                            class="input-icon"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true"
+                        >
                             <rect x="4" y="10" width="16" height="11" rx="2"/>
                             <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
                             <circle cx="12" cy="15" r="1"/>
@@ -395,11 +438,17 @@
                             class="toggle-password"
                             id="togglePassword"
                             aria-label="Tampilkan password"
+                            aria-pressed="false"
                         >
-                            <svg viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="1.8"
-                                stroke-linecap="round" stroke-linejoin="round"
-                                aria-hidden="true">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true"
+                            >
                                 <path d="M2 12s3.5-7 10-7s10 7 10 7s-3.5 7-10 7S2 12 2 12Z"/>
                                 <circle cx="12" cy="12" r="3"/>
                             </svg>
@@ -411,7 +460,13 @@
                     Masuk
                 </button>
 
-                <p class="message" id="message" role="status" aria-live="polite"></p>
+                <p
+                    class="message"
+                    id="message"
+                    role="status"
+                    aria-live="polite"
+                ></p>
+
             </form>
 
             <a href="index.html" class="back-link">
@@ -438,17 +493,22 @@
 
         // Menampilkan atau menyembunyikan password
         togglePassword.addEventListener("click", () => {
-            const isPassword = passwordInput.type === "password";
+            const showPassword = passwordInput.type === "password";
 
-            passwordInput.type = isPassword ? "text" : "password";
+            passwordInput.type = showPassword ? "text" : "password";
 
             togglePassword.setAttribute(
                 "aria-label",
-                isPassword ? "Sembunyikan password" : "Tampilkan password"
+                showPassword ? "Sembunyikan password" : "Tampilkan password"
+            );
+
+            togglePassword.setAttribute(
+                "aria-pressed",
+                String(showPassword)
             );
         });
 
-        // Proses login Firebase
+        // Login menggunakan Firebase Authentication
         form.addEventListener("submit", async (event) => {
             event.preventDefault();
 
@@ -464,7 +524,8 @@
                 await signInWithEmailAndPassword(auth, email, password);
 
                 message.style.color = "#28685a";
-                message.textContent = "Login berhasil. Mengalihkan halaman...";
+                message.textContent =
+                    "Login berhasil. Mengalihkan halaman...";
 
                 setTimeout(() => {
                     window.location.href = "warga.html";
@@ -478,13 +539,17 @@
                     error.code === "auth/wrong-password" ||
                     error.code === "auth/user-not-found"
                 ) {
-                    message.textContent = "Email atau password tidak sesuai.";
+                    message.textContent =
+                        "Email atau password tidak sesuai.";
+
                 } else if (error.code === "auth/too-many-requests") {
                     message.textContent =
                         "Terlalu banyak percobaan. Coba lagi nanti.";
+
                 } else if (error.code === "auth/network-request-failed") {
                     message.textContent =
                         "Koneksi bermasalah. Periksa internet kamu.";
+
                 } else {
                     message.textContent =
                         "Login gagal. Periksa konfigurasi Firebase.";
