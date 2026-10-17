@@ -1,404 +1,400 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Portal RT</title>
 
-  <title>Login - Portal Warga RT</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #dff8e8, #b5e8ce);
+        }
 
-    body {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      background: linear-gradient(135deg, #e7f5ed, #c8e8d6);
-      color: #26352e;
-    }
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+            padding: 40px 35px;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 35px rgba(34, 100, 66, 0.12);
+        }
 
-    .login-container {
-      width: 100%;
-      max-width: 420px;
-      background: white;
-      padding: 35px;
-      border-radius: 18px;
-      box-shadow: 0 10px 35px rgba(23, 107, 77, 0.12);
-    }
+        .logo {
+            width: 75px;
+            height: 75px;
+            margin: 0 auto 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background: #e1f7e9;
+            font-size: 35px;
+        }
 
-    .logo {
-      width: 65px;
-      height: 65px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 18px;
-      background: #d9f3e4;
-      border-radius: 18px;
-      font-size: 30px;
-    }
+        h1 {
+            color: #246b45;
+            font-size: 27px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
 
-    h1 {
-      text-align: center;
-      font-size: 25px;
-      color: #176b4d;
-      margin-bottom: 8px;
-    }
+        .subtitle {
+            color: #718078;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
 
-    .subtitle {
-      text-align: center;
-      color: #718078;
-      font-size: 14px;
-      line-height: 1.6;
-      margin-bottom: 28px;
-    }
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-    .form-group {
-      margin-bottom: 18px;
-    }
+        label {
+            display: block;
+            color: #34483b;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
 
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 14px;
-      font-weight: bold;
-    }
+        input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #d8e5dc;
+            border-radius: 10px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
 
-    input {
-      width: 100%;
-      padding: 13px;
-      border: 1px solid #d5e1d9;
-      border-radius: 9px;
-      outline: none;
-      font-size: 14px;
-    }
+        input:focus {
+            border-color: #43a66c;
+            box-shadow: 0 0 0 3px rgba(67, 166, 108, 0.12);
+        }
 
-    input:focus {
-      border-color: #24865f;
-      box-shadow: 0 0 0 3px rgba(36, 134, 95, 0.1);
-    }
+        .password-wrapper {
+            position: relative;
+        }
 
-    .password-wrapper {
-      position: relative;
-    }
+        .password-wrapper input {
+            padding-right: 65px;
+        }
 
-    .password-wrapper input {
-      padding-right: 65px;
-    }
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            color: #388557;
+            font-size: 12px;
+            cursor: pointer;
+        }
 
-    .toggle-password {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      border: none;
-      background: transparent;
-      color: #176b4d;
-      cursor: pointer;
-      font-size: 12px;
-    }
+        .login-button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 5px;
+            border: none;
+            border-radius: 10px;
+            background: #31945a;
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
 
-    .login-button {
-      width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 9px;
-      background: #176b4d;
-      color: white;
-      font-size: 15px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 5px;
-      transition: background 0.2s;
-    }
+        .login-button:hover {
+            background: #267746;
+        }
 
-    .login-button:hover {
-      background: #10583e;
-    }
+        .login-button:disabled {
+            background: #91bda1;
+            cursor: not-allowed;
+        }
 
-    .login-button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
+        .message {
+            display: none;
+            margin-bottom: 18px;
+            padding: 12px;
+            border-radius: 9px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
 
-    .message {
-      display: none;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 13px;
-      line-height: 1.5;
-      margin-bottom: 16px;
-      overflow-wrap: anywhere;
-    }
+        .message.error {
+            display: block;
+            color: #a52d2d;
+            background: #fff0f0;
+            border: 1px solid #f3caca;
+        }
 
-    .message.error {
-      display: block;
-      background: #fce8e6;
-      color: #b42318;
-    }
+        .message.success {
+            display: block;
+            color: #246b45;
+            background: #eaf8ef;
+            border: 1px solid #c8ead3;
+        }
 
-    .message.info {
-      display: block;
-      background: #e4f4eb;
-      color: #176b4d;
-    }
+        .back-link {
+            display: block;
+            margin-top: 24px;
+            color: #388557;
+            text-align: center;
+            text-decoration: none;
+            font-size: 13px;
+        }
 
-    .back-link {
-      display: block;
-      text-align: center;
-      margin-top: 22px;
-      color: #176b4d;
-      text-decoration: none;
-      font-size: 14px;
-    }
+        .back-link:hover {
+            text-decoration: underline;
+        }
 
-    .back-link:hover {
-      text-decoration: underline;
-    }
+        .footer {
+            margin-top: 25px;
+            text-align: center;
+            color: #96a49b;
+            font-size: 12px;
+        }
 
-    .footer {
-      margin-top: 25px;
-      text-align: center;
-      color: #89958e;
-      font-size: 12px;
-    }
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 32px 24px;
+            }
 
-    @media (max-width: 480px) {
-      .login-container {
-        padding: 25px 20px;
-      }
-
-      h1 {
-        font-size: 23px;
-      }
-    }
-  </style>
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-  <main class="login-container">
+    <main class="login-container">
 
-    <div class="logo">🏡</div>
+        <div class="logo">🏡</div>
 
-    <h1>Portal Warga RT</h1>
+        <h1>Portal RT</h1>
 
-    <p class="subtitle">
-      Selamat datang!<br>
-      Silakan login untuk mengakses layanan warga.
-    </p>
+        <p class="subtitle">
+            Selamat datang!<br>
+            Silakan login untuk mengakses layanan warga.
+        </p>
 
-    <div
-      id="message"
-      class="message"
-      role="alert"
-      aria-live="polite"
-    ></div>
+        <div id="message" class="message" role="alert"></div>
 
-    <form id="loginForm">
+        <form id="loginForm">
 
-      <div class="form-group">
-        <label for="email">Email</label>
+            <div class="form-group">
+                <label for="email">Email</label>
 
-        <input
-          type="email"
-          id="email"
-          placeholder="Masukkan email"
-          autocomplete="username"
-          required
-        >
-      </div>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Masukkan email"
+                    autocomplete="username"
+                    required
+                >
+            </div>
 
-      <div class="form-group">
-        <label for="password">Password</label>
+            <div class="form-group">
+                <label for="password">Password</label>
 
-        <div class="password-wrapper">
-          <input
-            type="password"
-            id="password"
-            placeholder="Masukkan password"
-            autocomplete="current-password"
-            required
-          >
+                <div class="password-wrapper">
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Masukkan password"
+                        autocomplete="current-password"
+                        required
+                    >
 
-          <button
-            type="button"
-            class="toggle-password"
-            id="togglePassword"
-          >
-            Lihat
-          </button>
+                    <button
+                        type="button"
+                        class="toggle-password"
+                        id="togglePassword"
+                    >
+                        Lihat
+                    </button>
+                </div>
+            </div>
+
+            <button
+                type="submit"
+                class="login-button"
+                id="loginButton"
+            >
+                Login
+            </button>
+
+        </form>
+
+        <a href="index.html" class="back-link">
+            ← Kembali ke halaman utama
+        </a>
+
+        <div class="footer">
+            &copy; 2026 Portal Informasi dan Pelayanan Warga
         </div>
-      </div>
 
-      <button
-        type="submit"
-        class="login-button"
-        id="loginButton"
-      >
-        Login
-      </button>
+    </main>
 
-    </form>
+    <script type="module">
+        import { auth, db } from "./firebase.js";
 
-    <a href="index.html" class="back-link">
-      ← Kembali ke Beranda
-    </a>
+        import {
+            signInWithEmailAndPassword
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-    <div class="footer">
-      Portal Informasi dan Pelayanan Warga RT
-    </div>
+        import {
+            doc,
+            getDoc
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-  </main>
+        const loginForm = document.getElementById("loginForm");
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+        const loginButton = document.getElementById("loginButton");
+        const messageBox = document.getElementById("message");
+        const togglePassword = document.getElementById("togglePassword");
 
-  <script type="module">
-    import { auth, db } from "./firebase.js";
+        let isProcessing = false;
 
-    import {
-      signInWithEmailAndPassword,
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-    import {
-      doc,
-      getDoc
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-    const loginForm = document.getElementById("loginForm");
-    const emailInput = document.getElementById("email");
-    const passwordInput = document.getElementById("password");
-    const loginButton = document.getElementById("loginButton");
-    const messageBox = document.getElementById("message");
-    const togglePassword = document.getElementById("togglePassword");
-
-    let checkingSession = false;
-
-    function showMessage(message, type = "error") {
-      messageBox.textContent = message;
-      messageBox.className = "message " + type;
-    }
-
-    function hideMessage() {
-      messageBox.textContent = "";
-      messageBox.className = "message";
-    }
-
-    function setLoading(loading) {
-      loginButton.disabled = loading;
-      loginButton.textContent = loading
-        ? "Memeriksa akun..."
-        : "Login";
-    }
-
-    function getLoginErrorMessage(error) {
-      switch (error.code) {
-        case "auth/invalid-credential":
-        case "auth/wrong-password":
-        case "auth/user-not-found":
-          return "Email atau password tidak sesuai.";
-
-        case "auth/invalid-email":
-          return "Format email tidak valid.";
-
-        case "auth/too-many-requests":
-          return "Terlalu banyak percobaan. Coba lagi nanti.";
-
-        case "auth/network-request-failed":
-          return "Koneksi internet bermasalah. Periksa koneksi kamu.";
-
-        case "auth/operation-not-allowed":
-          return "Login email/password belum diaktifkan di Firebase.";
-
-        default:
-          return "Login gagal. Silakan coba kembali.";
-      }
-    }
-
-    // Memeriksa apakah pengguna sudah login.
-    // Jika sudah, arahkan sesuai role.
-    async function redirectByRole(user) {
-      if (checkingSession) return;
-
-      checkingSession = true;
-      setLoading(true);
-
-      try {
-        const roleRef = doc(db, "roles", user.uid);
-        const roleSnapshot = await getDoc(roleRef);
-
-        if (roleSnapshot.exists() &&
-            roleSnapshot.data().role === "admin") {
-          window.location.replace("admin.html");
-        } else {
-          window.location.replace("warga.html");
+        function showMessage(message, type = "error") {
+            messageBox.textContent = message;
+            messageBox.className = `message ${type}`;
         }
-      } catch (error) {
-        console.error("Pemeriksaan role gagal:", error);
 
-        checkingSession = false;
-        setLoading(false);
+        function hideMessage() {
+            messageBox.textContent = "";
+            messageBox.className = "message";
+        }
 
-        showMessage(
-          "Gagal memeriksa hak akses akun. Periksa Firestore Rules dan coba lagi."
-        );
-      }
-    }
+        function setLoading(loading, text = "Memproses...") {
+            loginButton.disabled = loading;
+            loginButton.textContent = loading ? text : "Login";
+        }
 
-    // Jika sudah login dan membuka login.html,
-    // arahkan langsung sesuai role.
-    onAuthStateChanged(auth, (user) => {
-      if (user && !checkingSession) {
-        redirectByRole(user);
-      }
-    });
+        function getLoginErrorMessage(error) {
+            switch (error.code) {
+                case "auth/invalid-email":
+                    return "Format email tidak valid.";
 
-    // Proses login.
-    loginForm.addEventListener("submit", async (event) => {
-      event.preventDefault();
+                case "auth/invalid-credential":
+                case "auth/wrong-password":
+                case "auth/user-not-found":
+                    return "Email atau password salah.";
 
-      if (checkingSession) return;
+                case "auth/user-disabled":
+                    return "Akun ini telah dinonaktifkan.";
 
-      hideMessage();
-      setLoading(true);
+                case "auth/too-many-requests":
+                    return "Terlalu banyak percobaan. Silakan coba lagi nanti.";
 
-      const email = emailInput.value.trim();
-      const password = passwordInput.value;
+                case "auth/network-request-failed":
+                    return "Koneksi internet bermasalah. Periksa koneksi kamu.";
 
-      try {
-        const credential = await signInWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
+                default:
+                    return "Login gagal. Silakan periksa kembali data akun kamu.";
+            }
+        }
 
-        // Pemeriksaan role dilakukan setelah login berhasil.
-        await redirectByRole(credential.user);
+        togglePassword.addEventListener("click", () => {
+            const isPassword = passwordInput.type === "password";
 
-      } catch (error) {
-        console.error("Login gagal:", error);
+            passwordInput.type = isPassword ? "text" : "password";
+            togglePassword.textContent = isPassword ? "Sembunyikan" : "Lihat";
+        });
 
-        checkingSession = false;
-        setLoading(false);
+        loginForm.addEventListener("submit", async (event) => {
+            event.preventDefault();
 
-        showMessage(getLoginErrorMessage(error));
-      }
-    });
+            if (isProcessing) return;
 
-    // Tombol untuk melihat/menyembunyikan password.
-    togglePassword.addEventListener("click", () => {
-      const isPassword = passwordInput.type === "password";
+            hideMessage();
 
-      passwordInput.type = isPassword ? "text" : "password";
-      togglePassword.textContent = isPassword ? "Sembunyikan" : "Lihat";
-    });
-  </script>
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+
+            isProcessing = true;
+            setLoading(true, "Memeriksa akun...");
+
+            try {
+                // 1. Memverifikasi email dan password melalui Firebase Authentication.
+                const credential = await signInWithEmailAndPassword(
+                    auth,
+                    email,
+                    password
+                );
+
+                const user = credential.user;
+
+                // 2. Mengambil role berdasarkan UID pengguna yang login.
+                const roleRef = doc(db, "roles", user.uid);
+                const roleSnapshot = await getDoc(roleRef);
+
+                // 3. Mengarahkan pengguna sesuai role di Firestore.
+                if (
+                    roleSnapshot.exists() &&
+                    roleSnapshot.data().role === "admin"
+                ) {
+                    showMessage("Login berhasil. Mengarahkan ke dashboard admin...", "success");
+
+                    window.location.replace("admin.html");
+                } else {
+                    showMessage("Login berhasil. Mengarahkan ke halaman warga...", "success");
+
+                    window.location.replace("warga.html");
+                }
+
+            } catch (error) {
+                console.error("Login error:", error);
+
+                if (
+                    error.code === "permission-denied" ||
+                    error.code === "firestore/permission-denied"
+                ) {
+                    showMessage(
+                        "Tidak dapat memeriksa role akun. Periksa Firestore Rules dan pastikan dokumen roles sesuai dengan UID akun."
+                    );
+                } else if (
+                    error.code === "unavailable" ||
+                    error.code === "failed-precondition"
+                ) {
+                    showMessage(
+                        "Firestore tidak dapat diakses. Periksa koneksi dan konfigurasi database."
+                    );
+                } else if (error.code && error.code.startsWith("auth/")) {
+                    showMessage(getLoginErrorMessage(error));
+                } else {
+                    showMessage(
+                        "Terjadi kesalahan saat login. Periksa koneksi dan konfigurasi Firebase."
+                    );
+                }
+
+            } finally {
+                isProcessing = false;
+                setLoading(false);
+            }
+        });
+    </script>
 
 </body>
 </html>
