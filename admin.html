@@ -3,329 +3,421 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin - Portal Warga RT</title>
+
+  <title>Dashboard Admin | Portal RT</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --green: #16845b;
+      --dark-green: #106b49;
+      --light-green: #e9f7ef;
+      --background: #f6f9f7;
+      --text: #24352c;
+      --muted: #7c8b81;
+      --border: #e7eee9;
+      --white: #ffffff;
+      --red: #c74646;
+      --orange: #a96313;
+      --light-orange: #fff3df;
     }
 
     body {
-      background: #f3f7f5;
-      color: #26352e;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--background);
+      color: var(--text);
+      min-height: 100vh;
     }
 
-    header {
-      background: #176b4d;
-      color: white;
-      padding: 20px 7%;
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .navbar {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 15px 5%;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 15px;
-      flex-wrap: wrap;
     }
 
-    header h1 {
-      font-size: 23px;
-    }
-
-    header p {
-      font-size: 13px;
-      margin-top: 6px;
-      opacity: 0.9;
-    }
-
-    .header-buttons {
+    .brand {
       display: flex;
+      align-items: center;
       gap: 10px;
-      flex-wrap: wrap;
+      font-size: 15px;
+      font-weight: 800;
     }
 
-    button, .btn {
-      border: none;
-      border-radius: 8px;
-      padding: 11px 15px;
-      cursor: pointer;
-      font-size: 14px;
-      text-decoration: none;
-      display: inline-block;
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--light-green);
+      color: var(--green);
+      display: grid;
+      place-items: center;
+      font-size: 22px;
     }
 
-    .btn-light {
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-link {
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .logout-btn {
       background: white;
-      color: #176b4d;
+      color: var(--red);
+      border: 1px solid #f0dada;
+      padding: 9px 12px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 700;
     }
 
-    .btn-logout {
-      background: #d9534f;
-      color: white;
-    }
-
-    main {
+    .container {
+      width: 92%;
       max-width: 1100px;
-      margin: 35px auto;
-      padding: 0 20px;
+      margin: 30px auto 50px;
     }
 
     .welcome {
+      background: linear-gradient(135deg, #16845b, #35a979);
+      color: white;
+      padding: 32px;
+      border-radius: 20px;
       margin-bottom: 25px;
+      position: relative;
+      overflow: hidden;
     }
 
-    .welcome h2 {
-      font-size: 26px;
+    .welcome::after {
+      content: "";
+      position: absolute;
+      width: 190px;
+      height: 190px;
+      border: 30px solid rgba(255,255,255,.09);
+      border-radius: 50%;
+      right: -40px;
+      top: -65px;
+    }
+
+    .welcome-label {
+      display: inline-block;
+      padding: 7px 11px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.15);
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+
+    .welcome h1 {
+      font-size: clamp(23px, 4vw, 31px);
+      line-height: 1.5;
       margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
     }
 
     .welcome p {
-      color: #65746b;
-      line-height: 1.6;
-      overflow-wrap: anywhere;
+      font-size: 13px;
+      line-height: 1.9;
+      color: rgba(255,255,255,.9);
+      max-width: 600px;
+      position: relative;
+      z-index: 1;
     }
 
-    .panel {
-      background: white;
-      border-radius: 14px;
-      padding: 25px;
-      margin-bottom: 25px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    .section {
+      margin-bottom: 30px;
     }
 
-    .panel h3 {
-      margin-bottom: 20px;
-      color: #176b4d;
-    }
-
-    .section-description {
-      color: #65746b;
-      margin-bottom: 18px;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    .form-group {
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
       margin-bottom: 17px;
     }
 
-    label {
+    .section-heading h2 {
+      font-size: 19px;
+      margin-bottom: 6px;
+    }
+
+    .section-heading p {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 17px;
+    }
+
+    .menu-card {
       display: block;
-      margin-bottom: 7px;
-      font-size: 14px;
-      font-weight: bold;
-    }
-
-    input, textarea, select {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #d4ded8;
-      border-radius: 8px;
-      font-size: 14px;
-      outline: none;
-      color: #26352e;
       background: white;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 22px;
+      transition: transform .2s, box-shadow .2s;
     }
 
-    input:focus, textarea:focus, select:focus {
-      border-color: #176b4d;
+    .menu-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(30,70,45,.06);
     }
 
-    textarea {
-      min-height: 120px;
-      resize: vertical;
+    .menu-icon {
+      width: 47px;
+      height: 47px;
+      display: grid;
+      place-items: center;
+      background: var(--light-green);
+      border-radius: 13px;
+      font-size: 23px;
+      margin-bottom: 17px;
     }
 
-    .checkbox-group {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      margin-bottom: 20px;
+    .menu-card h3 {
+      font-size: 14px;
+      margin-bottom: 8px;
     }
 
-    .checkbox-group input {
-      width: auto;
+    .menu-card p {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 15px;
     }
 
-    .checkbox-group label {
-      margin: 0;
-      font-weight: normal;
+    .menu-arrow {
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 700;
     }
 
-    .btn-primary {
-      background: #176b4d;
-      color: white;
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 17px;
     }
 
-    .btn-secondary {
-      background: #e5ece8;
-      color: #26352e;
+    .summary-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 22px;
     }
 
-    .btn-edit {
-      background: #f0b429;
-      color: #26352e;
+    .summary-label {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.8;
     }
 
-    .btn-delete {
-      background: #d9534f;
-      color: white;
+    .summary-number {
+      font-size: 28px;
+      font-weight: 800;
+      margin: 8px 0;
+      overflow-wrap: anywhere;
     }
 
-    .btn-status {
-      background: #dcefe5;
-      color: #176b4d;
-    }
-
-    button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
+    .summary-note {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.8;
     }
 
     .announcement-list {
       display: grid;
-      gap: 15px;
+      gap: 13px;
     }
 
     .announcement-card {
-      border: 1px solid #e0e8e3;
-      border-radius: 10px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
       padding: 20px;
-      min-width: 0;
     }
 
-    .announcement-card h4 {
-      font-size: 18px;
+    .announcement-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
       margin-bottom: 10px;
+    }
+
+    .announcement-card h3 {
+      font-size: 14px;
+      line-height: 1.7;
       overflow-wrap: anywhere;
     }
 
-    .announcement-card p {
-      line-height: 1.6;
+    .badge {
+      background: var(--light-green);
+      color: var(--green);
+      border-radius: 20px;
+      padding: 5px 9px;
+      font-size: 10px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .announcement-date {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .announcement-content {
+      font-size: 12px;
+      line-height: 1.9;
+      color: #58695e;
       white-space: pre-wrap;
       overflow-wrap: anywhere;
     }
 
-    .announcement-date {
-      font-size: 13px;
-      color: #68766e;
-      margin-bottom: 12px;
-    }
-
-    .badge {
-      display: inline-block;
-      margin-top: 12px;
-      padding: 5px 10px;
-      border-radius: 20px;
+    .state-box {
+      background: white;
+      border: 1px dashed #dce7df;
+      border-radius: 14px;
+      padding: 30px 20px;
+      text-align: center;
+      color: var(--muted);
       font-size: 12px;
+      line-height: 1.9;
     }
 
-    .active {
-      background: #d9f3e4;
-      color: #176b4d;
+    .state-icon {
+      font-size: 29px;
+      margin-bottom: 10px;
     }
 
-    .inactive {
-      background: #fce5e5;
-      color: #b42318;
-    }
-
-    .status-waiting {
-      background: #fff0c2;
-      color: #825b00;
-    }
-
-    .status-processing {
-      background: #dceaff;
-      color: #2455a0;
-    }
-
-    .status-completed {
-      background: #d9f3e4;
-      color: #176b4d;
-    }
-
-    .card-actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 16px;
-    }
-
-    .card-actions button {
-      padding: 9px 12px;
+    .retry-btn {
+      background: var(--green);
+      color: white;
+      border: none;
+      border-radius: 9px;
+      padding: 10px 15px;
+      margin-top: 12px;
+      font-size: 12px;
+      font-weight: 700;
     }
 
     .message {
-      padding: 12px;
-      border-radius: 8px;
-      margin-bottom: 15px;
       display: none;
-      line-height: 1.5;
-      overflow-wrap: anywhere;
-      font-size: 14px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 12px;
+      line-height: 1.8;
+      margin-bottom: 15px;
     }
 
-    .message-success {
-      background: #d9f3e4;
-      color: #176b4d;
+    .message.show {
+      display: block;
     }
 
-    .message-error {
-      background: #fce5e5;
-      color: #b42318;
+    .message.error {
+      color: #a12c2c;
+      background: #fff0f0;
     }
 
-    .loading {
-      color: #65746b;
-      padding: 15px 0;
-      line-height: 1.6;
-    }
-
-    .request-status-label {
-      margin-top: 18px;
-    }
-
-    .request-status-select {
-      margin-top: 7px;
-    }
-
-    footer {
+    .footer {
+      border-top: 1px solid var(--border);
+      background: white;
+      padding: 22px 15px;
       text-align: center;
-      color: #718078;
-      font-size: 13px;
-      padding: 25px 15px;
+      font-size: 11px;
+      color: var(--muted);
     }
 
-    @media (max-width: 600px) {
-      header {
-        padding: 20px;
+    @media (max-width: 800px) {
+      .menu-grid,
+      .summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 550px) {
+      .navbar {
+        padding: 13px 4%;
       }
 
-      header h1 {
-        font-size: 20px;
+      .brand {
+        font-size: 12px;
       }
 
-      main {
-        margin-top: 25px;
-        padding: 0 14px;
+      .brand-icon {
+        width: 35px;
+        height: 35px;
       }
 
-      .panel {
-        padding: 18px;
+      .nav-actions {
+        gap: 8px;
       }
 
-      .welcome h2 {
-        font-size: 22px;
+      .nav-link {
+        font-size: 10px;
+      }
+
+      .logout-btn {
+        padding: 8px;
+        font-size: 10px;
+      }
+
+      .container {
+        margin-top: 22px;
+      }
+
+      .welcome {
+        padding: 24px;
+        border-radius: 15px;
+      }
+
+      .menu-grid,
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .menu-card {
+        padding: 19px;
       }
 
       .announcement-card {
-        padding: 15px;
+        padding: 17px;
       }
 
-      .header-buttons {
-        width: 100%;
+      .announcement-top {
+        flex-direction: column;
       }
     }
   </style>
@@ -333,111 +425,146 @@
 
 <body>
 
-  <header>
-    <div>
-      <h1>Portal Warga RT</h1>
-      <p>Halaman Pengelolaan Admin</p>
-    </div>
+  <header class="navbar">
+    <a href="index.html" class="brand">
+      <div class="brand-icon">⌂</div>
+      <span>Portal Warga RT</span>
+    </a>
 
-    <div class="header-buttons">
-      <a href="warga.html" class="btn btn-light">Dashboard Warga</a>
-      <button type="button" class="btn btn-logout" id="logoutBtn">
-        Keluar
-      </button>
+    <div class="nav-actions">
+      <a href="index.html" class="nav-link">Beranda</a>
+      <button id="logoutBtn" class="logout-btn">Keluar ↗</button>
     </div>
   </header>
 
-  <main>
+  <main class="container">
+
     <section class="welcome">
-      <h2>Dashboard Admin</h2>
-      <p id="adminInfo">Memeriksa akses akun...</p>
+      <span class="welcome-label">DASHBOARD ADMIN</span>
+
+      <h1>Selamat datang, <span id="userName">Admin</span>! 👋</h1>
+
+      <p>
+        Selamat datang di halaman administrator Portal Informasi dan
+        Pelayanan Warga RT. Kelola informasi pengumuman dan pantau
+        pengajuan pelayanan warga melalui menu yang tersedia.
+      </p>
     </section>
 
-    <div id="pageMessage" class="message" role="status"></div>
-
-    <!-- FORM TAMBAH DAN EDIT PENGUMUMAN -->
-    <section class="panel">
-      <h3 id="formTitle">Tambah Pengumuman</h3>
-
-      <div id="formMessage" class="message" role="status"></div>
-
-      <form id="announcementForm">
-        <div class="form-group">
-          <label for="judul">Judul Pengumuman</label>
-          <input
-            type="text"
-            id="judul"
-            placeholder="Contoh: Kerja Bakti Warga"
-            maxlength="150"
-            required
-          >
+    <section class="section">
+      <div class="section-heading">
+        <div>
+          <h2>Ringkasan Portal</h2>
+          <p>Ringkasan informasi pengumuman dan pengajuan pelayanan.</p>
         </div>
+      </div>
 
-        <div class="form-group">
-          <label for="isi">Isi Pengumuman</label>
-          <textarea
-            id="isi"
-            placeholder="Tulis informasi pengumuman..."
-            maxlength="10000"
-            required
-          ></textarea>
-        </div>
+      <div class="summary-grid">
+        <article class="summary-card">
+          <div class="summary-label">Pengumuman Aktif</div>
+          <div class="summary-number" id="activeCount">—</div>
+          <div class="summary-note">Informasi yang ditampilkan kepada warga.</div>
+        </article>
 
-        <div class="form-group">
-          <label for="tanggal">Tanggal Kegiatan</label>
-          <input type="date" id="tanggal" required>
-        </div>
+        <article class="summary-card">
+          <div class="summary-label">Total Pengajuan</div>
+          <div class="summary-number" id="requestCount">—</div>
+          <div class="summary-note">Seluruh pengajuan pelayanan yang tercatat.</div>
+        </article>
 
-        <div class="checkbox-group">
-          <input type="checkbox" id="aktif" checked>
-          <label for="aktif">Tampilkan pengumuman kepada warga</label>
-        </div>
-
-        <button type="submit" class="btn btn-primary" id="saveBtn">
-          Simpan Pengumuman
-        </button>
-
-        <button
-          type="button"
-          class="btn btn-secondary"
-          id="cancelBtn"
-          hidden
-        >
-          Batal Edit
-        </button>
-      </form>
+        <article class="summary-card">
+          <div class="summary-label">Pengajuan Menunggu</div>
+          <div class="summary-number" id="pendingCount">—</div>
+          <div class="summary-note">Pengajuan yang belum diproses.</div>
+        </article>
+      </div>
     </section>
 
-    <!-- DAFTAR PENGUMUMAN -->
-    <section class="panel">
-      <h3>Daftar Pengumuman</h3>
+    <section class="section">
+      <div class="section-heading">
+        <div>
+          <h2>Layanan Portal</h2>
+          <p>Pilih menu untuk mengelola informasi dan pelayanan warga.</p>
+        </div>
+      </div>
 
-      <div id="listMessage" class="message" role="status"></div>
+      <div class="menu-grid">
+
+        <a href="pengumuman.html" class="menu-card">
+          <div class="menu-icon">📢</div>
+          <h3>Pengumuman</h3>
+          <p>
+            Lihat informasi kegiatan, pemberitahuan, dan pengumuman
+            yang aktif untuk warga.
+          </p>
+          <span class="menu-arrow">Lihat pengumuman →</span>
+        </a>
+
+        <a href="pelayanan.html" class="menu-card">
+          <div class="menu-icon">📝</div>
+          <h3>Pelayanan Warga</h3>
+          <p>
+            Lihat halaman pelayanan warga dan informasi pengajuan
+            administrasi.
+          </p>
+          <span class="menu-arrow">Lihat pelayanan →</span>
+        </a>
+
+        <a href="kelola-pengumuman.html" class="menu-card">
+          <div class="menu-icon">⚙️</div>
+          <h3>Kelola Pengumuman</h3>
+          <p>
+            Tambah, edit, aktifkan, nonaktifkan, dan hapus
+            pengumuman Portal RT.
+          </p>
+          <span class="menu-arrow">Kelola pengumuman →</span>
+        </a>
+
+        <a href="kelola-pelayanan.html" class="menu-card">
+          <div class="menu-icon">📋</div>
+          <h3>Kelola Pengajuan</h3>
+          <p>
+            Lihat pengajuan dari seluruh warga dan perbarui status
+            pelayanannya.
+          </p>
+          <span class="menu-arrow">Kelola pengajuan →</span>
+        </a>
+
+        <a href="index.html" class="menu-card">
+          <div class="menu-icon">🏡</div>
+          <h3>Beranda Portal</h3>
+          <p>
+            Kembali ke halaman utama Portal Informasi dan Pelayanan
+            Warga RT.
+          </p>
+          <span class="menu-arrow">Kembali ke beranda →</span>
+        </a>
+
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-heading">
+        <div>
+          <h2>Pengumuman Terbaru</h2>
+          <p>Informasi aktif yang tersedia untuk warga.</p>
+        </div>
+      </div>
+
+      <div id="announcementMessage" class="message" role="status"></div>
 
       <div id="announcementList" class="announcement-list">
-        <p class="loading">Memuat pengumuman...</p>
+        <div class="state-box">
+          <div class="state-icon">⏳</div>
+          Memuat pengumuman...
+        </div>
       </div>
     </section>
 
-    <!-- DAFTAR PENGAJUAN WARGA -->
-    <section class="panel">
-      <h3>Daftar Pengajuan Pelayanan Warga</h3>
-
-      <p class="section-description">
-        Lihat pengajuan layanan administrasi dari warga, periksa keterangannya,
-        dan perbarui status pengajuan.
-      </p>
-
-      <div id="serviceMessage" class="message" role="status"></div>
-
-      <div id="serviceList" class="announcement-list">
-        <p class="loading">Memuat pengajuan warga...</p>
-      </div>
-    </section>
   </main>
 
-  <footer>
-    Portal Informasi dan Pelayanan Warga RT
+  <footer class="footer">
+    © <span id="year"></span> Portal Informasi dan Pelayanan Warga RT
   </footer>
 
   <script type="module">
@@ -450,758 +577,218 @@
 
     import {
       collection,
-      addDoc,
       getDocs,
       getDoc,
       doc,
-      updateDoc,
-      deleteDoc,
-      serverTimestamp
+      query,
+      where
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    // =========================================
-    // REFERENSI ELEMEN HTML
-    // =========================================
-
-    const form = document.getElementById("announcementForm");
-    const judulInput = document.getElementById("judul");
-    const isiInput = document.getElementById("isi");
-    const tanggalInput = document.getElementById("tanggal");
-    const aktifInput = document.getElementById("aktif");
-
-    const saveBtn = document.getElementById("saveBtn");
-    const cancelBtn = document.getElementById("cancelBtn");
+    const userName = document.getElementById("userName");
+    const announcementList = document.getElementById("announcementList");
+    const announcementMessage = document.getElementById("announcementMessage");
     const logoutBtn = document.getElementById("logoutBtn");
 
-    const formTitle = document.getElementById("formTitle");
-    const adminInfo = document.getElementById("adminInfo");
-    const announcementList = document.getElementById("announcementList");
+    const activeCount = document.getElementById("activeCount");
+    const requestCount = document.getElementById("requestCount");
+    const pendingCount = document.getElementById("pendingCount");
 
-    const serviceList = document.getElementById("serviceList");
-
-    const pageMessage = document.getElementById("pageMessage");
-    const formMessage = document.getElementById("formMessage");
-    const listMessage = document.getElementById("listMessage");
-    const serviceMessage = document.getElementById("serviceMessage");
+    document.getElementById("year").textContent = new Date().getFullYear();
 
     let currentUser = null;
-    let editingId = null;
-    let announcements = [];
-    let isAdminVerified = false;
-    let busy = false;
-
-    // =========================================
-    // PESAN DAN STATUS TOMBOL
-    // =========================================
-
-    function showMessage(element, message, type = "success") {
-      element.textContent = message;
-
-      element.className = "message " +
-        (type === "error" ? "message-error" : "message-success");
-
-      element.style.display = "block";
-    }
-
-    function hideMessage(element) {
-      element.textContent = "";
-      element.style.display = "none";
-    }
-
-    function setBusy(value) {
-      busy = value;
-      saveBtn.disabled = value;
-      logoutBtn.disabled = value;
-    }
-
-    // =========================================
-    // VERIFIKASI LOGIN DAN ROLE ADMIN
-    // =========================================
+    let isLoading = false;
 
     onAuthStateChanged(auth, async (user) => {
-      isAdminVerified = false;
-      currentUser = null;
-
       if (!user) {
         window.location.replace("login.html");
         return;
       }
 
-      adminInfo.textContent = "Memeriksa hak akses admin...";
-
       try {
-        const roleRef = doc(db, "roles", user.uid);
-        const roleSnapshot = await getDoc(roleRef);
+        // Memastikan akun memiliki role admin di Firestore.
+        const roleSnapshot = await getDoc(doc(db, "roles", user.uid));
 
-        if (
-          !roleSnapshot.exists() ||
-          roleSnapshot.data().role !== "admin"
-        ) {
+        if (!roleSnapshot.exists() || roleSnapshot.data().role !== "admin") {
+          alert("Akses ditolak. Halaman ini khusus administrator.");
           window.location.replace("warga.html");
           return;
         }
 
         currentUser = user;
-        isAdminVerified = true;
 
-        adminInfo.textContent =
-          "Login sebagai admin: " + (user.email || user.uid);
+        userName.textContent =
+          user.displayName ||
+          (user.email ? user.email.split("@")[0] : "Admin");
 
         await Promise.all([
           loadAnnouncements(),
-          loadServiceRequests()
+          loadSummary()
         ]);
 
       } catch (error) {
-        console.error("Pengecekan admin gagal:", error);
+        console.error("Gagal memeriksa akses admin:", error);
 
-        adminInfo.textContent =
-          "Tidak dapat memverifikasi akses admin.";
+        announcementMessage.textContent =
+          "Tidak dapat memverifikasi akses admin. Periksa koneksi dan Firestore Rules.";
 
-        showMessage(
-          pageMessage,
-          "Gagal memeriksa role admin. Periksa Firestore Rules dan koneksi internet. Detail: " +
-            error.message,
-          "error"
-        );
+        announcementMessage.className = "message show error";
+        announcementList.replaceChildren();
+
+        const box = document.createElement("div");
+        box.className = "state-box";
+        box.textContent = "Dashboard belum dapat dimuat. Silakan muat ulang halaman.";
+        announcementList.appendChild(box);
       }
     });
 
-    // =========================================
-    // FITUR PENGUMUMAN
-    // =========================================
+    function showAnnouncementState(icon, message, retry = false) {
+      announcementList.replaceChildren();
+
+      const box = document.createElement("div");
+      box.className = "state-box";
+
+      const iconElement = document.createElement("div");
+      iconElement.className = "state-icon";
+      iconElement.textContent = icon;
+
+      const textElement = document.createElement("p");
+      textElement.textContent = message;
+
+      box.append(iconElement, textElement);
+
+      if (retry) {
+        const button = document.createElement("button");
+        button.className = "retry-btn";
+        button.textContent = "Coba Lagi";
+        button.addEventListener("click", loadAnnouncements);
+        box.appendChild(button);
+      }
+
+      announcementList.appendChild(box);
+    }
 
     async function loadAnnouncements() {
-      if (!isAdminVerified) return;
+      if (!currentUser || isLoading) return;
 
-      announcementList.innerHTML =
-        '<p class="loading">Memuat pengumuman...</p>';
-
-      hideMessage(listMessage);
+      isLoading = true;
+      showAnnouncementState("⏳", "Sedang mengambil pengumuman...");
 
       try {
-        const snapshot = await getDocs(
-          collection(db, "pengumuman")
+        const announcementQuery = query(
+          collection(db, "pengumuman"),
+          where("aktif", "==", true)
         );
 
-        announcements = snapshot.docs.map((item) => ({
-          id: item.id,
-          ...item.data()
-        }));
+        const snapshot = await getDocs(announcementQuery);
 
-        announcements.sort((a, b) => {
-          const dateA = String(a.tanggal || "");
-          const dateB = String(b.tanggal || "");
+        const announcements = snapshot.docs
+          .map((item) => ({
+            id: item.id,
+            ...item.data()
+          }))
+          .sort((a, b) =>
+            String(b.tanggal || "").localeCompare(String(a.tanggal || ""))
+          );
 
-          return dateB.localeCompare(dateA);
-        });
+        announcementList.replaceChildren();
 
-        renderAnnouncements();
+        if (announcements.length === 0) {
+          showAnnouncementState("📭", "Belum ada pengumuman aktif saat ini.");
+          return;
+        }
+
+        announcements.slice(0, 3).forEach(renderAnnouncement);
 
       } catch (error) {
         console.error("Gagal memuat pengumuman:", error);
-
-        announcementList.innerHTML = "";
-
-        showMessage(
-          listMessage,
-          "Gagal memuat pengumuman: " + error.message,
-          "error"
+        showAnnouncementState(
+          "⚠️",
+          "Pengumuman belum dapat dimuat. Periksa koneksi dan Firestore Rules.",
+          true
         );
+      } finally {
+        isLoading = false;
       }
     }
 
-    function renderAnnouncements() {
-      announcementList.innerHTML = "";
+    function renderAnnouncement(item) {
+      const card = document.createElement("article");
+      card.className = "announcement-card";
 
-      if (announcements.length === 0) {
-        announcementList.innerHTML =
-          '<p class="loading">Belum ada pengumuman.</p>';
+      const top = document.createElement("div");
+      top.className = "announcement-top";
 
-        return;
+      const title = document.createElement("h3");
+      title.textContent = item.judul || "Tanpa judul";
+
+      const badge = document.createElement("span");
+      badge.className = "badge";
+      badge.textContent = "Aktif";
+
+      top.append(title, badge);
+
+      const date = document.createElement("div");
+      date.className = "announcement-date";
+
+      if (item.tanggal) {
+        const parsedDate = new Date(`${item.tanggal}T00:00:00`);
+
+        date.textContent = Number.isNaN(parsedDate.getTime())
+          ? `Tanggal: ${item.tanggal}`
+          : `📅 ${parsedDate.toLocaleDateString("id-ID", {
+              day: "numeric",
+              month: "long",
+              year: "numeric"
+            })}`;
+      } else {
+        date.textContent = "📅 Tanggal belum ditentukan";
       }
 
-      announcements.forEach((item) => {
-        const card = document.createElement("article");
-        card.className = "announcement-card";
+      const content = document.createElement("p");
+      content.className = "announcement-content";
+      content.textContent = item.isi || "Tidak ada isi pengumuman.";
 
-        const title = document.createElement("h4");
-        title.textContent = item.judul || "Tanpa judul";
-
-        const date = document.createElement("div");
-        date.className = "announcement-date";
-        date.textContent =
-          "Tanggal kegiatan: " + (item.tanggal || "-");
-
-        const content = document.createElement("p");
-        content.textContent = item.isi || "";
-
-        const badge = document.createElement("span");
-        const isActive = item.aktif === true;
-
-        badge.className = "badge " +
-          (isActive ? "active" : "inactive");
-
-        badge.textContent = isActive
-          ? "Aktif — tampil untuk warga"
-          : "Nonaktif — tidak tampil untuk warga";
-
-        const actions = document.createElement("div");
-        actions.className = "card-actions";
-
-        const editBtn = document.createElement("button");
-        editBtn.type = "button";
-        editBtn.className = "btn btn-edit";
-        editBtn.textContent = "Edit";
-
-        editBtn.addEventListener("click", () => {
-          startEdit(item.id);
-        });
-
-        const statusBtn = document.createElement("button");
-        statusBtn.type = "button";
-        statusBtn.className = "btn btn-status";
-        statusBtn.textContent = isActive
-          ? "Nonaktifkan"
-          : "Aktifkan";
-
-        statusBtn.addEventListener("click", () => {
-          toggleStatus(item.id, isActive);
-        });
-
-        const deleteBtn = document.createElement("button");
-        deleteBtn.type = "button";
-        deleteBtn.className = "btn btn-delete";
-        deleteBtn.textContent = "Hapus";
-
-        deleteBtn.addEventListener("click", () => {
-          removeAnnouncement(item.id);
-        });
-
-        actions.append(editBtn, statusBtn, deleteBtn);
-
-        card.append(
-          title,
-          date,
-          content,
-          badge,
-          actions
-        );
-
-        announcementList.appendChild(card);
-      });
+      card.append(top, date, content);
+      announcementList.appendChild(card);
     }
 
-    // Tambah atau edit pengumuman.
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
-
-      if (!isAdminVerified || !currentUser) {
-        showMessage(
-          formMessage,
-          "Akses admin belum terverifikasi.",
-          "error"
-        );
-        return;
-      }
-
-      if (busy) return;
-
-      const title = judulInput.value.trim();
-      const content = isiInput.value.trim();
-      const date = tanggalInput.value;
-      const isActive = aktifInput.checked;
-
-      if (!title || !content || !date) {
-        showMessage(
-          formMessage,
-          "Semua kolom wajib diisi.",
-          "error"
-        );
-        return;
-      }
-
-      setBusy(true);
-      hideMessage(formMessage);
-
+    async function loadSummary() {
       try {
-        const data = {
-          judul: title,
-          isi: content,
-          tanggal: date,
-          aktif: isActive,
-          updatedAt: serverTimestamp()
-        };
-
-        if (editingId) {
-          await updateDoc(
-            doc(db, "pengumuman", editingId),
-            data
-          );
-
-          showMessage(
-            formMessage,
-            "Pengumuman berhasil diperbarui."
-          );
-
-        } else {
-          data.createdAt = serverTimestamp();
-
-          await addDoc(
+        const [announcementSnapshot, requestSnapshot] = await Promise.all([
+          getDocs(query(
             collection(db, "pengumuman"),
-            data
-          );
+            where("aktif", "==", true)
+          )),
+          getDocs(collection(db, "pengajuan"))
+        ]);
 
-          showMessage(
-            formMessage,
-            "Pengumuman berhasil ditambahkan."
-          );
-        }
+        const totalRequests = requestSnapshot.size;
+        const pendingRequests = requestSnapshot.docs.filter(
+          (item) => item.data().status === "Menunggu"
+        ).length;
 
-        resetForm();
-        await loadAnnouncements();
-
-      } catch (error) {
-        console.error("Gagal menyimpan pengumuman:", error);
-
-        showMessage(
-          formMessage,
-          "Gagal menyimpan pengumuman: " + error.message,
-          "error"
-        );
-
-      } finally {
-        setBusy(false);
-      }
-    });
-
-    function startEdit(id) {
-      if (!isAdminVerified) return;
-
-      const item = announcements.find(
-        (entry) => entry.id === id
-      );
-
-      if (!item) return;
-
-      editingId = id;
-
-      judulInput.value = item.judul || "";
-      isiInput.value = item.isi || "";
-      tanggalInput.value = item.tanggal || "";
-      aktifInput.checked = item.aktif === true;
-
-      formTitle.textContent = "Edit Pengumuman";
-      saveBtn.textContent = "Simpan Perubahan";
-      cancelBtn.hidden = false;
-
-      hideMessage(formMessage);
-
-      form.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-    }
-
-    function resetForm() {
-      editingId = null;
-      form.reset();
-
-      aktifInput.checked = true;
-
-      formTitle.textContent = "Tambah Pengumuman";
-      saveBtn.textContent = "Simpan Pengumuman";
-      cancelBtn.hidden = true;
-    }
-
-    cancelBtn.addEventListener("click", () => {
-      resetForm();
-      hideMessage(formMessage);
-    });
-
-    async function toggleStatus(id, currentStatus) {
-      if (!isAdminVerified || busy) return;
-
-      setBusy(true);
-      hideMessage(listMessage);
-
-      try {
-        await updateDoc(
-          doc(db, "pengumuman", id),
-          {
-            aktif: !currentStatus,
-            updatedAt: serverTimestamp()
-          }
-        );
-
-        showMessage(
-          listMessage,
-          currentStatus
-            ? "Pengumuman berhasil dinonaktifkan."
-            : "Pengumuman berhasil diaktifkan."
-        );
-
-        await loadAnnouncements();
+        activeCount.textContent = announcementSnapshot.size;
+        requestCount.textContent = totalRequests;
+        pendingCount.textContent = pendingRequests;
 
       } catch (error) {
-        console.error("Gagal mengubah status pengumuman:", error);
+        console.error("Gagal memuat ringkasan:", error);
 
-        showMessage(
-          listMessage,
-          "Gagal mengubah status: " + error.message,
-          "error"
-        );
-
-      } finally {
-        setBusy(false);
+        activeCount.textContent = "—";
+        requestCount.textContent = "—";
+        pendingCount.textContent = "—";
       }
     }
-
-    async function removeAnnouncement(id) {
-      if (!isAdminVerified || busy) return;
-
-      const confirmed = window.confirm(
-        "Yakin ingin menghapus pengumuman ini?"
-      );
-
-      if (!confirmed) return;
-
-      setBusy(true);
-      hideMessage(listMessage);
-
-      try {
-        await deleteDoc(
-          doc(db, "pengumuman", id)
-        );
-
-        if (editingId === id) {
-          resetForm();
-        }
-
-        showMessage(
-          listMessage,
-          "Pengumuman berhasil dihapus."
-        );
-
-        await loadAnnouncements();
-
-      } catch (error) {
-        console.error("Gagal menghapus pengumuman:", error);
-
-        showMessage(
-          listMessage,
-          "Gagal menghapus pengumuman: " + error.message,
-          "error"
-        );
-
-      } finally {
-        setBusy(false);
-      }
-    }
-
-    // =========================================
-    // FITUR PENGAJUAN PELAYANAN WARGA
-    // =========================================
-
-    async function loadServiceRequests() {
-      if (!isAdminVerified) return;
-
-      serviceList.innerHTML =
-        '<p class="loading">Memuat pengajuan warga...</p>';
-
-      hideMessage(serviceMessage);
-
-      try {
-        const snapshot = await getDocs(
-          collection(db, "pengajuan")
-        );
-
-        const requests = snapshot.docs.map((item) => ({
-          id: item.id,
-          ...item.data()
-        }));
-
-        requests.sort((a, b) => {
-          const dateA = a.createdAt?.toMillis?.() || 0;
-          const dateB = b.createdAt?.toMillis?.() || 0;
-
-          return dateB - dateA;
-        });
-
-        renderServiceRequests(requests);
-
-      } catch (error) {
-        console.error("Gagal memuat pengajuan:", error);
-
-        serviceList.innerHTML = "";
-
-        showMessage(
-          serviceMessage,
-          "Gagal memuat pengajuan. Periksa Firestore Rules. Detail: " +
-            error.message,
-          "error"
-        );
-      }
-    }
-
-    function formatRequestDate(timestamp) {
-      if (!timestamp) return "-";
-
-      const date = timestamp.toDate
-        ? timestamp.toDate()
-        : new Date(timestamp);
-
-      return date.toLocaleDateString("id-ID", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric"
-      });
-    }
-
-    function getRequestStatusClass(status) {
-      if (status === "Diproses") {
-        return "status-processing";
-      }
-
-      if (status === "Selesai") {
-        return "status-completed";
-      }
-
-      return "status-waiting";
-    }
-
-    function renderServiceRequests(requests) {
-      serviceList.innerHTML = "";
-
-      if (requests.length === 0) {
-        serviceList.innerHTML =
-          '<p class="loading">Belum ada pengajuan pelayanan warga.</p>';
-
-        return;
-      }
-
-      requests.forEach((item) => {
-        const card = document.createElement("article");
-        card.className = "announcement-card";
-
-        const title = document.createElement("h4");
-        title.textContent =
-          item.jenisLayanan || "Jenis layanan tidak tersedia";
-
-        const email = document.createElement("p");
-        email.style.marginBottom = "8px";
-        email.textContent =
-          "Akun warga: " + (item.email || "-");
-
-        const purpose = document.createElement("p");
-        purpose.style.marginBottom = "8px";
-        purpose.textContent =
-          "Keperluan: " + (item.keperluan || "-");
-
-        const description = document.createElement("p");
-        description.style.marginBottom = "8px";
-        description.textContent =
-          "Keterangan: " + (item.keterangan || "-");
-
-        const date = document.createElement("p");
-        date.className = "announcement-date";
-        date.style.marginTop = "10px";
-        date.textContent =
-          "Tanggal pengajuan: " +
-          formatRequestDate(item.createdAt);
-
-        const currentStatus = item.status || "Menunggu";
-
-        const statusBadge = document.createElement("span");
-        statusBadge.className =
-          "badge " + getRequestStatusClass(currentStatus);
-
-        statusBadge.textContent =
-          "Status saat ini: " + currentStatus;
-
-        const statusLabel = document.createElement("label");
-        statusLabel.className = "request-status-label";
-        statusLabel.textContent = "Ubah Status Pengajuan";
-
-        const statusSelect = document.createElement("select");
-        statusSelect.className = "request-status-select";
-
-        const statuses = [
-          "Menunggu",
-          "Diproses",
-          "Selesai"
-        ];
-
-        statuses.forEach((status) => {
-          const option = document.createElement("option");
-
-          option.value = status;
-          option.textContent = status;
-
-          if (currentStatus === status) {
-            option.selected = true;
-          }
-
-          statusSelect.appendChild(option);
-        });
-
-        const actions = document.createElement("div");
-        actions.className = "card-actions";
-
-        const updateBtn = document.createElement("button");
-        updateBtn.type = "button";
-        updateBtn.className = "btn btn-primary";
-        updateBtn.textContent = "Simpan Status";
-
-        updateBtn.addEventListener("click", async () => {
-          await updateRequestStatus(
-            item.id,
-            statusSelect.value,
-            updateBtn
-          );
-        });
-
-        const deleteBtn = document.createElement("button");
-        deleteBtn.type = "button";
-        deleteBtn.className = "btn btn-delete";
-        deleteBtn.textContent = "Hapus Pengajuan";
-
-        deleteBtn.addEventListener("click", async () => {
-          await deleteServiceRequest(
-            item.id,
-            deleteBtn
-          );
-        });
-
-        actions.append(updateBtn, deleteBtn);
-
-        card.append(
-          title,
-          email,
-          purpose,
-          description,
-          date,
-          statusBadge,
-          statusLabel,
-          statusSelect,
-          actions
-        );
-
-        serviceList.appendChild(card);
-      });
-    }
-
-    async function updateRequestStatus(id, newStatus, button) {
-      if (!isAdminVerified || busy) return;
-
-      const allowedStatuses = [
-        "Menunggu",
-        "Diproses",
-        "Selesai"
-      ];
-
-      if (!allowedStatuses.includes(newStatus)) {
-        showMessage(
-          serviceMessage,
-          "Status pengajuan tidak valid.",
-          "error"
-        );
-
-        return;
-      }
-
-      setBusy(true);
-      button.disabled = true;
-
-      try {
-        await updateDoc(
-          doc(db, "pengajuan", id),
-          {
-            status: newStatus,
-            updatedAt: serverTimestamp()
-          }
-        );
-
-        showMessage(
-          serviceMessage,
-          "Status pengajuan berhasil diperbarui menjadi " +
-            newStatus + "."
-        );
-
-        await loadServiceRequests();
-
-      } catch (error) {
-        console.error("Gagal mengubah status pengajuan:", error);
-
-        showMessage(
-          serviceMessage,
-          "Gagal mengubah status: " + error.message,
-          "error"
-        );
-
-      } finally {
-        setBusy(false);
-        button.disabled = false;
-      }
-    }
-
-    async function deleteServiceRequest(id, button) {
-      if (!isAdminVerified || busy) return;
-
-      const confirmed = window.confirm(
-        "Yakin ingin menghapus pengajuan ini? " +
-        "Data yang dihapus tidak dapat dipulihkan melalui halaman ini."
-      );
-
-      if (!confirmed) return;
-
-      setBusy(true);
-      button.disabled = true;
-
-      try {
-        await deleteDoc(
-          doc(db, "pengajuan", id)
-        );
-
-        showMessage(
-          serviceMessage,
-          "Pengajuan berhasil dihapus."
-        );
-
-        await loadServiceRequests();
-
-      } catch (error) {
-        console.error("Gagal menghapus pengajuan:", error);
-
-        showMessage(
-          serviceMessage,
-          "Gagal menghapus pengajuan: " + error.message,
-          "error"
-        );
-
-      } finally {
-        setBusy(false);
-        button.disabled = false;
-      }
-    }
-
-    // =========================================
-    // LOGOUT
-    // =========================================
 
     logoutBtn.addEventListener("click", async () => {
+      if (!confirm("Yakin ingin keluar dari akun?")) return;
+
       try {
         await signOut(auth);
         window.location.replace("login.html");
-
       } catch (error) {
-        console.error("Logout gagal:", error);
-
-        showMessage(
-          pageMessage,
-          "Gagal logout: " + error.message,
-          "error"
-        );
+        console.error("Gagal logout:", error);
+        alert("Gagal keluar dari akun. Silakan coba lagi.");
       }
     });
   </script>
