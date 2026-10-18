@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -7,6 +8,7 @@
   <title>Dashboard Admin | Portal RT</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
@@ -18,21 +20,23 @@
 
     :root {
       --green: #16845b;
-      --dark-green: #106b49;
-      --light-green: #e9f7ef;
-      --background: #f6f9f7;
-      --text: #24352c;
-      --muted: #7c8b81;
-      --border: #e7eee9;
-      --white: #ffffff;
-      --red: #c74646;
-      --orange: #a96313;
-      --light-orange: #fff3df;
+      --green-dark: #10583f;
+      --green-light: #e6f5ec;
+      --bg: #f5f7f6;
+      --white: #fff;
+      --text: #25352c;
+      --muted: #849087;
+      --border: #e7ece8;
+      --orange: #f59e0b;
+      --blue: #3b82f6;
+      --purple: #8b5cf6;
+      --red: #dc5252;
+      --sidebar-width: 250px;
     }
 
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: var(--background);
+      font-family: "Plus Jakarta Sans", sans-serif;
+      background: var(--bg);
       color: var(--text);
       min-height: 100vh;
     }
@@ -47,138 +51,420 @@
       cursor: pointer;
     }
 
-    .navbar {
-      background: white;
-      border-bottom: 1px solid var(--border);
-      padding: 15px 5%;
+    .layout {
+      min-height: 100vh;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: var(--sidebar-width);
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      background: var(--green-dark);
+      color: white;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
+      flex-direction: column;
+      padding: 25px 17px;
+      overflow-y: auto;
+      transition: transform .25s ease;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-size: 15px;
-      font-weight: 800;
+      gap: 12px;
+      padding: 0 8px 30px;
+      border-bottom: 1px solid rgba(255,255,255,.12);
     }
 
     .brand-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      background: var(--light-green);
-      color: var(--green);
+      width: 43px;
+      height: 43px;
       display: grid;
       place-items: center;
-      font-size: 22px;
+      background: rgba(255,255,255,.13);
+      border-radius: 14px;
+      font-size: 24px;
     }
 
-    .nav-actions {
+    .brand-name {
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.5;
+    }
+
+    .brand-caption {
+      font-size: 10px;
+      color: #c1e5d1;
+      margin-top: 3px;
+    }
+
+    .nav-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      color: #a6d2b9;
+      padding: 25px 12px 11px;
+    }
+
+    .nav-list {
+      display: grid;
+      gap: 6px;
+    }
+
+    .nav-item {
       display: flex;
       align-items: center;
       gap: 12px;
-    }
-
-    .nav-link {
-      color: var(--green);
+      padding: 12px 13px;
+      border-radius: 10px;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 600;
+      color: #d9eee1;
+      transition: background .2s, color .2s;
     }
 
-    .logout-btn {
-      background: white;
-      color: var(--red);
-      border: 1px solid #f0dada;
-      padding: 9px 12px;
-      border-radius: 9px;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .container {
-      width: 92%;
-      max-width: 1100px;
-      margin: 30px auto 50px;
-    }
-
-    .welcome {
-      background: linear-gradient(135deg, #16845b, #35a979);
+    .nav-item:hover,
+    .nav-item.active {
+      background: rgba(255,255,255,.14);
       color: white;
-      padding: 32px;
-      border-radius: 20px;
-      margin-bottom: 25px;
+    }
+
+    .nav-icon {
+      width: 22px;
+      text-align: center;
+      font-size: 17px;
+    }
+
+    .sidebar-bottom {
+      margin-top: auto;
+      padding-top: 25px;
+    }
+
+    .admin-mini {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 10px;
+      background: rgba(255,255,255,.09);
+      border-radius: 12px;
+      margin-bottom: 12px;
+      min-width: 0;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #c7ead5;
+      color: var(--green-dark);
+      display: grid;
+      place-items: center;
+      font-size: 15px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .admin-info {
+      min-width: 0;
+    }
+
+    .admin-info strong {
+      display: block;
+      font-size: 11px;
+      overflow-wrap: anywhere;
+    }
+
+    .admin-info span {
+      display: block;
+      font-size: 10px;
+      color: #c1e5d1;
+      margin-top: 4px;
+    }
+
+    .sidebar-logout {
+      width: 100%;
+      background: transparent;
+      color: #ffdddd;
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 10px;
+      padding: 11px;
+      font-size: 12px;
+      font-weight: 700;
+      text-align: left;
+    }
+
+    .sidebar-logout:hover {
+      background: rgba(255,255,255,.09);
+    }
+
+    /* MAIN CONTENT */
+    .main {
+      margin-left: var(--sidebar-width);
+      min-height: 100vh;
+      transition: margin .25s ease;
+    }
+
+    .topbar {
+      height: 76px;
+      background: white;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 34px;
+      gap: 15px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .topbar h1 {
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .topbar p {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 5px;
+    }
+
+    .mobile-menu {
+      display: none;
+      border: 1px solid var(--border);
+      background: white;
+      border-radius: 9px;
+      width: 38px;
+      height: 38px;
+      font-size: 19px;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .online-badge {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: #e8f7ed;
+      color: #187748;
+      border-radius: 30px;
+      padding: 8px 11px;
+      font-size: 10px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .online-dot {
+      width: 7px;
+      height: 7px;
+      background: #20a45c;
+      border-radius: 50%;
+    }
+
+    .content {
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 30px 34px 40px;
+    }
+
+    /* WELCOME */
+    .welcome {
+      background: linear-gradient(120deg, #146c4a, #23996a);
+      color: white;
+      padding: 30px 32px;
+      border-radius: 19px;
+      margin-bottom: 30px;
       position: relative;
       overflow: hidden;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .welcome::before {
+      content: "";
+      width: 220px;
+      height: 220px;
+      border: 35px solid rgba(255,255,255,.07);
+      border-radius: 50%;
+      position: absolute;
+      right: 60px;
+      top: -125px;
     }
 
     .welcome::after {
       content: "";
-      position: absolute;
-      width: 190px;
-      height: 190px;
-      border: 30px solid rgba(255,255,255,.09);
+      width: 140px;
+      height: 140px;
+      border: 25px solid rgba(255,255,255,.07);
       border-radius: 50%;
-      right: -40px;
-      top: -65px;
+      position: absolute;
+      right: -30px;
+      bottom: -100px;
+    }
+
+    .welcome-content {
+      position: relative;
+      z-index: 1;
     }
 
     .welcome-label {
       display: inline-block;
       padding: 7px 11px;
-      border-radius: 20px;
       background: rgba(255,255,255,.15);
-      font-size: 11px;
+      border-radius: 20px;
+      font-size: 10px;
       font-weight: 700;
-      margin-bottom: 15px;
+      letter-spacing: .7px;
+      margin-bottom: 14px;
     }
 
-    .welcome h1 {
-      font-size: clamp(23px, 4vw, 31px);
+    .welcome h2 {
+      font-size: clamp(22px, 2.5vw, 29px);
       line-height: 1.5;
       margin-bottom: 8px;
-      position: relative;
-      z-index: 1;
     }
 
     .welcome p {
-      font-size: 13px;
+      max-width: 620px;
+      font-size: 12px;
       line-height: 1.9;
-      color: rgba(255,255,255,.9);
-      max-width: 600px;
-      position: relative;
-      z-index: 1;
+      color: rgba(255,255,255,.88);
     }
 
+    .welcome-illustration {
+      position: relative;
+      z-index: 1;
+      font-size: 65px;
+      padding: 10px 20px;
+      flex-shrink: 0;
+    }
+
+    /* SECTION */
     .section {
-      margin-bottom: 30px;
+      margin-bottom: 31px;
     }
 
     .section-heading {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-end;
       gap: 12px;
       margin-bottom: 17px;
     }
 
     .section-heading h2 {
-      font-size: 19px;
+      font-size: 16px;
+      font-weight: 800;
       margin-bottom: 6px;
     }
 
     .section-heading p {
-      font-size: 12px;
+      font-size: 11px;
+      line-height: 1.8;
       color: var(--muted);
+    }
+
+    /* STATISTICS */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .summary-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 21px;
+      min-width: 0;
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .summary-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(30,60,40,.06);
+    }
+
+    .summary-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 19px;
+    }
+
+    .summary-icon {
+      width: 43px;
+      height: 43px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 21px;
+    }
+
+    .icon-green {
+      background: #e5f5eb;
+    }
+
+    .icon-blue {
+      background: #e9f1ff;
+    }
+
+    .icon-orange {
+      background: #fff2df;
+    }
+
+    .icon-purple {
+      background: #f0eaff;
+    }
+
+    .summary-symbol {
+      font-size: 11px;
+      color: #9aa59d;
+    }
+
+    .summary-label {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .summary-number {
+      font-size: 30px;
+      font-weight: 800;
+      margin: 7px 0;
+      overflow-wrap: anywhere;
+      letter-spacing: -1px;
+    }
+
+    .summary-note {
+      color: var(--muted);
+      font-size: 10px;
       line-height: 1.8;
     }
 
+    /* MENU CARDS */
     .menu-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 17px;
+      gap: 16px;
     }
 
     .menu-card {
@@ -186,77 +472,47 @@
       background: white;
       border: 1px solid var(--border);
       border-radius: 15px;
-      padding: 22px;
-      transition: transform .2s, box-shadow .2s;
+      padding: 21px;
+      transition: transform .2s, box-shadow .2s, border-color .2s;
     }
 
     .menu-card:hover {
       transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(30,70,45,.06);
+      border-color: #b9ddc7;
+      box-shadow: 0 10px 28px rgba(30,60,40,.06);
     }
 
     .menu-icon {
-      width: 47px;
-      height: 47px;
+      width: 46px;
+      height: 46px;
       display: grid;
       place-items: center;
-      background: var(--light-green);
+      background: var(--green-light);
       border-radius: 13px;
-      font-size: 23px;
+      font-size: 22px;
       margin-bottom: 17px;
     }
 
     .menu-card h3 {
-      font-size: 14px;
+      font-size: 13px;
       margin-bottom: 8px;
     }
 
     .menu-card p {
-      font-size: 12px;
       color: var(--muted);
-      line-height: 1.8;
+      font-size: 11px;
+      line-height: 1.9;
       margin-bottom: 15px;
     }
 
     .menu-arrow {
+      display: inline-block;
       color: var(--green);
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .summary-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 17px;
-    }
-
-    .summary-card {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 15px;
-      padding: 22px;
-      min-width: 0;
-    }
-
-    .summary-label {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.8;
-    }
-
-    .summary-number {
-      font-size: 28px;
-      font-weight: 800;
-      margin: 8px 0;
-      overflow-wrap: anywhere;
-    }
-
-    .summary-note {
       font-size: 11px;
-      color: var(--muted);
-      line-height: 1.8;
+      font-weight: 800;
     }
 
+    /* ANNOUNCEMENTS */
     .announcement-list {
       display: grid;
       gap: 13px;
@@ -266,43 +522,48 @@
       background: white;
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 20px;
+      padding: 21px;
+      transition: border-color .2s;
+    }
+
+    .announcement-card:hover {
+      border-color: #b9ddc7;
     }
 
     .announcement-top {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      gap: 12px;
+      gap: 15px;
       margin-bottom: 10px;
     }
 
     .announcement-card h3 {
-      font-size: 14px;
-      line-height: 1.7;
+      font-size: 13px;
+      line-height: 1.8;
       overflow-wrap: anywhere;
     }
 
     .badge {
-      background: var(--light-green);
-      color: var(--green);
+      background: #e5f5eb;
+      color: #16845b;
       border-radius: 20px;
-      padding: 5px 9px;
+      padding: 6px 10px;
       font-size: 10px;
-      font-weight: 700;
+      font-weight: 800;
       white-space: nowrap;
     }
 
     .announcement-date {
-      font-size: 11px;
       color: var(--muted);
+      font-size: 10px;
       margin-bottom: 12px;
     }
 
     .announcement-content {
-      font-size: 12px;
+      color: #5e6c63;
+      font-size: 11px;
       line-height: 1.9;
-      color: #58695e;
       white-space: pre-wrap;
       overflow-wrap: anywhere;
     }
@@ -314,7 +575,7 @@
       padding: 30px 20px;
       text-align: center;
       color: var(--muted);
-      font-size: 12px;
+      font-size: 11px;
       line-height: 1.9;
     }
 
@@ -330,7 +591,7 @@
       border-radius: 9px;
       padding: 10px 15px;
       margin-top: 12px;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
     }
 
@@ -338,7 +599,7 @@
       display: none;
       padding: 12px 14px;
       border-radius: 10px;
-      font-size: 12px;
+      font-size: 11px;
       line-height: 1.8;
       margin-bottom: 15px;
     }
@@ -355,264 +616,382 @@
     .footer {
       border-top: 1px solid var(--border);
       background: white;
-      padding: 22px 15px;
+      padding: 20px;
       text-align: center;
-      font-size: 11px;
       color: var(--muted);
+      font-size: 10px;
     }
 
-    @media (max-width: 1000px) {
+    .overlay {
+      display: none;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1200px) {
       .summary-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
-    }
 
-    @media (max-width: 800px) {
       .menu-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
-    @media (max-width: 550px) {
-      .navbar {
-        padding: 13px 4%;
+    @media (max-width: 760px) {
+      .sidebar {
+        transform: translateX(-100%);
       }
 
-      .brand {
-        font-size: 12px;
+      .sidebar.open {
+        transform: translateX(0);
       }
 
-      .brand-icon {
-        width: 35px;
-        height: 35px;
+      .main {
+        margin-left: 0;
       }
 
-      .nav-actions {
-        gap: 8px;
+      .mobile-menu {
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
       }
 
-      .nav-link {
+      .topbar {
+        height: 70px;
+        padding: 0 18px;
+      }
+
+      .topbar h1 {
+        font-size: 14px;
+      }
+
+      .topbar p {
         font-size: 10px;
       }
 
-      .logout-btn {
-        padding: 8px;
-        font-size: 10px;
-      }
-
-      .container {
-        margin-top: 22px;
+      .content {
+        padding: 22px 18px 30px;
       }
 
       .welcome {
-        padding: 24px;
-        border-radius: 15px;
+        padding: 25px;
       }
 
-      .menu-grid,
-      .summary-grid {
+      .welcome-illustration {
+        font-size: 45px;
+        padding: 5px;
+      }
+
+      .overlay.show {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 90;
+        background: rgba(10,30,20,.45);
+      }
+    }
+
+    @media (max-width: 520px) {
+      .online-badge {
+        display: none;
+      }
+
+      .welcome {
+        padding: 23px 20px;
+      }
+
+      .welcome-illustration {
+        display: none;
+      }
+
+      .summary-grid,
+      .menu-grid {
         grid-template-columns: 1fr;
       }
 
-      .menu-card {
+      .summary-card {
         padding: 19px;
       }
 
-      .announcement-card {
-        padding: 17px;
+      .summary-top {
+        margin-bottom: 12px;
+      }
+
+      .summary-number {
+        font-size: 28px;
+      }
+
+      .section-heading h2 {
+        font-size: 15px;
       }
 
       .announcement-top {
         flex-direction: column;
+      }
+
+      .content {
+        padding: 19px 13px 25px;
+      }
+
+      .topbar {
+        padding: 0 13px;
       }
     }
   </style>
 </head>
 
 <body>
+  <div class="layout">
 
-  <header class="navbar">
-    <a href="index.html" class="brand">
-      <div class="brand-icon">⌂</div>
-      <span>Portal Warga RT</span>
-    </a>
-
-    <div class="nav-actions">
-      <a href="index.html" class="nav-link">Beranda</a>
-      <a href="profil.html" class="nav-link">Profil Saya</a>
-      <button id="logoutBtn" class="logout-btn">Keluar ↗</button>
-    </div>
-  </header>
-
-  <main class="container">
-
-    <section class="welcome">
-      <span class="welcome-label">DASHBOARD ADMIN</span>
-
-      <h1>Selamat datang, <span id="userName">Admin</span>! 👋</h1>
-
-      <p>
-        Selamat datang di halaman administrator Portal Informasi dan
-        Pelayanan Warga RT. Kelola informasi pengumuman dan pantau
-        pengajuan pelayanan warga melalui menu yang tersedia.
-      </p>
-    </section>
-
-    <!-- RINGKASAN STATISTIK -->
-    <section class="section">
-      <div class="section-heading">
+    <aside class="sidebar" id="sidebar">
+      <a href="admin.html" class="brand">
+        <div class="brand-icon">⌂</div>
         <div>
-          <h2>Ringkasan Portal</h2>
-          <p>Ringkasan informasi pengumuman dan pengajuan pelayanan.</p>
+          <div class="brand-name">Portal Warga RT</div>
+          <div class="brand-caption">Sistem Informasi Warga</div>
         </div>
-      </div>
+      </a>
 
-      <div class="summary-grid">
+      <div class="nav-label">MENU UTAMA</div>
 
-        <article class="summary-card">
-          <div class="summary-label">Pengumuman Aktif</div>
-          <div class="summary-number" id="activeCount">—</div>
-          <div class="summary-note">
-            Informasi yang ditampilkan kepada warga.
+      <nav class="nav-list">
+        <a href="admin.html" class="nav-item active">
+          <span class="nav-icon">▦</span>
+          <span>Dashboard</span>
+        </a>
+
+        <a href="kelola-pengumuman.html" class="nav-item">
+          <span class="nav-icon">📢</span>
+          <span>Kelola Pengumuman</span>
+        </a>
+
+        <a href="kelola-pelayanan.html" class="nav-item">
+          <span class="nav-icon">📋</span>
+          <span>Kelola Pengajuan</span>
+        </a>
+
+        <a href="kelola-warga.html" class="nav-item">
+          <span class="nav-icon">👥</span>
+          <span>Data Warga</span>
+        </a>
+      </nav>
+
+      <div class="nav-label">AKSES WARGA</div>
+
+      <nav class="nav-list">
+        <a href="pengumuman.html" class="nav-item">
+          <span class="nav-icon">📄</span>
+          <span>Lihat Pengumuman</span>
+        </a>
+
+        <a href="pelayanan.html" class="nav-item">
+          <span class="nav-icon">📝</span>
+          <span>Halaman Pelayanan</span>
+        </a>
+
+        <a href="profil.html" class="nav-item">
+          <span class="nav-icon">👤</span>
+          <span>Profil Saya</span>
+        </a>
+
+        <a href="index.html" class="nav-item">
+          <span class="nav-icon">🏠</span>
+          <span>Beranda Portal</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="admin-mini">
+          <div class="avatar" id="adminAvatar">A</div>
+          <div class="admin-info">
+            <strong id="sidebarUserName">Memuat akun...</strong>
+            <span>Administrator</span>
           </div>
-        </article>
-
-        <article class="summary-card">
-          <div class="summary-label">Total Pengajuan</div>
-          <div class="summary-number" id="requestCount">—</div>
-          <div class="summary-note">
-            Seluruh pengajuan pelayanan yang tercatat.
-          </div>
-        </article>
-
-        <article class="summary-card">
-          <div class="summary-label">Pengajuan Menunggu</div>
-          <div class="summary-number" id="pendingCount">—</div>
-          <div class="summary-note">
-            Pengajuan yang belum diproses.
-          </div>
-        </article>
-
-        <article class="summary-card">
-          <div class="summary-label">Pengajuan Selesai</div>
-          <div class="summary-number" id="completedCount">—</div>
-          <div class="summary-note">
-            Pengajuan yang sudah selesai dilayani.
-          </div>
-        </article>
-
-      </div>
-    </section>
-
-    <!-- MENU ADMIN -->
-    <section class="section">
-      <div class="section-heading">
-        <div>
-          <h2>Layanan Portal</h2>
-          <p>Pilih menu untuk mengelola informasi dan pelayanan warga.</p>
         </div>
+
+        <button id="logoutBtn" class="sidebar-logout">
+          ↗ &nbsp; Keluar dari akun
+        </button>
       </div>
+    </aside>
 
-      <div class="menu-grid">
+    <div class="overlay" id="overlay"></div>
 
-        <a href="pengumuman.html" class="menu-card">
-          <div class="menu-icon">📢</div>
-          <h3>Pengumuman</h3>
-          <p>
-            Lihat informasi kegiatan, pemberitahuan, dan pengumuman
-            yang aktif untuk warga.
-          </p>
-          <span class="menu-arrow">Lihat pengumuman →</span>
-        </a>
+    <main class="main">
 
-        <a href="pelayanan.html" class="menu-card">
-          <div class="menu-icon">📝</div>
-          <h3>Pelayanan Warga</h3>
-          <p>
-            Lihat halaman pelayanan warga dan informasi pengajuan
-            administrasi.
-          </p>
-          <span class="menu-arrow">Lihat pelayanan →</span>
-        </a>
+      <header class="topbar">
+        <div class="topbar-left">
+          <button
+            type="button"
+            class="mobile-menu"
+            id="mobileMenu"
+            aria-label="Buka menu navigasi"
+            aria-expanded="false"
+          >☰</button>
 
-        <a href="kelola-pelayanan.html" class="menu-card">
-          <div class="menu-icon">📋</div>
-          <h3>Kelola Pelayanan</h3>
-          <p>
-            Lihat pengajuan warga dan perbarui status pelayanan
-            administrasi.
-          </p>
-          <span class="menu-arrow">Kelola pengajuan →</span>
-        </a>
-
-        <a href="kelola-pengumuman.html" class="menu-card">
-          <div class="menu-icon">⚙️</div>
-          <h3>Kelola Pengumuman</h3>
-          <p>
-            Tambah, edit, aktifkan, nonaktifkan, dan hapus
-            pengumuman Portal RT.
-          </p>
-          <span class="menu-arrow">Kelola pengumuman →</span>
-        </a>
-
-        <a href="kelola-pelayanan.html" class="menu-card">
-          <div class="menu-icon">📋</div>
-          <h3>Kelola Pengajuan</h3>
-          <p>
-            Lihat pengajuan dari seluruh warga dan perbarui status
-            pelayanannya.
-          </p>
-          <span class="menu-arrow">Kelola pengajuan →</span>
-        </a>
-
-        <a href="index.html" class="menu-card">
-          <div class="menu-icon">🏡</div>
-          <h3>Beranda Portal</h3>
-          <p>
-            Kembali ke halaman utama Portal Informasi dan Pelayanan
-            Warga RT.
-          </p>
-          <span class="menu-arrow">Kembali ke beranda →</span>
-        </a>
-
-        <!-- MENU BARU: KELOLA DATA WARGA -->
-        <a href="kelola-warga.html" class="menu-card">
-          <div class="menu-icon">👥</div>
-          <h3>Kelola Data Warga</h3>
-          <p>
-            Lihat dan cari data warga yang sudah mengisi profil,
-            termasuk nama, nomor HP, dan alamat.
-          </p>
-          <span class="menu-arrow">Lihat data warga →</span>
-        </a>
-
-      </div>
-    </section>
-
-    <!-- PENGUMUMAN TERBARU -->
-    <section class="section">
-      <div class="section-heading">
-        <div>
-          <h2>Pengumuman Terbaru</h2>
-          <p>Informasi aktif yang tersedia untuk warga.</p>
+          <div>
+            <h1>Dashboard Admin</h1>
+            <p>Kelola portal informasi dan pelayanan warga.</p>
+          </div>
         </div>
-      </div>
 
-      <div id="announcementMessage" class="message" role="status"></div>
-
-      <div id="announcementList" class="announcement-list">
-        <div class="state-box">
-          <div class="state-icon">⏳</div>
-          Memuat pengumuman...
+        <div class="topbar-right">
+          <div class="online-badge">
+            <span class="online-dot"></span>
+            Portal Aktif
+          </div>
         </div>
+      </header>
+
+      <div class="content">
+
+        <!-- WELCOME -->
+        <section class="welcome">
+          <div class="welcome-content">
+            <span class="welcome-label">DASHBOARD ADMINISTRATOR</span>
+
+            <h2>Selamat datang, <span id="userName">Admin</span>! 👋</h2>
+
+            <p>
+              Kelola pengumuman, pantau pengajuan pelayanan, dan lihat
+              informasi warga melalui satu dashboard. Semoga aktivitas
+              pelayanan warga hari ini berjalan lancar.
+            </p>
+          </div>
+
+          <div class="welcome-illustration" aria-hidden="true">🏡</div>
+        </section>
+
+        <!-- STATISTIK -->
+        <section class="section">
+          <div class="section-heading">
+            <div>
+              <h2>Ringkasan Portal</h2>
+              <p>Pantau informasi pengumuman dan pengajuan pelayanan warga.</p>
+            </div>
+          </div>
+
+          <div class="summary-grid">
+
+            <article class="summary-card">
+              <div class="summary-top">
+                <div class="summary-icon icon-green">📢</div>
+                <span class="summary-symbol">PORTAL</span>
+              </div>
+              <div class="summary-label">Pengumuman Aktif</div>
+              <div class="summary-number" id="activeCount">—</div>
+              <div class="summary-note">Informasi aktif yang tersedia bagi warga.</div>
+            </article>
+
+            <article class="summary-card">
+              <div class="summary-top">
+                <div class="summary-icon icon-blue">📄</div>
+                <span class="summary-symbol">TOTAL</span>
+              </div>
+              <div class="summary-label">Total Pengajuan</div>
+              <div class="summary-number" id="requestCount">—</div>
+              <div class="summary-note">Seluruh pengajuan pelayanan yang tercatat.</div>
+            </article>
+
+            <article class="summary-card">
+              <div class="summary-top">
+                <div class="summary-icon icon-orange">⏳</div>
+                <span class="summary-symbol">PROSES</span>
+              </div>
+              <div class="summary-label">Pengajuan Menunggu</div>
+              <div class="summary-number" id="pendingCount">—</div>
+              <div class="summary-note">Pengajuan yang menunggu tindak lanjut.</div>
+            </article>
+
+            <article class="summary-card">
+              <div class="summary-top">
+                <div class="summary-icon icon-purple">✓</div>
+                <span class="summary-symbol">SELESAI</span>
+              </div>
+              <div class="summary-label">Pengajuan Selesai</div>
+              <div class="summary-number" id="completedCount">—</div>
+              <div class="summary-note">Pengajuan yang sudah selesai dilayani.</div>
+            </article>
+
+          </div>
+        </section>
+
+        <!-- MENU PENGELOLAAN -->
+        <section class="section">
+          <div class="section-heading">
+            <div>
+              <h2>Akses Pengelolaan</h2>
+              <p>Pilih fitur yang ingin kamu kelola.</p>
+            </div>
+          </div>
+
+          <div class="menu-grid">
+
+            <a href="kelola-pengumuman.html" class="menu-card">
+              <div class="menu-icon">📢</div>
+              <h3>Kelola Pengumuman</h3>
+              <p>
+                Tambah, edit, aktifkan, nonaktifkan, dan hapus informasi
+                untuk warga.
+              </p>
+              <span class="menu-arrow">Buka pengelolaan →</span>
+            </a>
+
+            <a href="kelola-pelayanan.html" class="menu-card">
+              <div class="menu-icon">📋</div>
+              <h3>Kelola Pengajuan</h3>
+              <p>
+                Periksa pengajuan pelayanan warga dan perbarui status
+                penanganannya.
+              </p>
+              <span class="menu-arrow">Buka pengajuan →</span>
+            </a>
+
+            <a href="kelola-warga.html" class="menu-card">
+              <div class="menu-icon">👥</div>
+              <h3>Kelola Data Warga</h3>
+              <p>
+                Lihat dan cari profil warga, termasuk nama, nomor HP,
+                serta alamat yang tersimpan.
+              </p>
+              <span class="menu-arrow">Buka data warga →</span>
+            </a>
+
+          </div>
+        </section>
+
+        <!-- PENGUMUMAN TERBARU -->
+        <section class="section">
+          <div class="section-heading">
+            <div>
+              <h2>Pengumuman Terbaru</h2>
+              <p>Informasi aktif yang dapat dilihat oleh warga.</p>
+            </div>
+
+            <a
+              href="kelola-pengumuman.html"
+              class="menu-arrow"
+            >Kelola pengumuman →</a>
+          </div>
+
+          <div id="announcementMessage" class="message" role="status"></div>
+
+          <div id="announcementList" class="announcement-list">
+            <div class="state-box">
+              <div class="state-icon">⏳</div>
+              Memuat pengumuman...
+            </div>
+          </div>
+        </section>
+
       </div>
-    </section>
 
-  </main>
+      <footer class="footer">
+        © <span id="year"></span> Portal Informasi dan Pelayanan Warga RT
+      </footer>
 
-  <footer class="footer">
-    © <span id="year"></span> Portal Informasi dan Pelayanan Warga RT
-  </footer>
+    </main>
+  </div>
 
   <script type="module">
     import { auth, db } from "./firebase.js";
@@ -632,22 +1011,60 @@
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const userName = document.getElementById("userName");
+    const sidebarUserName = document.getElementById("sidebarUserName");
+    const adminAvatar = document.getElementById("adminAvatar");
     const announcementList = document.getElementById("announcementList");
     const announcementMessage = document.getElementById("announcementMessage");
     const logoutBtn = document.getElementById("logoutBtn");
 
-    // Elemen statistik dashboard
     const activeCount = document.getElementById("activeCount");
     const requestCount = document.getElementById("requestCount");
     const pendingCount = document.getElementById("pendingCount");
     const completedCount = document.getElementById("completedCount");
+
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("overlay");
+    const mobileMenu = document.getElementById("mobileMenu");
 
     document.getElementById("year").textContent = new Date().getFullYear();
 
     let currentUser = null;
     let isLoading = false;
 
-    // Memeriksa login dan role admin
+    // SIDEBAR MOBILE
+    function openSidebar() {
+      sidebar.classList.add("open");
+      overlay.classList.add("show");
+      mobileMenu.setAttribute("aria-expanded", "true");
+    }
+
+    function closeSidebar() {
+      sidebar.classList.remove("open");
+      overlay.classList.remove("show");
+      mobileMenu.setAttribute("aria-expanded", "false");
+    }
+
+    mobileMenu.addEventListener("click", () => {
+      if (sidebar.classList.contains("open")) {
+        closeSidebar();
+      } else {
+        openSidebar();
+      }
+    });
+
+    overlay.addEventListener("click", closeSidebar);
+
+    document.querySelectorAll(".sidebar .nav-item").forEach(link => {
+      link.addEventListener("click", () => {
+        if (window.innerWidth <= 760) closeSidebar();
+      });
+    });
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 760) closeSidebar();
+    });
+
+    // CEK LOGIN DAN ROLE ADMIN
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
         window.location.replace("login.html");
@@ -657,7 +1074,8 @@
       try {
         const roleSnapshot = await getDoc(doc(db, "roles", user.uid));
 
-        if (!roleSnapshot.exists() || roleSnapshot.data().role !== "admin") {
+        if (!roleSnapshot.exists() ||
+            roleSnapshot.data().role !== "admin") {
           alert("Akses ditolak. Halaman ini khusus administrator.");
           window.location.replace("warga.html");
           return;
@@ -665,9 +1083,13 @@
 
         currentUser = user;
 
-        userName.textContent =
+        const displayName =
           user.displayName ||
           (user.email ? user.email.split("@")[0] : "Admin");
+
+        userName.textContent = displayName;
+        sidebarUserName.textContent = displayName;
+        adminAvatar.textContent = displayName.charAt(0).toUpperCase();
 
         await Promise.all([
           loadAnnouncements(),
@@ -681,19 +1103,16 @@
           "Tidak dapat memverifikasi akses admin. Periksa koneksi dan Firestore Rules.";
 
         announcementMessage.className = "message show error";
-        announcementList.replaceChildren();
 
-        const box = document.createElement("div");
-        box.className = "state-box";
-        box.textContent =
-          "Dashboard belum dapat dimuat. Silakan muat ulang halaman.";
-
-        announcementList.appendChild(box);
+        showAnnouncementState(
+          "⚠️",
+          "Dashboard belum dapat dimuat. Silakan periksa koneksi dan muat ulang halaman."
+        );
       }
     });
 
-    // Menampilkan kondisi pengumuman
-    function showAnnouncementState(icon, message, retry = false) {
+    // STATUS PENGUMUMAN
+    function showAnnouncementState(icon, text, retry = false) {
       announcementList.replaceChildren();
 
       const box = document.createElement("div");
@@ -704,7 +1123,7 @@
       iconElement.textContent = icon;
 
       const textElement = document.createElement("p");
-      textElement.textContent = message;
+      textElement.textContent = text;
 
       box.append(iconElement, textElement);
 
@@ -719,7 +1138,7 @@
       announcementList.appendChild(box);
     }
 
-    // Memuat pengumuman aktif
+    // AMBIL PENGUMUMAN AKTIF
     async function loadAnnouncements() {
       if (!currentUser || isLoading) return;
 
@@ -735,7 +1154,7 @@
         const snapshot = await getDocs(announcementQuery);
 
         const announcements = snapshot.docs
-          .map((item) => ({
+          .map(item => ({
             id: item.id,
             ...item.data()
           }))
@@ -769,7 +1188,7 @@
       }
     }
 
-    // Menampilkan satu pengumuman
+    // TAMPILKAN PENGUMUMAN
     function renderAnnouncement(item) {
       const card = document.createElement("article");
       card.className = "announcement-card";
@@ -811,7 +1230,7 @@
       announcementList.appendChild(card);
     }
 
-    // Memuat empat statistik dari Firestore
+    // AMBIL STATISTIK
     async function loadSummary() {
       try {
         const [announcementSnapshot, requestSnapshot] = await Promise.all([
@@ -822,18 +1241,16 @@
           getDocs(collection(db, "pengajuan"))
         ]);
 
-        const requests = requestSnapshot.docs.map(
-          (item) => item.data()
-        );
+        const requests = requestSnapshot.docs.map(item => item.data());
 
         const totalRequests = requests.length;
 
         const pendingRequests = requests.filter(
-          (item) => item.status === "Menunggu"
+          item => item.status === "Menunggu"
         ).length;
 
         const completedRequests = requests.filter(
-          (item) => item.status === "Selesai"
+          item => item.status === "Selesai"
         ).length;
 
         activeCount.textContent = announcementSnapshot.size;
@@ -851,7 +1268,7 @@
       }
     }
 
-    // Logout
+    // LOGOUT
     logoutBtn.addEventListener("click", async () => {
       if (!confirm("Yakin ingin keluar dari akun?")) return;
 
@@ -865,6 +1282,5 @@
       }
     });
   </script>
-
 </body>
 </html>
