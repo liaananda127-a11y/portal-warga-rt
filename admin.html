@@ -83,6 +83,7 @@
     .welcome p {
       color: #65746b;
       line-height: 1.6;
+      overflow-wrap: anywhere;
     }
 
     .panel {
@@ -98,6 +99,13 @@
       color: #176b4d;
     }
 
+    .section-description {
+      color: #65746b;
+      margin-bottom: 18px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
     .form-group {
       margin-bottom: 17px;
     }
@@ -109,16 +117,18 @@
       font-weight: bold;
     }
 
-    input, textarea {
+    input, textarea, select {
       width: 100%;
       padding: 12px;
       border: 1px solid #d4ded8;
       border-radius: 8px;
       font-size: 14px;
       outline: none;
+      color: #26352e;
+      background: white;
     }
 
-    input:focus, textarea:focus {
+    input:focus, textarea:focus, select:focus {
       border-color: #176b4d;
     }
 
@@ -182,11 +192,13 @@
       border: 1px solid #e0e8e3;
       border-radius: 10px;
       padding: 20px;
+      min-width: 0;
     }
 
     .announcement-card h4 {
       font-size: 18px;
       margin-bottom: 10px;
+      overflow-wrap: anywhere;
     }
 
     .announcement-card p {
@@ -219,6 +231,21 @@
       color: #b42318;
     }
 
+    .status-waiting {
+      background: #fff0c2;
+      color: #825b00;
+    }
+
+    .status-processing {
+      background: #dceaff;
+      color: #2455a0;
+    }
+
+    .status-completed {
+      background: #d9f3e4;
+      color: #176b4d;
+    }
+
     .card-actions {
       display: flex;
       gap: 8px;
@@ -237,6 +264,7 @@
       display: none;
       line-height: 1.5;
       overflow-wrap: anywhere;
+      font-size: 14px;
     }
 
     .message-success {
@@ -252,6 +280,15 @@
     .loading {
       color: #65746b;
       padding: 15px 0;
+      line-height: 1.6;
+    }
+
+    .request-status-label {
+      margin-top: 18px;
+    }
+
+    .request-status-select {
+      margin-top: 7px;
     }
 
     footer {
@@ -282,6 +319,14 @@
       .welcome h2 {
         font-size: 22px;
       }
+
+      .announcement-card {
+        padding: 15px;
+      }
+
+      .header-buttons {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -310,6 +355,7 @@
 
     <div id="pageMessage" class="message" role="status"></div>
 
+    <!-- FORM TAMBAH DAN EDIT PENGUMUMAN -->
     <section class="panel">
       <h3 id="formTitle">Tambah Pengumuman</h3>
 
@@ -362,6 +408,7 @@
       </form>
     </section>
 
+    <!-- DAFTAR PENGUMUMAN -->
     <section class="panel">
       <h3>Daftar Pengumuman</h3>
 
@@ -369,6 +416,22 @@
 
       <div id="announcementList" class="announcement-list">
         <p class="loading">Memuat pengumuman...</p>
+      </div>
+    </section>
+
+    <!-- DAFTAR PENGAJUAN WARGA -->
+    <section class="panel">
+      <h3>Daftar Pengajuan Pelayanan Warga</h3>
+
+      <p class="section-description">
+        Lihat pengajuan layanan administrasi dari warga, periksa keterangannya,
+        dan perbarui status pengajuan.
+      </p>
+
+      <div id="serviceMessage" class="message" role="status"></div>
+
+      <div id="serviceList" class="announcement-list">
+        <p class="loading">Memuat pengajuan warga...</p>
       </div>
     </section>
   </main>
@@ -396,6 +459,10 @@
       serverTimestamp
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+    // =========================================
+    // REFERENSI ELEMEN HTML
+    // =========================================
+
     const form = document.getElementById("announcementForm");
     const judulInput = document.getElementById("judul");
     const isiInput = document.getElementById("isi");
@@ -410,9 +477,12 @@
     const adminInfo = document.getElementById("adminInfo");
     const announcementList = document.getElementById("announcementList");
 
+    const serviceList = document.getElementById("serviceList");
+
     const pageMessage = document.getElementById("pageMessage");
     const formMessage = document.getElementById("formMessage");
     const listMessage = document.getElementById("listMessage");
+    const serviceMessage = document.getElementById("serviceMessage");
 
     let currentUser = null;
     let editingId = null;
@@ -420,10 +490,16 @@
     let isAdminVerified = false;
     let busy = false;
 
+    // =========================================
+    // PESAN DAN STATUS TOMBOL
+    // =========================================
+
     function showMessage(element, message, type = "success") {
       element.textContent = message;
+
       element.className = "message " +
         (type === "error" ? "message-error" : "message-success");
+
       element.style.display = "block";
     }
 
@@ -438,9 +514,13 @@
       logoutBtn.disabled = value;
     }
 
-    // Memeriksa login dan role admin sebelum mengizinkan akses.
+    // =========================================
+    // VERIFIKASI LOGIN DAN ROLE ADMIN
+    // =========================================
+
     onAuthStateChanged(auth, async (user) => {
       isAdminVerified = false;
+      currentUser = null;
 
       if (!user) {
         window.location.replace("login.html");
@@ -450,12 +530,13 @@
       adminInfo.textContent = "Memeriksa hak akses admin...";
 
       try {
-        // Ambil dokumen roles dengan Document ID = UID pengguna.
         const roleRef = doc(db, "roles", user.uid);
         const roleSnapshot = await getDoc(roleRef);
 
-        if (!roleSnapshot.exists() ||
-            roleSnapshot.data().role !== "admin") {
+        if (
+          !roleSnapshot.exists() ||
+          roleSnapshot.data().role !== "admin"
+        ) {
           window.location.replace("warga.html");
           return;
         }
@@ -466,7 +547,10 @@
         adminInfo.textContent =
           "Login sebagai admin: " + (user.email || user.uid);
 
-        await loadAnnouncements();
+        await Promise.all([
+          loadAnnouncements(),
+          loadServiceRequests()
+        ]);
 
       } catch (error) {
         console.error("Pengecekan admin gagal:", error);
@@ -483,7 +567,10 @@
       }
     });
 
-    // Mengambil daftar pengumuman.
+    // =========================================
+    // FITUR PENGUMUMAN
+    // =========================================
+
     async function loadAnnouncements() {
       if (!isAdminVerified) return;
 
@@ -505,6 +592,7 @@
         announcements.sort((a, b) => {
           const dateA = String(a.tanggal || "");
           const dateB = String(b.tanggal || "");
+
           return dateB.localeCompare(dateA);
         });
 
@@ -514,6 +602,7 @@
         console.error("Gagal memuat pengumuman:", error);
 
         announcementList.innerHTML = "";
+
         showMessage(
           listMessage,
           "Gagal memuat pengumuman: " + error.message,
@@ -522,13 +611,13 @@
       }
     }
 
-    // Menampilkan daftar pengumuman.
     function renderAnnouncements() {
       announcementList.innerHTML = "";
 
       if (announcements.length === 0) {
         announcementList.innerHTML =
           '<p class="loading">Belum ada pengumuman.</p>';
+
         return;
       }
 
@@ -541,8 +630,8 @@
 
         const date = document.createElement("div");
         date.className = "announcement-date";
-        date.textContent = "Tanggal kegiatan: " +
-          (item.tanggal || "-");
+        date.textContent =
+          "Tanggal kegiatan: " + (item.tanggal || "-");
 
         const content = document.createElement("p");
         content.textContent = item.isi || "";
@@ -590,12 +679,20 @@
         });
 
         actions.append(editBtn, statusBtn, deleteBtn);
-        card.append(title, date, content, badge, actions);
+
+        card.append(
+          title,
+          date,
+          content,
+          badge,
+          actions
+        );
+
         announcementList.appendChild(card);
       });
     }
 
-    // Menambah atau menyimpan perubahan pengumuman.
+    // Tambah atau edit pengumuman.
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
 
@@ -646,6 +743,7 @@
             formMessage,
             "Pengumuman berhasil diperbarui."
           );
+
         } else {
           data.createdAt = serverTimestamp();
 
@@ -671,16 +769,18 @@
           "Gagal menyimpan pengumuman: " + error.message,
           "error"
         );
+
       } finally {
         setBusy(false);
       }
     });
 
-    // Memasukkan data ke form untuk diedit.
     function startEdit(id) {
       if (!isAdminVerified) return;
 
-      const item = announcements.find((entry) => entry.id === id);
+      const item = announcements.find(
+        (entry) => entry.id === id
+      );
 
       if (!item) return;
 
@@ -703,7 +803,6 @@
       });
     }
 
-    // Membatalkan proses edit.
     function resetForm() {
       editingId = null;
       form.reset();
@@ -720,7 +819,6 @@
       hideMessage(formMessage);
     });
 
-    // Mengaktifkan atau menonaktifkan pengumuman.
     async function toggleStatus(id, currentStatus) {
       if (!isAdminVerified || busy) return;
 
@@ -746,19 +844,19 @@
         await loadAnnouncements();
 
       } catch (error) {
-        console.error("Gagal mengubah status:", error);
+        console.error("Gagal mengubah status pengumuman:", error);
 
         showMessage(
           listMessage,
           "Gagal mengubah status: " + error.message,
           "error"
         );
+
       } finally {
         setBusy(false);
       }
     }
 
-    // Menghapus pengumuman.
     async function removeAnnouncement(id) {
       if (!isAdminVerified || busy) return;
 
@@ -772,7 +870,9 @@
       hideMessage(listMessage);
 
       try {
-        await deleteDoc(doc(db, "pengumuman", id));
+        await deleteDoc(
+          doc(db, "pengumuman", id)
+        );
 
         if (editingId === id) {
           resetForm();
@@ -793,16 +893,307 @@
           "Gagal menghapus pengumuman: " + error.message,
           "error"
         );
+
       } finally {
         setBusy(false);
       }
     }
 
-    // Logout.
+    // =========================================
+    // FITUR PENGAJUAN PELAYANAN WARGA
+    // =========================================
+
+    async function loadServiceRequests() {
+      if (!isAdminVerified) return;
+
+      serviceList.innerHTML =
+        '<p class="loading">Memuat pengajuan warga...</p>';
+
+      hideMessage(serviceMessage);
+
+      try {
+        const snapshot = await getDocs(
+          collection(db, "pengajuan")
+        );
+
+        const requests = snapshot.docs.map((item) => ({
+          id: item.id,
+          ...item.data()
+        }));
+
+        requests.sort((a, b) => {
+          const dateA = a.createdAt?.toMillis?.() || 0;
+          const dateB = b.createdAt?.toMillis?.() || 0;
+
+          return dateB - dateA;
+        });
+
+        renderServiceRequests(requests);
+
+      } catch (error) {
+        console.error("Gagal memuat pengajuan:", error);
+
+        serviceList.innerHTML = "";
+
+        showMessage(
+          serviceMessage,
+          "Gagal memuat pengajuan. Periksa Firestore Rules. Detail: " +
+            error.message,
+          "error"
+        );
+      }
+    }
+
+    function formatRequestDate(timestamp) {
+      if (!timestamp) return "-";
+
+      const date = timestamp.toDate
+        ? timestamp.toDate()
+        : new Date(timestamp);
+
+      return date.toLocaleDateString("id-ID", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric"
+      });
+    }
+
+    function getRequestStatusClass(status) {
+      if (status === "Diproses") {
+        return "status-processing";
+      }
+
+      if (status === "Selesai") {
+        return "status-completed";
+      }
+
+      return "status-waiting";
+    }
+
+    function renderServiceRequests(requests) {
+      serviceList.innerHTML = "";
+
+      if (requests.length === 0) {
+        serviceList.innerHTML =
+          '<p class="loading">Belum ada pengajuan pelayanan warga.</p>';
+
+        return;
+      }
+
+      requests.forEach((item) => {
+        const card = document.createElement("article");
+        card.className = "announcement-card";
+
+        const title = document.createElement("h4");
+        title.textContent =
+          item.jenisLayanan || "Jenis layanan tidak tersedia";
+
+        const email = document.createElement("p");
+        email.style.marginBottom = "8px";
+        email.textContent =
+          "Akun warga: " + (item.email || "-");
+
+        const purpose = document.createElement("p");
+        purpose.style.marginBottom = "8px";
+        purpose.textContent =
+          "Keperluan: " + (item.keperluan || "-");
+
+        const description = document.createElement("p");
+        description.style.marginBottom = "8px";
+        description.textContent =
+          "Keterangan: " + (item.keterangan || "-");
+
+        const date = document.createElement("p");
+        date.className = "announcement-date";
+        date.style.marginTop = "10px";
+        date.textContent =
+          "Tanggal pengajuan: " +
+          formatRequestDate(item.createdAt);
+
+        const currentStatus = item.status || "Menunggu";
+
+        const statusBadge = document.createElement("span");
+        statusBadge.className =
+          "badge " + getRequestStatusClass(currentStatus);
+
+        statusBadge.textContent =
+          "Status saat ini: " + currentStatus;
+
+        const statusLabel = document.createElement("label");
+        statusLabel.className = "request-status-label";
+        statusLabel.textContent = "Ubah Status Pengajuan";
+
+        const statusSelect = document.createElement("select");
+        statusSelect.className = "request-status-select";
+
+        const statuses = [
+          "Menunggu",
+          "Diproses",
+          "Selesai"
+        ];
+
+        statuses.forEach((status) => {
+          const option = document.createElement("option");
+
+          option.value = status;
+          option.textContent = status;
+
+          if (currentStatus === status) {
+            option.selected = true;
+          }
+
+          statusSelect.appendChild(option);
+        });
+
+        const actions = document.createElement("div");
+        actions.className = "card-actions";
+
+        const updateBtn = document.createElement("button");
+        updateBtn.type = "button";
+        updateBtn.className = "btn btn-primary";
+        updateBtn.textContent = "Simpan Status";
+
+        updateBtn.addEventListener("click", async () => {
+          await updateRequestStatus(
+            item.id,
+            statusSelect.value,
+            updateBtn
+          );
+        });
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.type = "button";
+        deleteBtn.className = "btn btn-delete";
+        deleteBtn.textContent = "Hapus Pengajuan";
+
+        deleteBtn.addEventListener("click", async () => {
+          await deleteServiceRequest(
+            item.id,
+            deleteBtn
+          );
+        });
+
+        actions.append(updateBtn, deleteBtn);
+
+        card.append(
+          title,
+          email,
+          purpose,
+          description,
+          date,
+          statusBadge,
+          statusLabel,
+          statusSelect,
+          actions
+        );
+
+        serviceList.appendChild(card);
+      });
+    }
+
+    async function updateRequestStatus(id, newStatus, button) {
+      if (!isAdminVerified || busy) return;
+
+      const allowedStatuses = [
+        "Menunggu",
+        "Diproses",
+        "Selesai"
+      ];
+
+      if (!allowedStatuses.includes(newStatus)) {
+        showMessage(
+          serviceMessage,
+          "Status pengajuan tidak valid.",
+          "error"
+        );
+
+        return;
+      }
+
+      setBusy(true);
+      button.disabled = true;
+
+      try {
+        await updateDoc(
+          doc(db, "pengajuan", id),
+          {
+            status: newStatus,
+            updatedAt: serverTimestamp()
+          }
+        );
+
+        showMessage(
+          serviceMessage,
+          "Status pengajuan berhasil diperbarui menjadi " +
+            newStatus + "."
+        );
+
+        await loadServiceRequests();
+
+      } catch (error) {
+        console.error("Gagal mengubah status pengajuan:", error);
+
+        showMessage(
+          serviceMessage,
+          "Gagal mengubah status: " + error.message,
+          "error"
+        );
+
+      } finally {
+        setBusy(false);
+        button.disabled = false;
+      }
+    }
+
+    async function deleteServiceRequest(id, button) {
+      if (!isAdminVerified || busy) return;
+
+      const confirmed = window.confirm(
+        "Yakin ingin menghapus pengajuan ini? " +
+        "Data yang dihapus tidak dapat dipulihkan melalui halaman ini."
+      );
+
+      if (!confirmed) return;
+
+      setBusy(true);
+      button.disabled = true;
+
+      try {
+        await deleteDoc(
+          doc(db, "pengajuan", id)
+        );
+
+        showMessage(
+          serviceMessage,
+          "Pengajuan berhasil dihapus."
+        );
+
+        await loadServiceRequests();
+
+      } catch (error) {
+        console.error("Gagal menghapus pengajuan:", error);
+
+        showMessage(
+          serviceMessage,
+          "Gagal menghapus pengajuan: " + error.message,
+          "error"
+        );
+
+      } finally {
+        setBusy(false);
+        button.disabled = false;
+      }
+    }
+
+    // =========================================
+    // LOGOUT
+    // =========================================
+
     logoutBtn.addEventListener("click", async () => {
       try {
         await signOut(auth);
         window.location.replace("login.html");
+
       } catch (error) {
         console.error("Logout gagal:", error);
 
