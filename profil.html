@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Profil Saya | Portal RT</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --green: #16845b;
+      --light-green: #e9f7ef;
+      --background: #f6f9f7;
+      --text: #24352c;
+      --muted: #7c8b81;
+      --border: #e7eee9;
+      --red: #c74646;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--background);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .navbar {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 15px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--light-green);
+      color: var(--green);
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+    }
+
+    .back-link {
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    main {
+      width: 92%;
+      max-width: 850px;
+      margin: 35px auto 50px;
+    }
+
+    .heading {
+      margin-bottom: 25px;
+    }
+
+    .heading h1 {
+      font-size: 27px;
+      margin-bottom: 8px;
+    }
+
+    .heading p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .profile-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+    }
+
+    .profile-banner {
+      padding: 28px;
+      background: linear-gradient(135deg, #16845b, #35a979);
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .avatar {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.2);
+      border: 2px solid rgba(255,255,255,.6);
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .profile-banner h2 {
+      font-size: 20px;
+      overflow-wrap: anywhere;
+      margin-bottom: 6px;
+    }
+
+    .profile-banner p {
+      font-size: 12px;
+      color: rgba(255,255,255,.9);
+      overflow-wrap: anywhere;
+    }
+
+    .profile-details {
+      padding: 25px 28px;
+    }
+
+    .profile-details h3 {
+      font-size: 15px;
+      margin-bottom: 20px;
+    }
+
+    .detail-row {
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+
+    .detail-label {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .detail-value {
+      font-size: 13px;
+      font-weight: 600;
+      overflow-wrap: anywhere;
+      line-height: 1.8;
+    }
+
+    .account-note {
+      margin-top: 20px;
+      padding: 15px;
+      background: var(--light-green);
+      border-radius: 10px;
+      color: #28744f;
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 25px;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 12px 16px;
+      border-radius: 9px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+    }
+
+    .primary {
+      background: var(--green);
+      color: white;
+    }
+
+    .secondary {
+      background: white;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .danger {
+      background: white;
+      border: 1px solid #f0dada;
+      color: var(--red);
+    }
+
+    .message {
+      padding: 25px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    footer {
+      background: white;
+      border-top: 1px solid var(--border);
+      padding: 22px 15px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    @media (max-width: 550px) {
+      .navbar {
+        padding: 13px 4%;
+      }
+
+      .brand {
+        font-size: 12px;
+      }
+
+      .brand-icon {
+        width: 35px;
+        height: 35px;
+      }
+
+      main {
+        margin-top: 25px;
+      }
+
+      .heading h1 {
+        font-size: 23px;
+      }
+
+      .profile-banner {
+        padding: 22px;
+        gap: 13px;
+      }
+
+      .avatar {
+        width: 55px;
+        height: 55px;
+        font-size: 23px;
+      }
+
+      .profile-banner h2 {
+        font-size: 16px;
+      }
+
+      .profile-details {
+        padding: 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="navbar">
+    <a href="warga.html" class="brand">
+      <div class="brand-icon">⌂</div>
+      <span>Portal Warga RT</span>
+    </a>
+
+    <a href="warga.html" class="back-link">← Dashboard</a>
+  </header>
+
+  <main>
+    <section class="heading">
+      <h1>Profil Saya</h1>
+      <p>Informasi akun yang digunakan untuk mengakses Portal Warga RT.</p>
+    </section>
+
+    <section class="profile-card" id="profileCard" hidden>
+      <div class="profile-banner">
+        <div class="avatar" id="avatar">W</div>
+
+        <div>
+          <h2 id="profileName">Memuat profil...</h2>
+          <p>Warga Portal RT</p>
+        </div>
+      </div>
+
+      <div class="profile-details">
+        <h3>Informasi Akun</h3>
+
+        <div class="detail-row">
+          <span class="detail-label">Nama pengguna</span>
+          <div class="detail-value" id="detailName">-</div>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">Email</span>
+          <div class="detail-value" id="detailEmail">-</div>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">UID akun</span>
+          <div class="detail-value" id="detailUid">-</div>
+        </div>
+
+        <div class="account-note">
+          Informasi ini diambil dari akun yang sedang login.
+          UID digunakan Firebase untuk mengidentifikasi akun pengguna.
+        </div>
+
+        <div class="actions">
+          <a href="warga.html" class="button primary">
+            Kembali ke Dashboard
+          </a>
+
+          <button id="logoutBtn" class="button danger">
+            Keluar dari Akun
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <div id="message" class="message">
+      Memeriksa akun...
+    </div>
+  </main>
+
+  <footer>
+    © <span id="year"></span> Portal Informasi dan Pelayanan Warga RT
+  </footer>
+
+  <script type="module">
+    import { auth } from "./firebase.js";
+
+    import {
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    const profileCard = document.getElementById("profileCard");
+    const message = document.getElementById("message");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.replace("login.html");
+        return;
+      }
+
+      const email = user.email || "-";
+      const fallbackName = email !== "-"
+        ? email.split("@")[0]
+        : "Warga";
+
+      const name = user.displayName || fallbackName;
+
+      document.getElementById("profileName").textContent = name;
+      document.getElementById("detailName").textContent = name;
+      document.getElementById("detailEmail").textContent = email;
+      document.getElementById("detailUid").textContent = user.uid;
+
+      document.getElementById("avatar").textContent =
+        name.trim().charAt(0).toUpperCase() || "W";
+
+      profileCard.hidden = false;
+      message.hidden = true;
+    });
+
+    logoutBtn.addEventListener("click", async () => {
+      const confirmed = confirm("Yakin ingin keluar dari akun?");
+
+      if (!confirmed) return;
+
+      try {
+        await signOut(auth);
+        window.location.replace("login.html");
+      } catch (error) {
+        console.error("Gagal logout:", error);
+        alert("Gagal keluar dari akun. Silakan coba lagi.");
+      }
+    });
+  </script>
+
+</body>
+</html>
