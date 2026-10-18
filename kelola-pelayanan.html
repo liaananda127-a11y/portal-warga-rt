@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kelola Pelayanan | Portal RT</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #f5f8f5;
+      color: #26382e;
+    }
+
+    header {
+      background: white;
+      padding: 20px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      border-bottom: 1px solid #e7eee8;
+    }
+
+    .brand {
+      font-size: 20px;
+      font-weight: 800;
+      color: #217346;
+    }
+
+    .brand span {
+      display: block;
+      font-size: 12px;
+      color: #829087;
+      font-weight: 500;
+      margin-top: 4px;
+    }
+
+    .back-button {
+      text-decoration: none;
+      color: #217346;
+      background: #edf7ef;
+      padding: 10px 15px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 35px auto;
+      padding: 0 24px;
+    }
+
+    .heading {
+      margin-bottom: 25px;
+    }
+
+    .heading h1 {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .heading p {
+      color: #7b8980;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-bottom: 25px;
+    }
+
+    .summary-card {
+      background: white;
+      padding: 22px;
+      border: 1px solid #e8eee9;
+      border-radius: 16px;
+    }
+
+    .summary-card p {
+      font-size: 13px;
+      color: #77867b;
+      margin-bottom: 12px;
+    }
+
+    .summary-card h2 {
+      font-size: 30px;
+      color: #217346;
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid #e8eee9;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .panel-heading {
+      padding: 22px;
+      border-bottom: 1px solid #edf1ed;
+    }
+
+    .panel-heading h2 {
+      font-size: 17px;
+      margin-bottom: 6px;
+    }
+
+    .panel-heading p {
+      color: #849087;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 850px;
+    }
+
+    th, td {
+      padding: 16px;
+      text-align: left;
+      border-bottom: 1px solid #edf1ed;
+      font-size: 12px;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f9fbf9;
+      color: #6f7d73;
+      font-weight: 700;
+    }
+
+    td {
+      line-height: 1.7;
+    }
+
+    .muted {
+      color: #89948d;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 6px 9px;
+      border-radius: 20px;
+      background: #fff4d8;
+      color: #946500;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .status-diproses {
+      background: #e7f1ff;
+      color: #235a9f;
+    }
+
+    .status-selesai {
+      background: #e5f7e9;
+      color: #217346;
+    }
+
+    select {
+      width: 125px;
+      padding: 9px;
+      border: 1px solid #dce6dd;
+      border-radius: 8px;
+      background: white;
+      font-family: inherit;
+      font-size: 11px;
+      outline: none;
+    }
+
+    .empty {
+      padding: 35px;
+      text-align: center;
+      color: #849087;
+      font-size: 13px;
+    }
+
+    .notice {
+      margin-bottom: 18px;
+      padding: 13px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.6;
+      display: none;
+    }
+
+    .notice.error {
+      display: block;
+      background: #fff0f0;
+      color: #a52b2b;
+    }
+
+    .notice.success {
+      display: block;
+      background: #eaf7ed;
+      color: #217346;
+    }
+
+    .loading {
+      padding: 25px;
+      text-align: center;
+      color: #849087;
+      font-size: 13px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      color: #89948d;
+      font-size: 12px;
+    }
+
+    @media (max-width: 650px) {
+      header {
+        padding: 18px 5%;
+      }
+
+      main {
+        margin-top: 25px;
+        padding: 0 16px;
+      }
+
+      .heading h1 {
+        font-size: 23px;
+      }
+
+      .summary {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="brand">
+      Portal Warga RT
+      <span>Panel Administrator</span>
+    </div>
+
+    <a href="admin.html" class="back-button">← Dashboard</a>
+  </header>
+
+  <main>
+    <section class="heading">
+      <h1>Kelola Pelayanan</h1>
+      <p>
+        Lihat pengajuan layanan warga dan perbarui status penanganannya.
+      </p>
+    </section>
+
+    <div id="notice" class="notice"></div>
+
+    <section class="summary">
+      <div class="summary-card">
+        <p>Total Pengajuan</p>
+        <h2 id="totalCount">-</h2>
+      </div>
+
+      <div class="summary-card">
+        <p>Menunggu</p>
+        <h2 id="waitingCount">-</h2>
+      </div>
+
+      <div class="summary-card">
+        <p>Selesai</p>
+        <h2 id="doneCount">-</h2>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-heading">
+        <h2>Daftar Pengajuan Warga</h2>
+        <p>
+          Pilih status terbaru pada kolom tindakan untuk memperbarui pengajuan.
+        </p>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>Warga</th>
+              <th>Jenis Layanan</th>
+              <th>Keperluan</th>
+              <th>Keterangan</th>
+              <th>Tanggal</th>
+              <th>Status</th>
+              <th>Ubah Status</th>
+            </tr>
+          </thead>
+
+          <tbody id="requestTable">
+            <tr>
+              <td colspan="8" class="loading">Memuat data pengajuan...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Portal Informasi dan Pelayanan Warga RT
+  </footer>
+
+  <script type="module">
+    import { auth, db } from "./firebase.js";
+
+    import {
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    import {
+      collection,
+      getDocs,
+      doc,
+      getDoc,
+      updateDoc,
+      query,
+      orderBy
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const table = document.getElementById("requestTable");
+    const notice = document.getElementById("notice");
+
+    const totalCount = document.getElementById("totalCount");
+    const waitingCount = document.getElementById("waitingCount");
+    const doneCount = document.getElementById("doneCount");
+
+    let requests = [];
+
+    function showNotice(message, type = "error") {
+      notice.textContent = message;
+      notice.className = "notice " + type;
+    }
+
+    function clearNotice() {
+      notice.textContent = "";
+      notice.className = "notice";
+    }
+
+    function createCell(value) {
+      const td = document.createElement("td");
+      td.textContent = value || "-";
+      return td;
+    }
+
+    function formatDate(timestamp) {
+      if (!timestamp || typeof timestamp.toDate !== "function") {
+        return "-";
+      }
+
+      return timestamp.toDate().toLocaleString("id-ID", {
+        dateStyle: "medium",
+        timeStyle: "short"
+      });
+    }
+
+    function statusClass(status) {
+      if (status === "Selesai") return "status-selesai";
+      if (status === "Diproses") return "status-diproses";
+      return "";
+    }
+
+    function renderRequests() {
+      table.replaceChildren();
+
+      totalCount.textContent = requests.length;
+
+      waitingCount.textContent = requests.filter(
+        item => item.status === "Menunggu"
+      ).length;
+
+      doneCount.textContent = requests.filter(
+        item => item.status === "Selesai"
+      ).length;
+
+      if (requests.length === 0) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+
+        cell.colSpan = 8;
+        cell.className = "empty";
+        cell.textContent = "Belum ada pengajuan layanan dari warga.";
+
+        row.appendChild(cell);
+        table.appendChild(row);
+        return;
+      }
+
+      requests.forEach((item, index) => {
+        const row = document.createElement("tr");
+
+        row.appendChild(createCell(index + 1));
+        row.appendChild(createCell(item.email));
+        row.appendChild(createCell(item.jenisLayanan));
+        row.appendChild(createCell(item.keperluan));
+        row.appendChild(createCell(item.keterangan));
+        row.appendChild(createCell(formatDate(item.createdAt)));
+
+        const statusCell = document.createElement("td");
+        const badge = document.createElement("span");
+
+        badge.className = "status " + statusClass(item.status);
+        badge.textContent = item.status || "Menunggu";
+
+        statusCell.appendChild(badge);
+        row.appendChild(statusCell);
+
+        const actionCell = document.createElement("td");
+        const select = document.createElement("select");
+
+        ["Menunggu", "Diproses", "Selesai"].forEach(status => {
+          const option = document.createElement("option");
+          option.value = status;
+          option.textContent = status;
+
+          if ((item.status || "Menunggu") === status) {
+            option.selected = true;
+          }
+
+          select.appendChild(option);
+        });
+
+        select.addEventListener("change", async () => {
+          const newStatus = select.value;
+          const oldStatus = item.status || "Menunggu";
+
+          if (newStatus === oldStatus) return;
+
+          select.disabled = true;
+          clearNotice();
+
+          try {
+            await updateDoc(
+              doc(db, "pengajuan", item.id),
+              { status: newStatus }
+            );
+
+            item.status = newStatus;
+
+            renderRequests();
+            showNotice(
+              "Status pengajuan berhasil diperbarui.",
+              "success"
+            );
+          } catch (error) {
+            console.error("Gagal memperbarui status:", error);
+
+            select.disabled = false;
+            select.value = oldStatus;
+
+            showNotice(
+              "Gagal memperbarui status. Periksa Firestore Rules dan koneksi internet."
+            );
+          }
+        });
+
+        actionCell.appendChild(select);
+        row.appendChild(actionCell);
+
+        table.appendChild(row);
+      });
+    }
+
+    async function loadRequests() {
+      try {
+        const result = await getDocs(
+          query(
+            collection(db, "pengajuan"),
+            orderBy("createdAt", "desc")
+          )
+        );
+
+        requests = result.docs.map(document => ({
+          id: document.id,
+          ...document.data()
+        }));
+
+        renderRequests();
+      } catch (error) {
+        console.error("Gagal memuat pengajuan:", error);
+
+        table.replaceChildren();
+
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+
+        cell.colSpan = 8;
+        cell.className = "empty";
+        cell.textContent =
+          "Data tidak dapat dimuat. Periksa Firestore Rules dan koneksi.";
+
+        row.appendChild(cell);
+        table.appendChild(row);
+
+        showNotice(
+          "Gagal membaca data pengajuan. Pastikan akun admin memiliki akses."
+        );
+      }
+    }
+
+    onAuthStateChanged(auth, async user => {
+      if (!user) {
+        window.location.href = "login.html";
+        return;
+      }
+
+      try {
+        const roleSnapshot = await getDoc(
+          doc(db, "roles", user.uid)
+        );
+
+        if (!roleSnapshot.exists() ||
+            roleSnapshot.data().role !== "admin") {
+          alert("Halaman ini hanya dapat diakses oleh admin.");
+          window.location.href = "warga.html";
+          return;
+        }
+
+        await loadRequests();
+      } catch (error) {
+        console.error("Pemeriksaan admin gagal:", error);
+        showNotice(
+          "Gagal memverifikasi akses admin. Silakan muat ulang halaman."
+        );
+      }
+    });
+  </script>
+
+</body>
+</html>
