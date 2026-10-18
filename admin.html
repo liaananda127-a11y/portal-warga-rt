@@ -226,7 +226,7 @@
 
     .summary-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 17px;
     }
 
@@ -235,6 +235,7 @@
       border: 1px solid var(--border);
       border-radius: 15px;
       padding: 22px;
+      min-width: 0;
     }
 
     .summary-label {
@@ -360,9 +361,14 @@
       color: var(--muted);
     }
 
-    @media (max-width: 800px) {
-      .menu-grid,
+    @media (max-width: 1000px) {
       .summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 800px) {
+      .menu-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
@@ -452,6 +458,7 @@
       </p>
     </section>
 
+    <!-- RINGKASAN STATISTIK -->
     <section class="section">
       <div class="section-heading">
         <div>
@@ -461,26 +468,43 @@
       </div>
 
       <div class="summary-grid">
+
         <article class="summary-card">
           <div class="summary-label">Pengumuman Aktif</div>
           <div class="summary-number" id="activeCount">—</div>
-          <div class="summary-note">Informasi yang ditampilkan kepada warga.</div>
+          <div class="summary-note">
+            Informasi yang ditampilkan kepada warga.
+          </div>
         </article>
 
         <article class="summary-card">
           <div class="summary-label">Total Pengajuan</div>
           <div class="summary-number" id="requestCount">—</div>
-          <div class="summary-note">Seluruh pengajuan pelayanan yang tercatat.</div>
+          <div class="summary-note">
+            Seluruh pengajuan pelayanan yang tercatat.
+          </div>
         </article>
 
         <article class="summary-card">
           <div class="summary-label">Pengajuan Menunggu</div>
           <div class="summary-number" id="pendingCount">—</div>
-          <div class="summary-note">Pengajuan yang belum diproses.</div>
+          <div class="summary-note">
+            Pengajuan yang belum diproses.
+          </div>
         </article>
+
+        <article class="summary-card">
+          <div class="summary-label">Pengajuan Selesai</div>
+          <div class="summary-number" id="completedCount">—</div>
+          <div class="summary-note">
+            Pengajuan yang sudah selesai dilayani.
+          </div>
+        </article>
+
       </div>
     </section>
 
+    <!-- MENU ADMIN -->
     <section class="section">
       <div class="section-heading">
         <div>
@@ -512,13 +536,13 @@
         </a>
 
         <a href="kelola-pelayanan.html" class="menu-card">
-            <div class="menu-icon">📋</div>
-            <h3>Kelola Pelayanan</h3>
-            <p>
+          <div class="menu-icon">📋</div>
+          <h3>Kelola Pelayanan</h3>
+          <p>
             Lihat pengajuan warga dan perbarui status pelayanan
             administrasi.
-            </p>
-            <span class="menu-arrow">Kelola pengajuan →</span>
+          </p>
+          <span class="menu-arrow">Kelola pengajuan →</span>
         </a>
 
         <a href="kelola-pengumuman.html" class="menu-card">
@@ -554,6 +578,7 @@
       </div>
     </section>
 
+    <!-- PENGUMUMAN TERBARU -->
     <section class="section">
       <div class="section-heading">
         <div>
@@ -600,15 +625,18 @@
     const announcementMessage = document.getElementById("announcementMessage");
     const logoutBtn = document.getElementById("logoutBtn");
 
+    // Elemen statistik dashboard
     const activeCount = document.getElementById("activeCount");
     const requestCount = document.getElementById("requestCount");
     const pendingCount = document.getElementById("pendingCount");
+    const completedCount = document.getElementById("completedCount");
 
     document.getElementById("year").textContent = new Date().getFullYear();
 
     let currentUser = null;
     let isLoading = false;
 
+    // Memeriksa login dan role admin
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
         window.location.replace("login.html");
@@ -616,7 +644,6 @@
       }
 
       try {
-        // Memastikan akun memiliki role admin di Firestore.
         const roleSnapshot = await getDoc(doc(db, "roles", user.uid));
 
         if (!roleSnapshot.exists() || roleSnapshot.data().role !== "admin") {
@@ -647,11 +674,14 @@
 
         const box = document.createElement("div");
         box.className = "state-box";
-        box.textContent = "Dashboard belum dapat dimuat. Silakan muat ulang halaman.";
+        box.textContent =
+          "Dashboard belum dapat dimuat. Silakan muat ulang halaman.";
+
         announcementList.appendChild(box);
       }
     });
 
+    // Menampilkan kondisi pengumuman
     function showAnnouncementState(icon, message, retry = false) {
       announcementList.replaceChildren();
 
@@ -678,6 +708,7 @@
       announcementList.appendChild(box);
     }
 
+    // Memuat pengumuman aktif
     async function loadAnnouncements() {
       if (!currentUser || isLoading) return;
 
@@ -704,7 +735,10 @@
         announcementList.replaceChildren();
 
         if (announcements.length === 0) {
-          showAnnouncementState("📭", "Belum ada pengumuman aktif saat ini.");
+          showAnnouncementState(
+            "📭",
+            "Belum ada pengumuman aktif saat ini."
+          );
           return;
         }
 
@@ -712,16 +746,19 @@
 
       } catch (error) {
         console.error("Gagal memuat pengumuman:", error);
+
         showAnnouncementState(
           "⚠️",
           "Pengumuman belum dapat dimuat. Periksa koneksi dan Firestore Rules.",
           true
         );
+
       } finally {
         isLoading = false;
       }
     }
 
+    // Menampilkan satu pengumuman
     function renderAnnouncement(item) {
       const card = document.createElement("article");
       card.className = "announcement-card";
@@ -763,6 +800,7 @@
       announcementList.appendChild(card);
     }
 
+    // Memuat empat statistik dari Firestore
     async function loadSummary() {
       try {
         const [announcementSnapshot, requestSnapshot] = await Promise.all([
@@ -773,14 +811,24 @@
           getDocs(collection(db, "pengajuan"))
         ]);
 
-        const totalRequests = requestSnapshot.size;
-        const pendingRequests = requestSnapshot.docs.filter(
-          (item) => item.data().status === "Menunggu"
+        const requests = requestSnapshot.docs.map(
+          (item) => item.data()
+        );
+
+        const totalRequests = requests.length;
+
+        const pendingRequests = requests.filter(
+          (item) => item.status === "Menunggu"
+        ).length;
+
+        const completedRequests = requests.filter(
+          (item) => item.status === "Selesai"
         ).length;
 
         activeCount.textContent = announcementSnapshot.size;
         requestCount.textContent = totalRequests;
         pendingCount.textContent = pendingRequests;
+        completedCount.textContent = completedRequests;
 
       } catch (error) {
         console.error("Gagal memuat ringkasan:", error);
@@ -788,15 +836,18 @@
         activeCount.textContent = "—";
         requestCount.textContent = "—";
         pendingCount.textContent = "—";
+        completedCount.textContent = "—";
       }
     }
 
+    // Logout
     logoutBtn.addEventListener("click", async () => {
       if (!confirm("Yakin ingin keluar dari akun?")) return;
 
       try {
         await signOut(auth);
         window.location.replace("login.html");
+
       } catch (error) {
         console.error("Gagal logout:", error);
         alert("Gagal keluar dari akun. Silakan coba lagi.");
