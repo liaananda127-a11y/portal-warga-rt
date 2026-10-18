@@ -1,944 +1,1127 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Kelola Pengumuman | Portal RT</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    :root {
-      --green: #16845b;
-      --dark-green: #106b49;
-      --light-green: #e9f7ef;
-      --background: #f6f9f7;
-      --text: #24352c;
-      --muted: #7c8b81;
-      --border: #e7eee9;
-      --white: #ffffff;
-      --red: #c74646;
-      --light-red: #fff0f0;
-      --orange: #a96313;
-      --light-orange: #fff3df;
-    }
-
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: var(--background);
-      color: var(--text);
-      min-height: 100vh;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    button,
-    input,
-    textarea,
-    select {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    .navbar {
-      background: white;
-      border-bottom: 1px solid var(--border);
-      padding: 15px 5%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 15px;
-      font-weight: 800;
-    }
-
-    .brand-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      background: var(--light-green);
-      color: var(--green);
-      display: grid;
-      place-items: center;
-      font-size: 22px;
-    }
-
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .nav-link {
-      color: var(--green);
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .logout-btn {
-      background: white;
-      color: var(--red);
-      border: 1px solid #f0dada;
-      padding: 9px 12px;
-      border-radius: 9px;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .container {
-      width: 92%;
-      max-width: 1100px;
-      margin: 30px auto 50px;
-    }
-
-    .welcome {
-      background: linear-gradient(135deg, #16845b, #35a979);
-      color: white;
-      padding: 30px;
-      border-radius: 20px;
-      margin-bottom: 25px;
-    }
-
-    .welcome-label {
-      display: inline-block;
-      padding: 7px 11px;
-      border-radius: 20px;
-      background: rgba(255,255,255,.15);
-      font-size: 11px;
-      font-weight: 700;
-      margin-bottom: 14px;
-    }
-
-    .welcome h1 {
-      font-size: clamp(23px, 4vw, 30px);
-      line-height: 1.5;
-      margin-bottom: 8px;
-    }
-
-    .welcome p {
-      font-size: 13px;
-      line-height: 1.9;
-      color: rgba(255,255,255,.9);
-    }
-
-    .back-link {
-      display: inline-block;
-      margin-bottom: 20px;
-      color: var(--green);
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .panel {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 24px;
-      margin-bottom: 24px;
-    }
-
-    .panel-heading {
-      margin-bottom: 20px;
-    }
-
-    .panel-heading h2 {
-      font-size: 18px;
-      margin-bottom: 7px;
-    }
-
-    .panel-heading p {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.8;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 17px;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .form-group.full {
-      grid-column: 1 / -1;
-    }
-
-    label {
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    input,
-    textarea,
-    select {
-      width: 100%;
-      padding: 12px 13px;
-      border: 1px solid #dfe8e2;
-      border-radius: 10px;
-      outline: none;
-      color: var(--text);
-      background: white;
-      font-size: 12px;
-    }
-
-    input:focus,
-    textarea:focus,
-    select:focus {
-      border-color: var(--green);
-      box-shadow: 0 0 0 3px rgba(22,132,91,.08);
-    }
-
-    textarea {
-      min-height: 120px;
-      resize: vertical;
-      line-height: 1.8;
-    }
-
-    .checkbox-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 12px;
-      color: var(--text);
-    }
-
-    .checkbox-row input {
-      width: auto;
-      accent-color: var(--green);
-    }
-
-    .button-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .btn {
-      border: none;
-      border-radius: 9px;
-      padding: 11px 15px;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .btn-primary {
-      background: var(--green);
-      color: white;
-    }
-
-    .btn-primary:hover {
-      background: var(--dark-green);
-    }
-
-    .btn-secondary {
-      background: #f0f3f1;
-      color: var(--text);
-    }
-
-    .btn-edit {
-      background: var(--light-orange);
-      color: var(--orange);
-    }
-
-    .btn-toggle {
-      background: var(--light-green);
-      color: var(--green);
-    }
-
-    .btn-delete {
-      background: var(--light-red);
-      color: var(--red);
-    }
-
-    .btn:disabled {
-      opacity: .6;
-      cursor: not-allowed;
-    }
-
-    .message {
-      display: none;
-      padding: 12px 14px;
-      border-radius: 10px;
-      font-size: 12px;
-      line-height: 1.8;
-      margin-bottom: 16px;
-      overflow-wrap: anywhere;
-    }
-
-    .message.show {
-      display: block;
-    }
-
-    .message.success {
-      display: block;
-      background: var(--light-green);
-      color: var(--dark-green);
-    }
-
-    .message.error {
-      display: block;
-      background: var(--light-red);
-      color: #a12c2c;
-    }
-
-    .announcement-list {
-      display: grid;
-      gap: 14px;
-    }
-
-    .announcement-card {
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      padding: 20px;
-    }
-
-    .announcement-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 15px;
-      margin-bottom: 12px;
-    }
-
-    .announcement-card h3 {
-      font-size: 14px;
-      line-height: 1.8;
-      overflow-wrap: anywhere;
-    }
-
-    .badge {
-      border-radius: 20px;
-      padding: 6px 10px;
-      font-size: 10px;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-    .badge-active {
-      background: var(--light-green);
-      color: var(--green);
-    }
-
-    .badge-inactive {
-      background: #f0f3f1;
-      color: #66736a;
-    }
-
-    .announcement-date {
-      font-size: 11px;
-      color: var(--muted);
-      margin-bottom: 12px;
-    }
-
-    .announcement-content {
-      font-size: 12px;
-      color: #58695e;
-      line-height: 1.9;
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
-      margin-bottom: 16px;
-    }
-
-    .card-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .state-box {
-      background: white;
-      border: 1px dashed #dce7df;
-      border-radius: 13px;
-      padding: 30px 20px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.9;
-    }
-
-    .footer {
-      border-top: 1px solid var(--border);
-      background: white;
-      padding: 22px 15px;
-      text-align: center;
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    @media (max-width: 650px) {
-      .navbar {
-        padding: 13px 4%;
-      }
-
-      .brand {
-        font-size: 12px;
-      }
-
-      .brand-icon {
-        width: 35px;
-        height: 35px;
-      }
-
-      .nav-actions {
-        gap: 8px;
-      }
-
-      .nav-link,
-      .logout-btn {
-        font-size: 10px;
-      }
-
-      .logout-btn {
-        padding: 8px;
-      }
-
-      .container {
-        margin-top: 22px;
-      }
-
-      .welcome {
-        padding: 24px;
-        border-radius: 15px;
-      }
-
-      .panel {
-        padding: 18px;
-      }
-
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .form-group.full {
-        grid-column: auto;
-      }
-
-      .announcement-top {
-        flex-direction: column;
-      }
-
-      .card-actions .btn {
-        flex: 1 1 auto;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Pengumuman - Portal Warga RT</title>
+
+    <style>
+        :root {
+            --green: #14532d;
+            --green-dark: #103d23;
+            --green-light: #dcfce7;
+            --bg: #f4f7f5;
+            --white: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --red: #dc2626;
+            --yellow: #fef3c7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        button, input, textarea {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .sidebar {
+            position: fixed;
+            inset: 0 auto 0 0;
+            width: 250px;
+            background: var(--green-dark);
+            color: white;
+            padding: 25px 16px;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .brand {
+            padding: 0 12px 25px;
+            border-bottom: 1px solid rgba(255,255,255,.15);
+            margin-bottom: 25px;
+        }
+
+        .brand h2 {
+            font-size: 21px;
+            margin-bottom: 7px;
+        }
+
+        .brand p {
+            font-size: 12px;
+            color: #cbd5e1;
+        }
+
+        .menu-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #a7c4ae;
+            padding: 0 12px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #e5e7eb;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            font-size: 14px;
+            transition: .2s;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background: #23653b;
+            color: white;
+        }
+
+        .main {
+            margin-left: 250px;
+            padding: 28px;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .topbar h1 {
+            font-size: 26px;
+            margin-bottom: 7px;
+        }
+
+        .topbar p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .user-info {
+            font-size: 13px;
+            color: var(--muted);
+            text-align: right;
+            overflow-wrap: anywhere;
+        }
+
+        .welcome {
+            background: linear-gradient(120deg, #14532d, #287746);
+            color: white;
+            border-radius: 14px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .welcome h2 {
+            margin-bottom: 9px;
+            font-size: 22px;
+        }
+
+        .welcome p {
+            color: #e5f5e9;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 22px;
+            border: 1px solid var(--border);
+            box-shadow: 0 3px 10px rgba(0,0,0,.03);
+        }
+
+        .stat-card p {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .stat-card h3 {
+            font-size: 28px;
+            color: var(--green);
+        }
+
+        .panel {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,.03);
+        }
+
+        .panel-header {
+            margin-bottom: 20px;
+        }
+
+        .panel-header h2 {
+            font-size: 19px;
+            margin-bottom: 7px;
+        }
+
+        .panel-header p {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            background: white;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px rgba(20,83,45,.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 130px;
+            line-height: 1.6;
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checkbox-row input {
+            width: 17px;
+            height: 17px;
+            accent-color: var(--green);
+        }
+
+        .checkbox-row label {
+            margin: 0;
+            font-weight: normal;
+        }
+
+        .form-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 7px;
+            padding: 11px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: .2s;
+        }
+
+        .btn-primary {
+            background: var(--green);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #166534;
+        }
+
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            background: #d1d5db;
+        }
+
+        .btn-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .btn-danger {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .btn-small {
+            padding: 8px 10px;
+            font-size: 12px;
+        }
+
+        .announcement-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .announcement-card {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            background: white;
+        }
+
+        .announcement-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 12px;
+        }
+
+        .announcement-card h3 {
+            font-size: 17px;
+            line-height: 1.5;
+            margin-bottom: 7px;
+            overflow-wrap: anywhere;
+        }
+
+        .announcement-date {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .badge-active {
+            background: var(--green-light);
+            color: #166534;
+        }
+
+        .badge-inactive {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+        .announcement-content {
+            font-size: 14px;
+            line-height: 1.7;
+            color: #4b5563;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            margin: 15px 0;
+        }
+
+        .announcement-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            border-top: 1px solid var(--border);
+            padding-top: 15px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 35px 15px;
+            color: var(--muted);
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .message {
+            display: none;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 18px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .message.success {
+            display: block;
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .message.error {
+            display: block;
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .loading {
+            color: var(--muted);
+            font-size: 14px;
+            padding: 15px 0;
+        }
+
+        .menu-toggle {
+            display: none;
+            border: none;
+            border-radius: 7px;
+            background: var(--green);
+            color: white;
+            padding: 10px 12px;
+            font-size: 18px;
+        }
+
+        .sidebar-overlay {
+            display: none;
+        }
+
+        @media (max-width: 1000px) {
+            .stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .stats .stat-card:last-child {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform .25s ease;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .sidebar-overlay.show {
+                display: block;
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,.4);
+                z-index: 900;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 18px;
+            }
+
+            .menu-toggle {
+                display: inline-block;
+                margin-bottom: 15px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+            }
+
+            .topbar h1 {
+                font-size: 22px;
+            }
+
+            .user-info {
+                display: none;
+            }
+
+            .welcome {
+                padding: 20px;
+            }
+
+            .welcome h2 {
+                font-size: 19px;
+            }
+
+            .panel {
+                padding: 18px;
+            }
+
+            .announcement-top {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .stats .stat-card:last-child {
+                grid-column: auto;
+            }
+
+            .stat-card {
+                padding: 18px;
+            }
+
+            .form-actions .btn {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-  <header class="navbar">
-    <a href="admin.html" class="brand">
-      <div class="brand-icon">⌂</div>
-      <span>Portal Warga RT</span>
-    </a>
-
-    <div class="nav-actions">
-      <a href="admin.html" class="nav-link">Dashboard Admin</a>
-      <button id="logoutBtn" class="logout-btn">Keluar ↗</button>
-    </div>
-  </header>
-
-  <main class="container">
-
-    <a href="admin.html" class="back-link">← Kembali ke Dashboard Admin</a>
-
-    <section class="welcome">
-      <span class="welcome-label">PENGELOLAAN ADMIN</span>
-      <h1>Kelola Pengumuman 📢</h1>
-      <p>
-        Tambah, edit, aktifkan, atau nonaktifkan pengumuman
-        agar informasi Portal RT tetap terbarui.
-      </p>
-    </section>
-
-    <section class="panel" id="formPanel">
-      <div class="panel-heading">
-        <h2 id="formTitle">Tambah Pengumuman</h2>
-        <p>Isi informasi berikut untuk menerbitkan pengumuman kepada warga.</p>
-      </div>
-
-      <div id="formMessage" class="message" role="status"></div>
-
-      <form id="announcementForm">
-        <div class="form-grid">
-
-          <div class="form-group full">
-            <label for="judul">Judul Pengumuman *</label>
-            <input
-              type="text"
-              id="judul"
-              maxlength="150"
-              placeholder="Contoh: Informasi Kerja Bakti Warga"
-              required
-            >
-          </div>
-
-          <div class="form-group">
-            <label for="tanggal">Tanggal Pengumuman *</label>
-            <input type="date" id="tanggal" required>
-          </div>
-
-          <div class="form-group">
-            <label>Status Pengumuman</label>
-            <label class="checkbox-row">
-              <input type="checkbox" id="aktif" checked>
-              Tampilkan kepada warga
-            </label>
-          </div>
-
-          <div class="form-group full">
-            <label for="isi">Isi Pengumuman *</label>
-            <textarea
-              id="isi"
-              maxlength="10000"
-              placeholder="Tuliskan informasi pengumuman secara jelas..."
-              required
-            ></textarea>
-          </div>
-
+    <aside class="sidebar" id="sidebar">
+        <div class="brand">
+            <h2>🏡 Portal Warga RT</h2>
+            <p>Sistem Informasi dan Pelayanan Warga</p>
         </div>
 
-        <div class="button-row">
-          <button type="submit" id="saveBtn" class="btn btn-primary">
-            Simpan Pengumuman
-          </button>
+        <div class="menu-title">Menu Utama</div>
 
-          <button
-            type="button"
-            id="cancelBtn"
-            class="btn btn-secondary"
-            hidden
-          >
-            Batal Edit
-          </button>
-        </div>
-      </form>
-    </section>
+        <nav>
+            <a href="admin.html">📊 Dashboard</a>
+            <a href="kelola-pengumuman.html" class="active">📢 Kelola Pengumuman</a>
+            <a href="kelola-pelayanan.html">📋 Kelola Pengajuan</a>
+            <a href="kelola-warga.html">👥 Data Warga</a>
 
-    <section class="panel">
-      <div class="panel-heading">
-        <h2>Daftar Pengumuman</h2>
-        <p>Semua pengumuman ditampilkan di sini, termasuk yang nonaktif.</p>
-      </div>
+            <div class="menu-title" style="margin-top: 25px;">Menu Warga</div>
 
-      <div id="listMessage" class="message" role="status"></div>
+            <a href="pengumuman.html">📄 Lihat Pengumuman</a>
+            <a href="pelayanan.html">📝 Halaman Pelayanan</a>
+            <a href="profil.html">👤 Profil Saya</a>
+            <a href="index.html">🏠 Beranda Portal</a>
+        </nav>
+    </aside>
 
-      <div id="announcementList" class="announcement-list">
-        <div class="state-box">Memuat data pengumuman...</div>
-      </div>
-    </section>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-  </main>
+    <main class="main">
 
-  <footer class="footer">
-    © <span id="year"></span> Portal Informasi dan Pelayanan Warga RT
-  </footer>
+        <button class="menu-toggle" id="menuToggle" type="button"
+                aria-label="Buka menu">☰</button>
 
-  <script type="module">
-    import { auth, db } from "./firebase.js";
+        <header class="topbar">
+            <div>
+                <h1>Kelola Pengumuman</h1>
+                <p>Kelola informasi dan pengumuman untuk warga RT.</p>
+            </div>
 
-    import {
-      onAuthStateChanged,
-      signOut
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+            <div class="user-info" id="userInfo">
+                Memeriksa akun...
+            </div>
+        </header>
 
-    import {
-      collection,
-      addDoc,
-      getDocs,
-      getDoc,
-      doc,
-      updateDoc,
-      deleteDoc,
-      serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        <section class="welcome">
+            <h2>Kelola Informasi Warga 📢</h2>
+            <p>
+                Tambahkan pengumuman baru, ubah informasi yang sudah ada,
+                dan atur status pengumuman agar informasi penting dapat
+                dilihat oleh warga.
+            </p>
+        </section>
 
-    const form = document.getElementById("announcementForm");
-    const formTitle = document.getElementById("formTitle");
-    const titleInput = document.getElementById("judul");
-    const dateInput = document.getElementById("tanggal");
-    const contentInput = document.getElementById("isi");
-    const activeInput = document.getElementById("aktif");
+        <section class="stats">
+            <div class="stat-card">
+                <p>Total Pengumuman</p>
+                <h3 id="totalAnnouncements">0</h3>
+            </div>
 
-    const saveBtn = document.getElementById("saveBtn");
-    const cancelBtn = document.getElementById("cancelBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
+            <div class="stat-card">
+                <p>Pengumuman Aktif</p>
+                <h3 id="activeAnnouncements">0</h3>
+            </div>
 
-    const formMessage = document.getElementById("formMessage");
-    const listMessage = document.getElementById("listMessage");
-    const announcementList = document.getElementById("announcementList");
+            <div class="stat-card">
+                <p>Pengumuman Nonaktif</p>
+                <h3 id="inactiveAnnouncements">0</h3>
+            </div>
+        </section>
 
-    document.getElementById("year").textContent = new Date().getFullYear();
+        <section class="panel" id="formPanel">
+            <div class="panel-header">
+                <h2 id="formTitle">Tambah Pengumuman</h2>
+                <p>
+                    Isi informasi di bawah ini untuk membuat pengumuman
+                    yang akan ditampilkan di portal warga.
+                </p>
+            </div>
 
-    let currentUser = null;
-    let editingId = null;
-    let isSaving = false;
-    let isLoading = false;
+            <div id="formMessage" class="message" role="status"
+                 aria-live="polite"></div>
 
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        window.location.replace("login.html");
-        return;
-      }
+            <form id="announcementForm">
+                <div class="form-group">
+                    <label for="judul">Judul Pengumuman</label>
+                    <input
+                        type="text"
+                        id="judul"
+                        name="judul"
+                        placeholder="Contoh: Kerja Bakti Lingkungan"
+                        maxlength="150"
+                        required
+                    >
+                </div>
 
-      try {
-        const roleSnapshot = await getDoc(doc(db, "roles", user.uid));
+                <div class="form-group">
+                    <label for="tanggal">Tanggal Pengumuman</label>
+                    <input
+                        type="date"
+                        id="tanggal"
+                        name="tanggal"
+                        required
+                    >
+                </div>
 
-        if (!roleSnapshot.exists() || roleSnapshot.data().role !== "admin") {
-          alert("Akses ditolak. Halaman ini khusus administrator.");
-          window.location.replace("warga.html");
-          return;
+                <div class="form-group">
+                    <label for="isi">Isi Pengumuman</label>
+                    <textarea
+                        id="isi"
+                        name="isi"
+                        placeholder="Tuliskan informasi pengumuman di sini..."
+                        maxlength="10000"
+                        required
+                    ></textarea>
+                </div>
+
+                <div class="form-group">
+                    <div class="checkbox-row">
+                        <input
+                            type="checkbox"
+                            id="aktif"
+                            name="aktif"
+                            checked
+                        >
+                        <label for="aktif">
+                            Tampilkan pengumuman kepada warga
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary"
+                            id="saveButton">
+                        Simpan Pengumuman
+                    </button>
+
+                    <button type="button" class="btn btn-secondary"
+                            id="cancelButton" hidden>
+                        Batal Edit
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <section class="panel">
+            <div class="panel-header">
+                <h2>Daftar Pengumuman</h2>
+                <p>
+                    Daftar semua pengumuman yang tersimpan di sistem,
+                    termasuk pengumuman aktif dan nonaktif.
+                </p>
+            </div>
+
+            <div id="listMessage" class="message" role="status"
+                 aria-live="polite"></div>
+
+            <div id="announcementList" class="announcement-list">
+                <p class="loading">Memuat pengumuman...</p>
+            </div>
+        </section>
+
+    </main>
+
+    <script type="module">
+        import { auth, db } from "./firebase.js";
+
+        import {
+            onAuthStateChanged,
+            signOut
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        import {
+            collection,
+            addDoc,
+            getDocs,
+            doc,
+            getDoc,
+            updateDoc,
+            deleteDoc,
+            serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const form = document.getElementById("announcementForm");
+        const judulInput = document.getElementById("judul");
+        const tanggalInput = document.getElementById("tanggal");
+        const isiInput = document.getElementById("isi");
+        const aktifInput = document.getElementById("aktif");
+
+        const saveButton = document.getElementById("saveButton");
+        const cancelButton = document.getElementById("cancelButton");
+        const formTitle = document.getElementById("formTitle");
+
+        const formMessage = document.getElementById("formMessage");
+        const listMessage = document.getElementById("listMessage");
+        const announcementList = document.getElementById("announcementList");
+
+        const totalAnnouncements = document.getElementById("totalAnnouncements");
+        const activeAnnouncements = document.getElementById("activeAnnouncements");
+        const inactiveAnnouncements = document.getElementById("inactiveAnnouncements");
+
+        const userInfo = document.getElementById("userInfo");
+
+        let editingId = null;
+        let announcements = [];
+        let currentUser = null;
+        let saving = false;
+
+        // Menu sidebar untuk tampilan mobile
+        const sidebar = document.getElementById("sidebar");
+        const sidebarOverlay = document.getElementById("sidebarOverlay");
+        const menuToggle = document.getElementById("menuToggle");
+
+        function closeSidebar() {
+            sidebar.classList.remove("open");
+            sidebarOverlay.classList.remove("show");
         }
 
-        currentUser = user;
-        await loadAnnouncements();
-
-      } catch (error) {
-        console.error("Gagal memverifikasi admin:", error);
-        showMessage(
-          listMessage,
-          "Gagal memverifikasi akses admin. Periksa koneksi dan Firestore Rules.",
-          "error"
-        );
-        announcementList.replaceChildren();
-      }
-    });
-
-    function showMessage(element, message, type) {
-      element.textContent = message;
-      element.className = `message show ${type}`;
-    }
-
-    function clearMessage(element) {
-      element.textContent = "";
-      element.className = "message";
-    }
-
-    function formatDate(dateString) {
-      if (!dateString) return "Tanggal belum ditentukan";
-
-      const date = new Date(`${dateString}T00:00:00`);
-
-      if (Number.isNaN(date.getTime())) {
-        return `Tanggal: ${dateString}`;
-      }
-
-      return date.toLocaleDateString("id-ID", {
-        day: "numeric",
-        month: "long",
-        year: "numeric"
-      });
-    }
-
-    async function loadAnnouncements() {
-      if (!currentUser || isLoading) return;
-
-      isLoading = true;
-      announcementList.replaceChildren();
-
-      const loading = document.createElement("div");
-      loading.className = "state-box";
-      loading.textContent = "Memuat data pengumuman...";
-      announcementList.appendChild(loading);
-
-      clearMessage(listMessage);
-
-      try {
-        const snapshot = await getDocs(collection(db, "pengumuman"));
-
-        const items = snapshot.docs
-          .map((item) => ({
-            id: item.id,
-            ...item.data()
-          }))
-          .sort((a, b) =>
-            String(b.tanggal || "").localeCompare(String(a.tanggal || ""))
-          );
-
-        announcementList.replaceChildren();
-
-        if (items.length === 0) {
-          const empty = document.createElement("div");
-          empty.className = "state-box";
-          empty.textContent = "Belum ada pengumuman. Silakan tambahkan pengumuman baru.";
-          announcementList.appendChild(empty);
-          return;
-        }
-
-        items.forEach(renderAnnouncement);
-
-      } catch (error) {
-        console.error("Gagal mengambil pengumuman:", error);
-
-        showMessage(
-          listMessage,
-          "Gagal mengambil pengumuman. Periksa Firestore Rules dan koneksi internet.",
-          "error"
-        );
-
-        announcementList.replaceChildren();
-
-        const errorBox = document.createElement("div");
-        errorBox.className = "state-box";
-        errorBox.textContent = "Data pengumuman belum dapat ditampilkan.";
-        announcementList.appendChild(errorBox);
-
-      } finally {
-        isLoading = false;
-      }
-    }
-
-    function renderAnnouncement(item) {
-      const card = document.createElement("article");
-      card.className = "announcement-card";
-
-      const top = document.createElement("div");
-      top.className = "announcement-top";
-
-      const title = document.createElement("h3");
-      title.textContent = item.judul || "Tanpa judul";
-
-      const badge = document.createElement("span");
-      badge.className = `badge ${item.aktif ? "badge-active" : "badge-inactive"}`;
-      badge.textContent = item.aktif ? "Aktif" : "Nonaktif";
-
-      top.append(title, badge);
-
-      const date = document.createElement("div");
-      date.className = "announcement-date";
-      date.textContent = `📅 ${formatDate(item.tanggal)}`;
-
-      const content = document.createElement("p");
-      content.className = "announcement-content";
-      content.textContent = item.isi || "Tidak ada isi pengumuman.";
-
-      const actions = document.createElement("div");
-      actions.className = "card-actions";
-
-      const editBtn = document.createElement("button");
-      editBtn.className = "btn btn-edit";
-      editBtn.textContent = "Edit";
-      editBtn.addEventListener("click", () => startEdit(item));
-
-      const toggleBtn = document.createElement("button");
-      toggleBtn.className = "btn btn-toggle";
-      toggleBtn.textContent = item.aktif ? "Nonaktifkan" : "Aktifkan";
-      toggleBtn.addEventListener("click", () => toggleAnnouncement(item));
-
-      const deleteBtn = document.createElement("button");
-      deleteBtn.className = "btn btn-delete";
-      deleteBtn.textContent = "Hapus";
-      deleteBtn.addEventListener("click", () => removeAnnouncement(item));
-
-      actions.append(editBtn, toggleBtn, deleteBtn);
-      card.append(top, date, content, actions);
-
-      announcementList.appendChild(card);
-    }
-
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
-
-      if (!currentUser || isSaving) return;
-
-      const judul = titleInput.value.trim();
-      const tanggal = dateInput.value;
-      const isi = contentInput.value.trim();
-      const aktif = activeInput.checked;
-
-      if (!judul || !tanggal || !isi) {
-        showMessage(formMessage, "Lengkapi judul, tanggal, dan isi pengumuman.", "error");
-        return;
-      }
-
-      isSaving = true;
-      saveBtn.disabled = true;
-      cancelBtn.disabled = true;
-      clearMessage(formMessage);
-
-      const announcementData = {
-        judul,
-        tanggal,
-        isi,
-        aktif
-      };
-
-      try {
-        if (editingId) {
-          await updateDoc(doc(db, "pengumuman", editingId), {
-            ...announcementData,
-            updatedAt: serverTimestamp()
-          });
-
-          showMessage(formMessage, "Pengumuman berhasil diperbarui.", "success");
-        } else {
-          await addDoc(collection(db, "pengumuman"), {
-            ...announcementData,
-            createdAt: serverTimestamp()
-          });
-
-          showMessage(formMessage, "Pengumuman berhasil ditambahkan.", "success");
-        }
-
-        resetForm();
-        await loadAnnouncements();
-
-      } catch (error) {
-        console.error("Gagal menyimpan pengumuman:", error);
-
-        showMessage(
-          formMessage,
-          "Pengumuman gagal disimpan. Pastikan akun admin memiliki izin tulis di Firestore.",
-          "error"
-        );
-
-      } finally {
-        isSaving = false;
-        saveBtn.disabled = false;
-        cancelBtn.disabled = false;
-      }
-    });
-
-    function startEdit(item) {
-      editingId = item.id;
-
-      titleInput.value = item.judul || "";
-      dateInput.value = item.tanggal || "";
-      contentInput.value = item.isi || "";
-      activeInput.checked = item.aktif === true;
-
-      formTitle.textContent = "Edit Pengumuman";
-      saveBtn.textContent = "Simpan Perubahan";
-      cancelBtn.hidden = false;
-
-      clearMessage(formMessage);
-
-      document.getElementById("formPanel").scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-
-      titleInput.focus();
-    }
-
-    function resetForm() {
-      editingId = null;
-      form.reset();
-
-      activeInput.checked = true;
-      formTitle.textContent = "Tambah Pengumuman";
-      saveBtn.textContent = "Simpan Pengumuman";
-      cancelBtn.hidden = true;
-    }
-
-    cancelBtn.addEventListener("click", () => {
-      resetForm();
-      clearMessage(formMessage);
-    });
-
-    async function toggleAnnouncement(item) {
-      if (!currentUser) return;
-
-      const nextStatus = !item.aktif;
-      const confirmation = nextStatus
-        ? `Aktifkan pengumuman "${item.judul}"?`
-        : `Nonaktifkan pengumuman "${item.judul}"?`;
-
-      if (!confirm(confirmation)) return;
-
-      try {
-        await updateDoc(doc(db, "pengumuman", item.id), {
-          aktif: nextStatus,
-          updatedAt: serverTimestamp()
+        menuToggle.addEventListener("click", () => {
+            sidebar.classList.toggle("open");
+            sidebarOverlay.classList.toggle("show");
         });
 
-        showMessage(
-          listMessage,
-          `Pengumuman berhasil ${nextStatus ? "diaktifkan" : "dinonaktifkan"}.`,
-          "success"
-        );
+        sidebarOverlay.addEventListener("click", closeSidebar);
 
-        await loadAnnouncements();
+        document.querySelectorAll(".sidebar a").forEach(link => {
+            link.addEventListener("click", closeSidebar);
+        });
 
-      } catch (error) {
-        console.error("Gagal mengubah status:", error);
-
-        showMessage(
-          listMessage,
-          "Gagal mengubah status pengumuman. Periksa Firestore Rules.",
-          "error"
-        );
-      }
-    }
-
-    async function removeAnnouncement(item) {
-      if (!currentUser) return;
-
-      const confirmation = confirm(
-        `Yakin ingin menghapus pengumuman "${item.judul}"? Tindakan ini tidak dapat dibatalkan.`
-      );
-
-      if (!confirmation) return;
-
-      try {
-        await deleteDoc(doc(db, "pengumuman", item.id));
-
-        if (editingId === item.id) {
-          resetForm();
+        function showMessage(element, message, type = "success") {
+            element.textContent = message;
+            element.className = `message ${type}`;
         }
 
-        showMessage(listMessage, "Pengumuman berhasil dihapus.", "success");
-        await loadAnnouncements();
+        function clearMessage(element) {
+            element.textContent = "";
+            element.className = "message";
+        }
 
-      } catch (error) {
-        console.error("Gagal menghapus pengumuman:", error);
+        function formatDate(value) {
+            if (!value) return "Tanggal belum diatur";
 
-        showMessage(
-          listMessage,
-          "Gagal menghapus pengumuman. Periksa Firestore Rules.",
-          "error"
-        );
-      }
-    }
+            const parts = String(value).split("-");
 
-    logoutBtn.addEventListener("click", async () => {
-      if (!confirm("Yakin ingin keluar dari akun?")) return;
+            if (parts.length === 3) {
+                return `${parts[2]}/${parts[1]}/${parts[0]}`;
+            }
 
-      try {
-        await signOut(auth);
-        window.location.replace("login.html");
-      } catch (error) {
-        console.error("Gagal logout:", error);
-        alert("Gagal keluar dari akun. Silakan coba lagi.");
-      }
-    });
-  </script>
+            return value;
+        }
+
+        function updateStats() {
+            const activeCount = announcements.filter(item => item.aktif === true).length;
+
+            totalAnnouncements.textContent = announcements.length;
+            activeAnnouncements.textContent = activeCount;
+            inactiveAnnouncements.textContent = announcements.length - activeCount;
+        }
+
+        function createElement(tag, className, text) {
+            const element = document.createElement(tag);
+
+            if (className) {
+                element.className = className;
+            }
+
+            if (text !== undefined) {
+                element.textContent = text;
+            }
+
+            return element;
+        }
+
+        // Menampilkan daftar pengumuman
+        function renderAnnouncements() {
+            announcementList.replaceChildren();
+            updateStats();
+
+            if (announcements.length === 0) {
+                announcementList.appendChild(
+                    createElement(
+                        "div",
+                        "empty-state",
+                        "Belum ada pengumuman. Silakan tambahkan pengumuman baru melalui formulir di atas."
+                    )
+                );
+
+                return;
+            }
+
+            announcements.forEach(item => {
+                const card = createElement("article", "announcement-card");
+                const top = createElement("div", "announcement-top");
+                const titleArea = createElement("div");
+                const title = createElement("h3", "", item.judul || "Tanpa Judul");
+                const date = createElement(
+                    "p",
+                    "announcement-date",
+                    "Tanggal: " + formatDate(item.tanggal)
+                );
+
+                titleArea.append(title, date);
+
+                const badge = createElement(
+                    "span",
+                    item.aktif ? "badge badge-active" : "badge badge-inactive",
+                    item.aktif ? "Aktif" : "Nonaktif"
+                );
+
+                top.append(titleArea, badge);
+
+                const content = createElement(
+                    "p",
+                    "announcement-content",
+                    item.isi || ""
+                );
+
+                const actions = createElement("div", "announcement-actions");
+
+                const editButton = createElement("button", "btn btn-primary btn-small", "Edit");
+                editButton.type = "button";
+                editButton.addEventListener("click", () => editAnnouncement(item));
+
+                const toggleButton = createElement(
+                    "button",
+                    "btn btn-warning btn-small",
+                    item.aktif ? "Nonaktifkan" : "Aktifkan"
+                );
+                toggleButton.type = "button";
+                toggleButton.addEventListener("click", () => toggleAnnouncement(item));
+
+                const deleteButton = createElement(
+                    "button",
+                    "btn btn-danger btn-small",
+                    "Hapus"
+                );
+                deleteButton.type = "button";
+                deleteButton.addEventListener("click", () => removeAnnouncement(item));
+
+                actions.append(editButton, toggleButton, deleteButton);
+                card.append(top, content, actions);
+                announcementList.appendChild(card);
+            });
+        }
+
+        // Mengambil data dari Firestore
+        async function loadAnnouncements() {
+            announcementList.replaceChildren(
+                createElement("p", "loading", "Memuat pengumuman...")
+            );
+
+            try {
+                const snapshot = await getDocs(collection(db, "pengumuman"));
+
+                announcements = snapshot.docs.map(documentSnapshot => ({
+                    id: documentSnapshot.id,
+                    ...documentSnapshot.data()
+                }));
+
+                announcements.sort((a, b) => {
+                    const dateA = a.tanggal || "";
+                    const dateB = b.tanggal || "";
+
+                    if (dateA !== dateB) {
+                        return dateB.localeCompare(dateA);
+                    }
+
+                    return (a.judul || "").localeCompare(b.judul || "");
+                });
+
+                renderAnnouncements();
+                clearMessage(listMessage);
+            } catch (error) {
+                console.error("Gagal memuat pengumuman:", error);
+
+                announcementList.replaceChildren(
+                    createElement(
+                        "p",
+                        "empty-state",
+                        "Pengumuman gagal dimuat. Periksa koneksi internet dan Firestore Rules."
+                    )
+                );
+
+                showMessage(
+                    listMessage,
+                    "Gagal mengambil data pengumuman: " + error.message,
+                    "error"
+                );
+            }
+        }
+
+        // Reset formulir
+        function resetForm() {
+            form.reset();
+            aktifInput.checked = true;
+            editingId = null;
+
+            formTitle.textContent = "Tambah Pengumuman";
+            saveButton.textContent = "Simpan Pengumuman";
+            cancelButton.hidden = true;
+
+            clearMessage(formMessage);
+        }
+
+        // Mengisi formulir saat edit
+        function editAnnouncement(item) {
+            editingId = item.id;
+
+            judulInput.value = item.judul || "";
+            tanggalInput.value = item.tanggal || "";
+            isiInput.value = item.isi || "";
+            aktifInput.checked = item.aktif === true;
+
+            formTitle.textContent = "Edit Pengumuman";
+            saveButton.textContent = "Simpan Perubahan";
+            cancelButton.hidden = false;
+
+            clearMessage(formMessage);
+
+            document.getElementById("formPanel").scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+            judulInput.focus();
+        }
+
+        cancelButton.addEventListener("click", resetForm);
+
+        // Tambah atau ubah pengumuman
+        form.addEventListener("submit", async event => {
+            event.preventDefault();
+
+            if (!currentUser || saving) return;
+
+            const judul = judulInput.value.trim();
+            const tanggal = tanggalInput.value;
+            const isi = isiInput.value.trim();
+            const aktif = aktifInput.checked;
+
+            if (!judul || !tanggal || !isi) {
+                showMessage(
+                    formMessage,
+                    "Judul, tanggal, dan isi pengumuman wajib diisi.",
+                    "error"
+                );
+
+                return;
+            }
+
+            saving = true;
+            saveButton.disabled = true;
+            saveButton.textContent = "Menyimpan...";
+
+            const announcementData = {
+                judul,
+                tanggal,
+                isi,
+                aktif
+            };
+
+            try {
+                if (editingId) {
+                    await updateDoc(
+                        doc(db, "pengumuman", editingId),
+                        {
+                            ...announcementData,
+                            updatedAt: serverTimestamp()
+                        }
+                    );
+
+                    showMessage(
+                        formMessage,
+                        "Pengumuman berhasil diperbarui."
+                    );
+                } else {
+                    await addDoc(
+                        collection(db, "pengumuman"),
+                        {
+                            ...announcementData,
+                            createdAt: serverTimestamp()
+                        }
+                    );
+
+                    showMessage(
+                        formMessage,
+                        "Pengumuman berhasil ditambahkan."
+                    );
+                }
+
+                resetForm();
+                await loadAnnouncements();
+
+                showMessage(
+                    formMessage,
+                    editingId
+                        ? "Pengumuman berhasil diperbarui."
+                        : "Pengumuman berhasil disimpan."
+                );
+
+                document.getElementById("formPanel").scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            } catch (error) {
+                console.error("Gagal menyimpan pengumuman:", error);
+
+                showMessage(
+                    formMessage,
+                    "Gagal menyimpan pengumuman. " + error.message,
+                    "error"
+                );
+            } finally {
+                saving = false;
+                saveButton.disabled = false;
+                saveButton.textContent = editingId
+                    ? "Simpan Perubahan"
+                    : "Simpan Pengumuman";
+            }
+        });
+
+        // Mengaktifkan atau menonaktifkan pengumuman
+        async function toggleAnnouncement(item) {
+            const nextStatus = item.aktif !== true;
+
+            const confirmation = confirm(
+                `Yakin ingin ${nextStatus ? "mengaktifkan" : "menonaktifkan"} pengumuman ini?`
+            );
+
+            if (!confirmation) return;
+
+            try {
+                await updateDoc(doc(db, "pengumuman", item.id), {
+                    aktif: nextStatus,
+                    updatedAt: serverTimestamp()
+                });
+
+                showMessage(
+                    listMessage,
+                    `Pengumuman berhasil ${nextStatus ? "diaktifkan" : "dinonaktifkan"}.`
+                );
+
+                await loadAnnouncements();
+            } catch (error) {
+                console.error("Gagal mengubah status:", error);
+
+                showMessage(
+                    listMessage,
+                    "Gagal mengubah status pengumuman: " + error.message,
+                    "error"
+                );
+            }
+        }
+
+        // Menghapus pengumuman
+        async function removeAnnouncement(item) {
+            const confirmation = confirm(
+                `Yakin ingin menghapus pengumuman "${item.judul || "Tanpa Judul"}"? Tindakan ini tidak dapat dibatalkan.`
+            );
+
+            if (!confirmation) return;
+
+            try {
+                await deleteDoc(doc(db, "pengumuman", item.id));
+
+                if (editingId === item.id) {
+                    resetForm();
+                }
+
+                showMessage(listMessage, "Pengumuman berhasil dihapus.");
+                await loadAnnouncements();
+            } catch (error) {
+                console.error("Gagal menghapus pengumuman:", error);
+
+                showMessage(
+                    listMessage,
+                    "Gagal menghapus pengumuman: " + error.message,
+                    "error"
+                );
+            }
+        }
+
+        // Memastikan pengguna sudah login dan memiliki role admin
+        onAuthStateChanged(auth, async user => {
+            if (!user) {
+                window.location.replace("login.html");
+                return;
+            }
+
+            currentUser = user;
+
+            try {
+                const roleSnapshot = await getDoc(
+                    doc(db, "roles", user.uid)
+                );
+
+                if (!roleSnapshot.exists() ||
+                    roleSnapshot.data().role !== "admin") {
+
+                    alert("Halaman ini hanya dapat diakses oleh admin.");
+                    window.location.replace("warga.html");
+                    return;
+                }
+
+                userInfo.textContent =
+                    user.displayName ||
+                    user.email ||
+                    "Administrator";
+
+                await loadAnnouncements();
+            } catch (error) {
+                console.error("Gagal memeriksa role admin:", error);
+
+                announcementList.replaceChildren(
+                    createElement(
+                        "p",
+                        "empty-state",
+                        "Tidak dapat memverifikasi akun admin. Silakan muat ulang halaman."
+                    )
+                );
+
+                showMessage(
+                    listMessage,
+                    "Gagal memeriksa akses admin: " + error.message,
+                    "error"
+                );
+            }
+        });
+    </script>
 
 </body>
 </html>
