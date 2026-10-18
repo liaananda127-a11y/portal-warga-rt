@@ -149,10 +149,6 @@
       border-bottom: 1px solid var(--border);
     }
 
-    .detail-row:last-child {
-      border-bottom: none;
-    }
-
     .detail-label {
       display: block;
       font-size: 11px;
@@ -165,6 +161,28 @@
       font-weight: 600;
       overflow-wrap: anywhere;
       line-height: 1.8;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: #fff;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 13px;
+      outline: none;
+      transition: border-color .2s;
+    }
+
+    .form-input:focus {
+      border-color: var(--green);
+    }
+
+    textarea.form-input {
+      resize: vertical;
+      min-height: 85px;
     }
 
     .account-note {
@@ -193,11 +211,16 @@
       font-weight: 700;
       cursor: pointer;
       border: none;
+      text-align: center;
     }
 
     .primary {
       background: var(--green);
       color: white;
+    }
+
+    .primary:hover {
+      background: #116b49;
     }
 
     .secondary {
@@ -212,11 +235,22 @@
       color: var(--red);
     }
 
+    .button:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
+
     .message {
       padding: 25px;
       text-align: center;
       color: var(--muted);
       font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .save-message {
+      margin-top: 12px;
+      font-size: 12px;
       line-height: 1.8;
     }
 
@@ -287,40 +321,110 @@
   <main>
     <section class="heading">
       <h1>Profil Saya</h1>
-      <p>Informasi akun yang digunakan untuk mengakses Portal Warga RT.</p>
+      <p>
+        Kelola informasi pribadi yang digunakan di Portal Warga RT.
+      </p>
     </section>
 
     <section class="profile-card" id="profileCard" hidden>
+
       <div class="profile-banner">
         <div class="avatar" id="avatar">W</div>
 
         <div>
           <h2 id="profileName">Memuat profil...</h2>
-          <p>Warga Portal RT</p>
+          <p id="profileEmail">Memuat email...</p>
         </div>
       </div>
 
       <div class="profile-details">
-        <h3>Informasi Akun</h3>
+
+        <h3>Edit Informasi Profil</h3>
+
+        <form id="profileForm">
+
+          <div class="detail-row">
+            <label class="detail-label" for="namaLengkap">
+              Nama Lengkap *
+            </label>
+
+            <input
+              class="form-input"
+              id="namaLengkap"
+              type="text"
+              maxlength="100"
+              placeholder="Masukkan nama lengkap"
+              required
+            >
+          </div>
+
+          <div class="detail-row">
+            <label class="detail-label" for="noHp">
+              Nomor HP
+            </label>
+
+            <input
+              class="form-input"
+              id="noHp"
+              type="tel"
+              maxlength="20"
+              placeholder="Contoh: 081234567890"
+            >
+          </div>
+
+          <div class="detail-row">
+            <label class="detail-label" for="alamat">
+              Alamat
+            </label>
+
+            <textarea
+              class="form-input"
+              id="alamat"
+              maxlength="500"
+              placeholder="Masukkan alamat tempat tinggal"
+            ></textarea>
+          </div>
+
+          <div class="actions">
+            <button
+              type="submit"
+              class="button primary"
+              id="saveBtn"
+            >
+              Simpan Profil
+            </button>
+
+            <button
+              type="button"
+              class="button secondary"
+              id="resetBtn"
+            >
+              Batalkan Perubahan
+            </button>
+          </div>
+
+          <p
+            id="saveMessage"
+            class="save-message"
+            role="status"
+            aria-live="polite"
+          ></p>
+
+        </form>
 
         <div class="detail-row">
-          <span class="detail-label">Nama pengguna</span>
-          <div class="detail-value" id="detailName">-</div>
-        </div>
-
-        <div class="detail-row">
-          <span class="detail-label">Email</span>
+          <span class="detail-label">Email Akun</span>
           <div class="detail-value" id="detailEmail">-</div>
         </div>
 
         <div class="detail-row">
-          <span class="detail-label">UID akun</span>
+          <span class="detail-label">UID Akun</span>
           <div class="detail-value" id="detailUid">-</div>
         </div>
 
         <div class="account-note">
-          Informasi ini diambil dari akun yang sedang login.
-          UID digunakan Firebase untuk mengidentifikasi akun pengguna.
+          Data nama, nomor HP, dan alamat disimpan di database Portal RT.
+          Email dan UID berasal dari akun Firebase yang sedang login.
         </div>
 
         <div class="actions">
@@ -328,10 +432,15 @@
             Kembali ke Dashboard
           </a>
 
-          <button id="logoutBtn" class="button danger">
+          <button
+            id="logoutBtn"
+            type="button"
+            class="button danger"
+          >
             Keluar dari Akun
           </button>
         </div>
+
       </div>
     </section>
 
@@ -345,43 +454,185 @@
   </footer>
 
   <script type="module">
-    import { auth } from "./firebase.js";
+    import { auth, db } from "./firebase.js";
 
     import {
       onAuthStateChanged,
       signOut
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
+    import {
+      doc,
+      getDoc,
+      setDoc
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
     const profileCard = document.getElementById("profileCard");
     const message = document.getElementById("message");
+    const profileForm = document.getElementById("profileForm");
+    const saveBtn = document.getElementById("saveBtn");
+    const saveMessage = document.getElementById("saveMessage");
     const logoutBtn = document.getElementById("logoutBtn");
+    const resetBtn = document.getElementById("resetBtn");
+
+    const namaInput = document.getElementById("namaLengkap");
+    const noHpInput = document.getElementById("noHp");
+    const alamatInput = document.getElementById("alamat");
+
+    let currentUser = null;
+    let savedProfile = null;
 
     document.getElementById("year").textContent =
       new Date().getFullYear();
 
-    onAuthStateChanged(auth, (user) => {
+    function updateProfileDisplay(name) {
+      const safeName = name.trim() || "Pengguna";
+
+      document.getElementById("profileName").textContent = safeName;
+      document.getElementById("detailName")?.textContent;
+
+      document.getElementById("avatar").textContent =
+        safeName.charAt(0).toUpperCase();
+    }
+
+    function showMessage(text, isError = false) {
+      saveMessage.textContent = text;
+      saveMessage.style.color = isError ? "#c74646" : "#16845b";
+    }
+
+    function getFormData() {
+      return {
+        namaLengkap: namaInput.value.trim(),
+        noHp: noHpInput.value.trim(),
+        alamat: alamatInput.value.trim()
+      };
+    }
+
+    function fillForm(data) {
+      namaInput.value = data.namaLengkap || "";
+      noHpInput.value = data.noHp || "";
+      alamatInput.value = data.alamat || "";
+    }
+
+    onAuthStateChanged(auth, async (user) => {
       if (!user) {
         window.location.replace("login.html");
         return;
       }
 
+      currentUser = user;
+
       const email = user.email || "-";
       const fallbackName = email !== "-"
         ? email.split("@")[0]
-        : "Warga";
+        : "Pengguna";
 
-      const name = user.displayName || fallbackName;
-
-      document.getElementById("profileName").textContent = name;
-      document.getElementById("detailName").textContent = name;
+      document.getElementById("profileEmail").textContent = email;
       document.getElementById("detailEmail").textContent = email;
       document.getElementById("detailUid").textContent = user.uid;
 
-      document.getElementById("avatar").textContent =
-        name.trim().charAt(0).toUpperCase() || "W";
+      message.hidden = false;
+      message.textContent = "Memuat data profil...";
 
-      profileCard.hidden = false;
-      message.hidden = true;
+      try {
+        const profileRef = doc(db, "profil", user.uid);
+        const profileSnap = await getDoc(profileRef);
+
+        if (profileSnap.exists()) {
+          const data = profileSnap.data();
+
+          savedProfile = {
+            namaLengkap: data.namaLengkap || user.displayName || fallbackName,
+            noHp: data.noHp || "",
+            alamat: data.alamat || ""
+          };
+        } else {
+          savedProfile = {
+            namaLengkap: user.displayName || fallbackName,
+            noHp: "",
+            alamat: ""
+          };
+        }
+
+        fillForm(savedProfile);
+        updateProfileDisplay(savedProfile.namaLengkap);
+
+        profileCard.hidden = false;
+        message.hidden = true;
+
+      } catch (error) {
+        console.error("Gagal memuat profil:", error);
+
+        message.textContent =
+          "Profil gagal dimuat. Periksa koneksi dan Firestore Rules.";
+      }
+    });
+
+    profileForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (!currentUser) {
+        showMessage("Silakan login kembali.", true);
+        return;
+      }
+
+      const formData = getFormData();
+
+      if (!formData.namaLengkap) {
+        showMessage("Nama lengkap wajib diisi.", true);
+        namaInput.focus();
+        return;
+      }
+
+      saveBtn.disabled = true;
+      saveBtn.textContent = "Menyimpan...";
+      showMessage("");
+
+      try {
+        const profileRef = doc(db, "profil", currentUser.uid);
+
+        await setDoc(profileRef, {
+          namaLengkap: formData.namaLengkap,
+          noHp: formData.noHp,
+          alamat: formData.alamat,
+          updatedAt: new Date().toISOString()
+        }, {
+          merge: true
+        });
+
+        savedProfile = { ...formData };
+
+        updateProfileDisplay(formData.namaLengkap);
+
+        showMessage("Profil berhasil disimpan!");
+
+      } catch (error) {
+        console.error("Gagal menyimpan profil:", error);
+
+        if (error.code === "permission-denied") {
+          showMessage(
+            "Akses ditolak. Periksa Firestore Rules untuk collection profil.",
+            true
+          );
+        } else {
+          showMessage(
+            "Profil gagal disimpan. Periksa koneksi internet dan coba lagi.",
+            true
+          );
+        }
+
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = "Simpan Profil";
+      }
+    });
+
+    resetBtn.addEventListener("click", () => {
+      if (!savedProfile) return;
+
+      fillForm(savedProfile);
+      updateProfileDisplay(savedProfile.namaLengkap);
+      showMessage("Perubahan yang belum disimpan dibatalkan.");
     });
 
     logoutBtn.addEventListener("click", async () => {
