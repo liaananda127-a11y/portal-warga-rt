@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pelayanan Warga | Portal RT</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #28685a;
+            --primary-dark: #1d5147;
+            --heading: #203f39;
+            --text: #75868c;
+            --border: #dce5e2;
+            --background: #f3f7f4;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--background);
+            color: var(--heading);
+        }
+
+        header {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 18px 7%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .brand {
+            font-size: 19px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: var(--primary);
+        }
+
+        main {
+            width: min(1000px, 90%);
+            margin: 38px auto;
+        }
+
+        .page-heading {
+            margin-bottom: 25px;
+        }
+
+        .page-heading h1 {
+            font-size: 27px;
+            margin: 0 0 10px;
+        }
+
+        .page-heading p {
+            color: var(--text);
+            font-size: 14px;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        .card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 26px;
+            margin-bottom: 25px;
+        }
+
+        .card h2 {
+            font-size: 18px;
+            margin: 0 0 22px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 13px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            font-family: inherit;
+            font-size: 13px;
+            color: var(--heading);
+            background: #fff;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--primary);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        button {
+            border: none;
+            background: var(--primary);
+            color: white;
+            border-radius: 9px;
+            padding: 13px 19px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: var(--primary-dark);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .message {
+            display: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 17px;
+        }
+
+        .message.success {
+            display: block;
+            background: #e8f6ed;
+            color: #21643a;
+        }
+
+        .message.error {
+            display: block;
+            background: #fff0ef;
+            color: #a12b2b;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            min-width: 600px;
+        }
+
+        th, td {
+            padding: 13px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            color: var(--text);
+            font-weight: 700;
+            background: #f8faf9;
+        }
+
+        td {
+            line-height: 1.6;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 20px;
+            background: #fff4d8;
+            color: #88600b;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .status.diproses {
+            background: #e6f0ff;
+            color: #285a9e;
+        }
+
+        .status.selesai {
+            background: #e5f6e9;
+            color: #21643a;
+        }
+
+        .empty {
+            color: var(--text);
+            font-size: 13px;
+            text-align: center;
+            padding: 25px 10px;
+        }
+
+        footer {
+            text-align: center;
+            color: var(--text);
+            font-size: 12px;
+            padding: 25px 15px;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            nav {
+                gap: 13px;
+            }
+
+            main {
+                margin-top: 27px;
+            }
+
+            .page-heading h1 {
+                font-size: 23px;
+            }
+
+            .card {
+                padding: 19px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="brand">Portal Warga RT</div>
+
+    <nav>
+        <a href="index.html">Beranda</a>
+        <a href="warga.html">Dashboard</a>
+        <a href="pengumuman.html">Pengumuman</a>
+        <a href="pelayanan.html" class="active">Pelayanan</a>
+        <a href="#" id="logoutButton">Keluar</a>
+    </nav>
+</header>
+
+<main>
+    <section class="page-heading">
+        <h1>Pelayanan Warga</h1>
+        <p>
+            Ajukan kebutuhan administrasi kepada pengurus RT dan pantau
+            perkembangan pengajuan melalui halaman ini.
+        </p>
+    </section>
+
+    <section class="card">
+        <h2>Formulir Pengajuan Layanan</h2>
+
+        <div id="formMessage" class="message"></div>
+
+        <form id="serviceForm">
+            <div class="form-group">
+                <label for="jenisLayanan">Jenis Layanan</label>
+                <select id="jenisLayanan" required>
+                    <option value="">Pilih jenis layanan</option>
+                    <option value="Surat Pengantar">Surat Pengantar</option>
+                    <option value="Surat Keterangan Domisili">Surat Keterangan Domisili</option>
+                    <option value="Surat Keterangan Usaha">Surat Keterangan Usaha</option>
+                    <option value="Surat Keterangan Tidak Mampu">Surat Keterangan Tidak Mampu</option>
+                    <option value="Lainnya">Lainnya</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="keperluan">Keperluan Pengajuan</label>
+                <input
+                    type="text"
+                    id="keperluan"
+                    placeholder="Contoh: Persyaratan administrasi"
+                    maxlength="150"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="keterangan">Keterangan Tambahan</label>
+                <textarea
+                    id="keterangan"
+                    placeholder="Tuliskan keterangan tambahan jika diperlukan..."
+                    maxlength="1000"
+                ></textarea>
+            </div>
+
+            <button type="submit" id="submitButton">
+                Kirim Pengajuan
+            </button>
+        </form>
+    </section>
+
+    <section class="card">
+        <h2>Riwayat Pengajuan Saya</h2>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Jenis Layanan</th>
+                        <th>Keperluan</th>
+                        <th>Tanggal</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody id="historyTable">
+                    <tr>
+                        <td colspan="5" class="empty">
+                            Memuat data pengajuan...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<footer>
+    &copy; 2026 Portal Informasi dan Pelayanan Warga RT
+</footer>
+
+<script type="module">
+    import { auth, db } from "./firebase.js";
+
+    import {
+        onAuthStateChanged,
+        signOut
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    import {
+        collection,
+        addDoc,
+        getDocs,
+        query,
+        where,
+        orderBy,
+        serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const serviceForm = document.getElementById("serviceForm");
+    const submitButton = document.getElementById("submitButton");
+    const formMessage = document.getElementById("formMessage");
+    const historyTable = document.getElementById("historyTable");
+    const logoutButton = document.getElementById("logoutButton");
+
+    let currentUser = null;
+    let isSubmitting = false;
+
+    function showMessage(message, type) {
+        formMessage.textContent = message;
+        formMessage.className = "message " + type;
+    }
+
+    function formatDate(timestamp) {
+        if (!timestamp) return "-";
+
+        const date = timestamp.toDate
+            ? timestamp.toDate()
+            : new Date(timestamp);
+
+        return date.toLocaleDateString("id-ID", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        });
+    }
+
+    function getStatusClass(status) {
+        if (status === "Diproses") return "diproses";
+        if (status === "Selesai") return "selesai";
+        return "";
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+        if (!user) {
+            window.location.replace("login.html");
+            return;
+        }
+
+        currentUser = user;
+        await loadHistory();
+    });
+
+    serviceForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        if (!currentUser || isSubmitting) return;
+
+        isSubmitting = true;
+        submitButton.disabled = true;
+        submitButton.textContent = "Mengirim...";
+
+        try {
+            const jenisLayanan =
+                document.getElementById("jenisLayanan").value;
+
+            const keperluan =
+                document.getElementById("keperluan").value.trim();
+
+            const keterangan =
+                document.getElementById("keterangan").value.trim();
+
+            if (!jenisLayanan || !keperluan) {
+                throw new Error("Lengkapi jenis layanan dan keperluan.");
+            }
+
+            await addDoc(collection(db, "pengajuan"), {
+                userId: currentUser.uid,
+                email: currentUser.email || "",
+                jenisLayanan: jenisLayanan,
+                keperluan: keperluan,
+                keterangan: keterangan,
+                status: "Menunggu",
+                createdAt: serverTimestamp()
+            });
+
+            showMessage(
+                "Pengajuan berhasil dikirim! Kamu bisa memantau statusnya di bawah.",
+                "success"
+            );
+
+            serviceForm.reset();
+            await loadHistory();
+
+        } catch (error) {
+            console.error("Gagal mengirim pengajuan:", error);
+
+            showMessage(
+                error.code === "permission-denied"
+                    ? "Pengajuan belum bisa disimpan. Aturan keamanan Firestore perlu diperiksa."
+                    : "Pengajuan gagal dikirim. Periksa koneksi dan konfigurasi Firebase, lalu coba lagi.",
+                "error"
+            );
+        } finally {
+            isSubmitting = false;
+            submitButton.disabled = false;
+            submitButton.textContent = "Kirim Pengajuan";
+        }
+    });
+
+    async function loadHistory() {
+        if (!currentUser) return;
+
+        historyTable.innerHTML = `
+            <tr>
+                <td colspan="5" class="empty">Memuat data...</td>
+            </tr>
+        `;
+
+        try {
+            const requestsQuery = query(
+                collection(db, "pengajuan"),
+                where("userId", "==", currentUser.uid)
+            );
+
+            const snapshot = await getDocs(requestsQuery);
+
+            const requests = snapshot.docs.map((document) => ({
+                id: document.id,
+                ...document.data()
+            }));
+
+            requests.sort((a, b) => {
+                const dateA = a.createdAt?.toMillis?.() || 0;
+                const dateB = b.createdAt?.toMillis?.() || 0;
+                return dateB - dateA;
+            });
+
+            if (requests.length === 0) {
+                historyTable.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="empty">
+                            Belum ada pengajuan layanan.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            historyTable.innerHTML = "";
+
+            requests.forEach((request, index) => {
+                const row = document.createElement("tr");
+
+                const values = [
+                    index + 1,
+                    request.jenisLayanan || "-",
+                    request.keperluan || "-",
+                    formatDate(request.createdAt)
+                ];
+
+                values.forEach((value) => {
+                    const cell = document.createElement("td");
+                    cell.textContent = value;
+                    row.appendChild(cell);
+                });
+
+                const statusCell = document.createElement("td");
+                const badge = document.createElement("span");
+
+                badge.className =
+                    "status " + getStatusClass(request.status);
+
+                badge.textContent = request.status || "Menunggu";
+
+                statusCell.appendChild(badge);
+                row.appendChild(statusCell);
+
+                historyTable.appendChild(row);
+            });
+
+        } catch (error) {
+            console.error("Gagal memuat riwayat:", error);
+
+            historyTable.innerHTML = `
+                <tr>
+                    <td colspan="5" class="empty">
+                        Riwayat gagal dimuat. Periksa koneksi dan aturan Firestore.
+                    </td>
+                </tr>
+            `;
+        }
+    }
+
+    logoutButton.addEventListener("click", async (event) => {
+        event.preventDefault();
+
+        try {
+            await signOut(auth);
+            window.location.replace("login.html");
+        } catch (error) {
+            console.error("Gagal logout:", error);
+            alert("Gagal keluar. Silakan coba lagi.");
+        }
+    });
+</script>
+
+</body>
+</html>
