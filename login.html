@@ -297,7 +297,6 @@
     <main class="login-wrapper">
         <section class="login-card">
 
-            <!-- Logo rumah -->
             <div class="logo-wrapper">
                 <div class="logo">
                     <svg
@@ -355,7 +354,6 @@
 
             <form id="loginForm">
 
-                <!-- Email -->
                 <div class="form-group">
                     <label for="email">Email</label>
 
@@ -385,7 +383,6 @@
                     </div>
                 </div>
 
-                <!-- Password -->
                 <div class="form-group">
                     <label for="password">Password</label>
 
@@ -497,7 +494,7 @@
             );
         });
 
-        // Login hanya diproses setelah tombol Masuk diklik.
+        // Proses login hanya saat tombol Masuk diklik.
         form.addEventListener("submit", async (event) => {
             event.preventDefault();
 
@@ -514,7 +511,7 @@
             message.style.color = "#b91c1c";
 
             try {
-                // 1. Verifikasi email dan password.
+                // 1. Verifikasi akun menggunakan Firebase Authentication.
                 const credential = await signInWithEmailAndPassword(
                     auth,
                     email,
@@ -529,16 +526,13 @@
                 const roleRef = doc(db, "roles", user.uid);
                 const roleSnapshot = await getDoc(roleRef);
 
-                if (!roleSnapshot.exists()) {
-                    message.textContent =
-                        "Akun berhasil login, tetapi role belum terdaftar. Hubungi administrator.";
+                // Jika dokumen role belum ada, akun dianggap warga.
+                // Role admin hanya diberikan melalui dokumen Firestore.
+                const role = roleSnapshot.exists()
+                    ? roleSnapshot.data().role
+                    : "warga";
 
-                    return;
-                }
-
-                const role = roleSnapshot.data().role;
-
-                // 3. Arahkan berdasarkan role di Firestore.
+                // 3. Arahkan pengguna sesuai role.
                 if (role === "admin") {
                     message.style.color = "#28685a";
                     message.textContent =
@@ -554,6 +548,7 @@
                     window.location.replace("warga.html");
 
                 } else {
+                    message.style.color = "#b91c1c";
                     message.textContent =
                         "Role akun tidak valid. Hubungi administrator.";
                 }
