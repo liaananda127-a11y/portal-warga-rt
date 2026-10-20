@@ -496,6 +496,8 @@
     import {
       collection,
       getDocs,
+      doc,
+      getDoc,
       query,
       where
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -519,14 +521,29 @@
 
       currentUser = user;
 
-      // Menampilkan nama pengguna berdasarkan profil akun
+            // Sementara pakai username, lalu diganti nama lengkap dari profil
       userName.textContent =
         user.displayName ||
         (user.email ? user.email.split("@")[0] : "Warga");
 
+      muatNamaProfil(user);
       loadAnnouncements();
     });
+    // Mengambil nama lengkap dari koleksi profil
+    async function muatNamaProfil(user) {
+      try {
+        const snap = await getDoc(doc(db, "profil", user.uid));
 
+        if (snap.exists()) {
+          const data = snap.data();
+          const nama = data.nama || data.namaLengkap || data.fullName;
+
+          if (nama) userName.textContent = nama;
+        }
+      } catch (error) {
+        console.error("Gagal memuat nama profil:", error);
+      }
+    }
     // Menampilkan pesan status
     function showState(icon, message, showRetry = false) {
       announcementList.replaceChildren();
