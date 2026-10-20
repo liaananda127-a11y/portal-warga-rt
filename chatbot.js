@@ -36,7 +36,7 @@
   ];
 
   const SAPAAN = ["halo", "hai", "hi", "hello", "pagi", "siang", "sore", "malam"];
-  const SAPA_JAWAB = "Halo! Aku asisten Portal Warga RT. Ada yang bisa kubantu? Pilih pertanyaan di bawah atau ketik sendiri.";
+  const SAPA_JAWAB = "Halo! Aku asisten Portal Warga RT 02. Ada yang bisa kubantu? Pilih pertanyaan di bawah atau ketik sendiri.";
   const TIDAK_TAHU = "Maaf, aku belum paham pertanyaan itu. Coba pakai kata lain, atau hubungi Bu RT langsung.";
   const CEPAT = [
     "Cara mengajukan layanan",
