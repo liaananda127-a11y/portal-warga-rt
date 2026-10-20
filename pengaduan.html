@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Pengaduan Warga | Portal RT</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --green: #16845b;
+      --green-dark: #106b49;
+      --light-green: #e9f7ef;
+      --background: #f6f9f7;
+      --text: #24352c;
+      --muted: #7c8b81;
+      --border: #e7eee9;
+      --red: #c74646;
+      --orange: #b7791f;
+      --orange-bg: #fff3dc;
+      --blue: #2b6cb0;
+      --blue-bg: #e8f1fd;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--background);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+
+    .navbar {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 15px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--light-green);
+      color: var(--green);
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+    }
+
+    .nav-actions { display: flex; align-items: center; gap: 12px; }
+    .nav-link { color: var(--green); font-size: 12px; font-weight: 700; }
+
+    .logout-btn {
+      background: white;
+      color: var(--red);
+      border: 1px solid #f0dada;
+      padding: 9px 12px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .container {
+      width: 92%;
+      max-width: 1000px;
+      margin: 30px auto 50px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #16845b, #35a979);
+      color: white;
+      padding: 30px;
+      border-radius: 20px;
+      margin-bottom: 25px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 190px;
+      height: 190px;
+      border: 30px solid rgba(255,255,255,.09);
+      border-radius: 50%;
+      right: -40px;
+      top: -65px;
+    }
+
+    .hero-label {
+      display: inline-block;
+      padding: 7px 11px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.15);
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .hero h1 {
+      font-size: clamp(22px, 4vw, 29px);
+      line-height: 1.5;
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero p {
+      font-size: 13px;
+      line-height: 1.9;
+      color: rgba(255,255,255,.9);
+      max-width: 600px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 25px;
+      margin-bottom: 24px;
+    }
+
+    .card h2 { font-size: 17px; margin-bottom: 6px; }
+
+    .card .sub {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .field { margin-bottom: 17px; }
+
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #dfe7e1;
+      border-radius: 10px;
+      background: white;
+      color: var(--text);
+      font-size: 13px;
+      outline: none;
+      transition: .2s;
+    }
+
+    .field textarea { min-height: 130px; resize: vertical; line-height: 1.7; }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(22,132,91,.09);
+    }
+
+    .counter {
+      text-align: right;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 13px 16px;
+      border: none;
+      border-radius: 10px;
+      background: var(--green);
+      color: white;
+      font-size: 13px;
+      font-weight: 800;
+      transition: .2s;
+    }
+
+    .btn:hover { background: var(--green-dark); }
+    .btn:disabled { opacity: .6; cursor: wait; }
+
+    .notice {
+      display: none;
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 12px;
+      line-height: 1.8;
+      margin-bottom: 17px;
+    }
+
+    .notice.show { display: block; }
+    .notice.success { background: #e6f6ec; color: #17683f; }
+    .notice.error { background: #fff0f0; color: #a12c2c; }
+
+    .heading-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .heading-row h2 { margin-bottom: 4px; }
+
+    .refresh-btn {
+      background: white;
+      color: var(--green);
+      border: 1px solid #cfe5d8;
+      border-radius: 9px;
+      padding: 9px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+
+    th, td {
+      padding: 14px;
+      text-align: left;
+      vertical-align: top;
+      font-size: 12px;
+      line-height: 1.7;
+      border-bottom: 1px solid #edf1ee;
+    }
+
+    th {
+      background: #f7faf8;
+      color: #64756a;
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+
+    tbody tr:last-child td { border-bottom: none; }
+
+    .judul { font-weight: 800; color: var(--green-dark); margin-bottom: 4px; }
+    .isi { color: #58695e; white-space: pre-wrap; overflow-wrap: anywhere; }
+
+    .status {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .status.menunggu { background: var(--orange-bg); color: var(--orange); }
+    .status.diproses { background: var(--blue-bg); color: var(--blue); }
+    .status.selesai { background: #e5f5eb; color: var(--green); }
+
+    .state-box {
+      border: 1px dashed #dce7df;
+      border-radius: 14px;
+      padding: 30px 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.9;
+    }
+
+    .footer {
+      border-top: 1px solid var(--border);
+      background: white;
+      padding: 22px 15px;
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    [hidden] { display: none !important; }
+
+    /* Foto opsional */
+    .optional { font-weight: 500; color: var(--muted); }
+
+    .field input[type="file"] {
+      padding: 10px 12px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .photo-hint {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 6px;
+      line-height: 1.6;
+    }
+
+    .photo-preview {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .photo-preview img {
+      width: 96px;
+      height: 96px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .remove-photo {
+      background: white;
+      color: var(--red);
+      border: 1px solid #f0dada;
+      border-radius: 9px;
+      padding: 9px 12px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .thumb-btn {
+      display: block;
+      margin-top: 10px;
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      background: none;
+      width: 84px;
+      height: 84px;
+    }
+
+    .thumb-btn img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(10, 30, 20, .8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      cursor: zoom-out;
+    }
+
+    .lightbox img {
+      max-width: 100%;
+      max-height: 90vh;
+      border-radius: 12px;
+      background: white;
+    }
+
+    /* Di HP, tabel berubah jadi kartu supaya tidak terpotong */
+    @media (max-width: 640px) {
+      .navbar { padding: 13px 4%; }
+      .brand { font-size: 12px; }
+      .brand-icon { width: 35px; height: 35px; }
+      .nav-actions { gap: 8px; }
+      .nav-link { font-size: 10px; }
+      .logout-btn { padding: 8px; font-size: 10px; }
+
+      .container { margin-top: 22px; }
+      .hero { padding: 24px 20px; border-radius: 15px; }
+      .card { padding: 19px 15px; }
+
+      .table-wrap { border: none; }
+      table, thead, tbody, tr, td { display: block; width: 100%; }
+      thead { display: none; }
+
+      tr {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 14px;
+        margin-bottom: 12px;
+      }
+
+      td { border: none; padding: 4px 0; }
+      td::before {
+        content: attr(data-label);
+        display: block;
+        font-size: 10px;
+        font-weight: 800;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: .4px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="navbar">
+    <a href="warga.html" class="brand">
+      <div class="brand-icon">⌂</div>
+      <span>Portal Warga RT</span>
+    </a>
+
+    <div class="nav-actions">
+      <a href="warga.html" class="nav-link">Dashboard</a>
+      <a href="profil.html" class="nav-link">Profil Saya</a>
+      <button id="logoutBtn" class="logout-btn" type="button">Keluar ↗</button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section class="hero">
+      <span class="hero-label">PENGADUAN WARGA</span>
+      <h1>Sampaikan Keluhan dan Aspirasimu 📣</h1>
+      <p>
+        Laporkan masalah di lingkungan RT, seperti kebersihan, keamanan,
+        atau fasilitas umum. Pengurus RT akan menindaklanjuti dan statusnya
+        bisa kamu pantau di halaman ini.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Buat Pengaduan Baru</h2>
+      <p class="sub">Isi semua kolom di bawah, lalu kirim ke pengurus RT.</p>
+
+      <div id="formNotice" class="notice" role="status"></div>
+
+      <form id="pengaduanForm" novalidate>
+        <div class="field">
+          <label for="kategori">Kategori</label>
+          <select id="kategori" required>
+            <option value="">Pilih kategori</option>
+            <option value="Kebersihan">Kebersihan</option>
+            <option value="Keamanan">Keamanan</option>
+            <option value="Fasilitas umum">Fasilitas umum</option>
+            <option value="Lingkungan">Lingkungan</option>
+            <option value="Lainnya">Lainnya</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="judul">Judul pengaduan</label>
+          <input type="text" id="judul" maxlength="80"
+                 placeholder="Contoh: Lampu jalan di gang 2 mati" required>
+        </div>
+
+        <div class="field">
+          <label for="isi">Isi pengaduan</label>
+          <textarea id="isi" maxlength="500"
+                    placeholder="Jelaskan masalahnya: di mana, sejak kapan, dan apa dampaknya." required></textarea>
+          <div class="counter"><span id="isiCount">0</span>/500</div>
+        </div>
+
+        <div class="field">
+          <label for="foto">Foto pendukung <span class="optional">(opsional)</span></label>
+          <input type="file" id="foto" accept="image/*">
+          <div class="photo-hint">
+            Boleh dikosongkan. Ukuran foto minimal 20 KB dan maksimal 10 MB.
+            Foto akan dikecilkan otomatis sebelum dikirim.
+          </div>
+
+          <div class="photo-preview" id="photoPreview" hidden>
+            <img id="photoPreviewImg" alt="Pratinjau foto pengaduan">
+            <button type="button" class="remove-photo" id="removePhoto">Hapus foto</button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn" id="submitBtn">Kirim Pengaduan</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <div class="heading-row">
+        <div>
+          <h2>Riwayat Pengaduanmu</h2>
+          <p class="sub" style="margin-bottom:0">Pantau status tindak lanjut tiap pengaduan.</p>
+        </div>
+        <button type="button" class="refresh-btn" id="refreshBtn">↻ Muat ulang</button>
+      </div>
+
+      <div id="historyState" class="state-box">Memuat riwayat...</div>
+
+      <div id="tableWrap" class="table-wrap" hidden>
+        <table>
+          <thead>
+            <tr>
+              <th>Tanggal</th>
+              <th>Kategori</th>
+              <th>Pengaduan</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="historyBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    © <span id="year"></span> Portal Informasi dan Pelayanan Warga RT
+  </footer>
+
+  <div class="lightbox" id="lightbox" hidden>
+    <img id="lightboxImg" alt="Foto pengaduan">
+  </div>
+
+  <script type="module">
+    import { auth, db } from "./firebase.js";
+
+    import {
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    import {
+      collection,
+      addDoc,
+      getDocs,
+      getDoc,
+      doc,
+      query,
+      where,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const form = document.getElementById("pengaduanForm");
+    const kategoriInput = document.getElementById("kategori");
+    const judulInput = document.getElementById("judul");
+    const isiInput = document.getElementById("isi");
+    const isiCount = document.getElementById("isiCount");
+    const submitBtn = document.getElementById("submitBtn");
+    const formNotice = document.getElementById("formNotice");
+    const historyState = document.getElementById("historyState");
+    const tableWrap = document.getElementById("tableWrap");
+    const historyBody = document.getElementById("historyBody");
+    const refreshBtn = document.getElementById("refreshBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    const fotoInput = document.getElementById("foto");
+    const photoPreview = document.getElementById("photoPreview");
+    const photoPreviewImg = document.getElementById("photoPreviewImg");
+    const removePhoto = document.getElementById("removePhoto");
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightboxImg");
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    let currentUser = null;
+    let namaPelapor = "";
+
+    function showNotice(text, type) {
+      formNotice.textContent = text;
+      formNotice.className = `notice show ${type}`;
+    }
+
+    function hideNotice() {
+      formNotice.className = "notice";
+    }
+
+    isiInput.addEventListener("input", () => {
+      isiCount.textContent = String(isiInput.value.length);
+    });
+
+    // ---------- FOTO OPSIONAL ----------
+    // Foto dikecilkan di browser lalu disimpan sebagai teks di dokumen
+    // Firestore (tanpa Firebase Storage). Batas dokumen Firestore 1 MB,
+    // jadi hasilnya dijaga di bawah ~700 KB.
+    const FOTO_MIN_UKURAN_ASLI = 20 * 1024;
+    const FOTO_MAKS_UKURAN_ASLI = 10 * 1024 * 1024;
+    const FOTO_MAKS_SISI = 800;
+    const FOTO_MAKS_KARAKTER = 700000;
+
+    let fotoDipilih = null;
+    let previewUrl = "";
+
+    function resetFoto() {
+      fotoDipilih = null;
+      fotoInput.value = "";
+
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+        previewUrl = "";
+      }
+
+      photoPreview.hidden = true;
+      photoPreviewImg.removeAttribute("src");
+    }
+
+    fotoInput.addEventListener("change", () => {
+      const file = fotoInput.files && fotoInput.files[0];
+
+      if (!file) {
+        resetFoto();
+        return;
+      }
+
+      if (!file.type.startsWith("image/")) {
+        resetFoto();
+        showNotice("File yang dipilih harus berupa gambar (JPG atau PNG).", "error");
+        return;
+      }
+
+      if (file.size < FOTO_MIN_UKURAN_ASLI) {
+        resetFoto();
+        showNotice("Ukuran foto terlalu kecil (minimal 20 KB). Pilih foto lain.", "error");
+        return;
+      }
+
+      if (file.size > FOTO_MAKS_UKURAN_ASLI) {
+        resetFoto();
+        showNotice("Ukuran foto terlalu besar (maksimal 10 MB). Pilih foto lain.", "error");
+        return;
+      }
+
+      hideNotice();
+      fotoDipilih = file;
+
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      previewUrl = URL.createObjectURL(file);
+
+      photoPreviewImg.src = previewUrl;
+      photoPreview.hidden = false;
+    });
+
+    removePhoto.addEventListener("click", resetFoto);
+
+    function bacaGambar(file) {
+      return new Promise((resolve, reject) => {
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+
+        img.onload = () => {
+          URL.revokeObjectURL(url);
+          resolve(img);
+        };
+
+        img.onerror = () => {
+          URL.revokeObjectURL(url);
+          reject(new Error("gambar-tidak-valid"));
+        };
+
+        img.src = url;
+      });
+    }
+
+    async function kecilkanFoto(file) {
+      const img = await bacaGambar(file);
+
+      let sisi = FOTO_MAKS_SISI;
+      let kualitas = 0.7;
+
+      for (let percobaan = 0; percobaan < 6; percobaan++) {
+        const skala = Math.min(1, sisi / Math.max(img.width, img.height));
+
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.max(1, Math.round(img.width * skala));
+        canvas.height = Math.max(1, Math.round(img.height * skala));
+
+        const ctx = canvas.getContext("2d");
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        const hasil = canvas.toDataURL("image/jpeg", kualitas);
+
+        if (hasil.length <= FOTO_MAKS_KARAKTER) return hasil;
+
+        sisi = Math.round(sisi * 0.8);
+        kualitas = Math.max(0.4, kualitas - 0.1);
+      }
+
+      throw new Error("foto-terlalu-besar");
+    }
+
+    function openLightbox(src) {
+      lightboxImg.src = src;
+      lightbox.hidden = false;
+    }
+
+    function closeLightbox() {
+      lightbox.hidden = true;
+      lightboxImg.removeAttribute("src");
+    }
+
+    lightbox.addEventListener("click", closeLightbox);
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !lightbox.hidden) closeLightbox();
+    });
+
+    // Cek login, lalu ambil nama dari koleksi profil (kalau sudah diisi)
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        window.location.replace("login.html");
+        return;
+      }
+
+      currentUser = user;
+
+      namaPelapor = user.displayName ||
+        (user.email ? user.email.split("@")[0] : "Warga");
+
+      try {
+        const profilSnap = await getDoc(doc(db, "profil", user.uid));
+        if (profilSnap.exists() && profilSnap.data().namaLengkap) {
+          namaPelapor = profilSnap.data().namaLengkap;
+        }
+      } catch (error) {
+        // Profil tidak wajib; pakai nama dari email.
+        console.info("Profil tidak dapat dibaca:", error.code || error);
+      }
+
+      loadHistory();
+    });
+
+    function formatDate(value) {
+      if (!value || typeof value.toDate !== "function") return "Baru saja";
+
+      return value.toDate().toLocaleDateString("id-ID", {
+        day: "numeric",
+        month: "short",
+        year: "numeric"
+      });
+    }
+
+    function addCell(row, label, content) {
+      const cell = document.createElement("td");
+      cell.dataset.label = label;
+
+      if (content instanceof Node) {
+        cell.appendChild(content);
+      } else {
+        cell.textContent = content;
+      }
+
+      row.appendChild(cell);
+    }
+
+    function statusBadge(status) {
+      const badge = document.createElement("span");
+      const value = status || "Menunggu";
+
+      badge.className = `status ${value.toLowerCase()}`;
+      badge.textContent = value;
+
+      return badge;
+    }
+
+    function renderHistory(items) {
+      historyBody.replaceChildren();
+
+      if (items.length === 0) {
+        historyState.textContent =
+          "Kamu belum pernah mengirim pengaduan.";
+        historyState.hidden = false;
+        tableWrap.hidden = true;
+        return;
+      }
+
+      items.forEach(item => {
+        const row = document.createElement("tr");
+
+        addCell(row, "Tanggal", formatDate(item.createdAt));
+        addCell(row, "Kategori", item.kategori || "—");
+
+        const detail = document.createElement("div");
+
+        const title = document.createElement("div");
+        title.className = "judul";
+        title.textContent = item.judul || "Tanpa judul";
+
+        const body = document.createElement("div");
+        body.className = "isi";
+        body.textContent = item.isi || "";
+
+        detail.append(title, body);
+
+        // Foto opsional: hanya tampil kalau warga melampirkannya
+        if (typeof item.foto === "string" && item.foto.startsWith("data:image/")) {
+          const thumb = document.createElement("button");
+          thumb.type = "button";
+          thumb.className = "thumb-btn";
+          thumb.setAttribute("aria-label", "Lihat foto pengaduan");
+
+          const thumbImg = document.createElement("img");
+          thumbImg.src = item.foto;
+          thumbImg.alt = "Foto pengaduan";
+
+          thumb.appendChild(thumbImg);
+          thumb.addEventListener("click", () => openLightbox(item.foto));
+          detail.appendChild(thumb);
+        }
+
+        addCell(row, "Pengaduan", detail);
+        addCell(row, "Status", statusBadge(item.status));
+
+        historyBody.appendChild(row);
+      });
+
+      historyState.hidden = true;
+      tableWrap.hidden = false;
+    }
+
+    // Ambil pengaduan milik user yang sedang login
+    async function loadHistory() {
+      if (!currentUser) return;
+
+      historyState.textContent = "Memuat riwayat...";
+      historyState.hidden = false;
+      tableWrap.hidden = true;
+
+      try {
+        const snapshot = await getDocs(query(
+          collection(db, "pengaduan"),
+          where("userId", "==", currentUser.uid)
+        ));
+
+        const items = snapshot.docs
+          .map(item => ({ id: item.id, ...item.data() }))
+          .sort((a, b) => {
+            const timeA = a.createdAt && a.createdAt.toMillis
+              ? a.createdAt.toMillis() : Date.now();
+            const timeB = b.createdAt && b.createdAt.toMillis
+              ? b.createdAt.toMillis() : Date.now();
+            return timeB - timeA;
+          });
+
+        renderHistory(items);
+
+      } catch (error) {
+        console.error("Gagal memuat riwayat:", error);
+
+        historyState.textContent =
+          "Riwayat belum dapat dimuat. Periksa koneksi internet dan aturan Firestore.";
+        historyState.hidden = false;
+        tableWrap.hidden = true;
+      }
+    }
+
+    // Kirim pengaduan
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      hideNotice();
+
+      if (!currentUser) return;
+
+      const kategori = kategoriInput.value;
+      const judul = judulInput.value.trim();
+      const isi = isiInput.value.trim();
+
+      if (!kategori || !judul || !isi) {
+        showNotice("Lengkapi kategori, judul, dan isi pengaduan dulu ya.", "error");
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Mengirim...";
+
+      try {
+        const data = {
+          userId: currentUser.uid,
+          email: currentUser.email || "",
+          nama: namaPelapor,
+          kategori: kategori,
+          judul: judul,
+          isi: isi,
+          status: "Menunggu",
+          createdAt: serverTimestamp()
+        };
+
+        // Foto bersifat opsional: field "foto" hanya ditambahkan bila ada
+        if (fotoDipilih) {
+          submitBtn.textContent = "Memproses foto...";
+          data.foto = await kecilkanFoto(fotoDipilih);
+          submitBtn.textContent = "Mengirim...";
+        }
+
+        await addDoc(collection(db, "pengaduan"), data);
+
+        form.reset();
+        resetFoto();
+        isiCount.textContent = "0";
+        showNotice("Pengaduan terkirim. Pantau statusnya di riwayat di bawah.", "success");
+
+        await loadHistory();
+
+      } catch (error) {
+        console.error("Gagal mengirim pengaduan:", error);
+
+        if (error.message === "gambar-tidak-valid") {
+          showNotice(
+            "Foto tidak bisa dibaca. Coba foto lain dengan format JPG atau PNG, atau kirim tanpa foto.",
+            "error"
+          );
+        } else if (error.message === "foto-terlalu-besar") {
+          showNotice(
+            "Foto masih terlalu besar setelah dikecilkan. Coba foto lain atau kirim tanpa foto.",
+            "error"
+          );
+        } else if (error.code === "permission-denied") {
+          showNotice(
+            fotoDipilih
+              ? "Pengaduan ditolak oleh aturan Firestore. Coba kirim tanpa foto; kalau berhasil, aturan koleksi pengaduan perlu mengizinkan field foto."
+              : "Pengaduan ditolak oleh aturan Firestore. Pastikan aturan koleksi pengaduan sudah dipasang.",
+            "error"
+          );
+        } else {
+          showNotice("Pengaduan gagal dikirim. Periksa koneksi lalu coba lagi.", "error");
+        }
+
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Kirim Pengaduan";
+      }
+    });
+
+    refreshBtn.addEventListener("click", loadHistory);
+
+    logoutBtn.addEventListener("click", async () => {
+      if (!confirm("Yakin ingin keluar dari akun?")) return;
+
+      try {
+        await signOut(auth);
+        window.location.replace("login.html");
+      } catch (error) {
+        console.error("Gagal logout:", error);
+        alert("Gagal keluar dari akun. Silakan coba lagi.");
+      }
+    });
+  </script>
+
+</body>
+</html>
