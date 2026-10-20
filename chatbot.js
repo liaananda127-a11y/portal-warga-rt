@@ -21,8 +21,8 @@
     },
     {
       k: ["kontak", "telepon", "telpon", "nomor", "hubungi", "pengurus", "bu rt", "whatsapp", "nunung"],
-      a: "Kamu bisa menghubungi Bu RT (Bu Nunung) lewat WhatsApp di nomor 0896-7543-2156.",
-      link: ["Chat WhatsApp Bu RT", "https://wa.me/6289675432156"]
+      a: "Kamu bisa menghubungi Bu RT (Bu Nunung) lewat WhatsApp di nomor 0812-9940-4279.",
+      link: ["Chat WhatsApp Bu RT", "https://wa.me/6281299404279"]
     },
     {
       k: ["login", "masuk", "password", "sandi", "akun", "daftar"],
@@ -36,7 +36,7 @@
   ];
 
   const SAPAAN = ["halo", "hai", "hi", "hello", "pagi", "siang", "sore", "malam"];
-  const SAPA_JAWAB = "Halo! Aku asisten Portal Warga RT 02. Ada yang bisa kubantu? Pilih pertanyaan di bawah atau ketik sendiri.";
+  const SAPA_JAWAB = "Halo! Aku asisten Warga RT 02. Ada yang bisa kubantu? Pilih pertanyaan di bawah atau ketik sendiri.";
   const TIDAK_TAHU = "Maaf, aku belum paham pertanyaan itu. Coba pakai kata lain, atau hubungi Bu RT langsung.";
   const CEPAT = [
     "Cara mengajukan layanan",
