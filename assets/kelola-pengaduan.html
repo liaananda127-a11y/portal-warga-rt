@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kelola Pengaduan | Portal RT</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green: #16845b;
+      --dark: #10583f;
+      --bg: #f5f7f6;
+      --text: #25352c;
+      --muted: #849087;
+      --border: #e7ece8;
+    }
+
+    body { font-family: "Plus Jakarta Sans", sans-serif; background: var(--bg); color: var(--text); }
+    a { text-decoration: none; color: inherit; }
+    button, select { font: inherit; }
+
+    /* SIDEBAR */
+    .sidebar { width: 250px; height: 100vh; position: fixed; top: 0; left: 0; z-index: 100; background: var(--dark); color: white; display: flex; flex-direction: column; padding: 25px 17px; overflow-y: auto; transition: transform .25s ease; }
+    .brand { display: flex; align-items: center; gap: 12px; padding: 0 8px 30px; border-bottom: 1px solid rgba(255,255,255,.12); }
+    .brand-icon { width: 43px; height: 43px; display: grid; place-items: center; background: rgba(255,255,255,.13); border-radius: 14px; font-size: 24px; }
+    .brand-name { font-size: 14px; font-weight: 800; }
+    .brand-caption { font-size: 10px; color: #c1e5d1; margin-top: 5px; }
+    .nav-label { font-size: 10px; font-weight: 700; letter-spacing: 1.2px; color: #a6d2b9; padding: 25px 12px 11px; }
+    .nav-list { display: grid; gap: 6px; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 13px; border-radius: 10px; font-size: 12px; font-weight: 600; color: #d9eee1; transition: background .2s; }
+    .nav-item:hover, .nav-item.active { background: rgba(255,255,255,.14); color: white; }
+    .nav-icon { width: 22px; text-align: center; font-size: 17px; }
+    .sidebar-bottom { margin-top: auto; padding-top: 25px; }
+    .admin-mini { display: flex; align-items: center; gap: 10px; padding: 13px 10px; background: rgba(255,255,255,.09); border-radius: 12px; margin-bottom: 12px; }
+    .avatar { width: 36px; height: 36px; flex-shrink: 0; border-radius: 50%; background: #c7ead5; color: var(--dark); display: grid; place-items: center; font-size: 15px; font-weight: 800; }
+    .admin-info { min-width: 0; }
+    .admin-info strong { display: block; font-size: 11px; overflow-wrap: anywhere; }
+    .admin-info span { display: block; font-size: 10px; color: #c1e5d1; margin-top: 4px; }
+    .sidebar-logout { width: 100%; background: transparent; color: #ffdddd; border: 1px solid rgba(255,255,255,.2); border-radius: 10px; padding: 11px; font-size: 12px; font-weight: 700; text-align: left; cursor: pointer; }
+    .sidebar-logout:hover { background: rgba(255,255,255,.09); }
+
+    /* KONTEN */
+    .main { margin-left: 250px; min-height: 100vh; }
+    .topbar { height: 76px; background: white; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; padding: 0 34px; gap: 15px; position: sticky; top: 0; z-index: 50; }
+    .topbar-left { display: flex; align-items: center; gap: 14px; }
+    .topbar h1 { font-size: 17px; font-weight: 800; }
+    .topbar p { font-size: 11px; color: var(--muted); margin-top: 5px; }
+    .mobile-menu { display: none; border: 1px solid var(--border); background: white; border-radius: 9px; width: 38px; height: 38px; font-size: 19px; cursor: pointer; }
+    .online-badge { display: flex; align-items: center; gap: 7px; background: #e8f7ed; color: #187748; border-radius: 30px; padding: 8px 11px; font-size: 10px; font-weight: 700; white-space: nowrap; }
+    .online-dot { width: 7px; height: 7px; background: #20a45c; border-radius: 50%; }
+    .content { max-width: 1600px; margin: 0 auto; padding: 30px 34px 40px; }
+
+    .welcome { background: linear-gradient(120deg, #146c4a, #23996a); color: white; padding: 27px 30px; border-radius: 18px; margin-bottom: 28px; }
+    .welcome-label { display: inline-block; padding: 7px 11px; background: rgba(255,255,255,.15); border-radius: 20px; font-size: 10px; font-weight: 700; letter-spacing: .7px; margin-bottom: 13px; }
+    .welcome h2 { font-size: 23px; line-height: 1.5; margin-bottom: 7px; }
+    .welcome p { font-size: 12px; line-height: 1.9; color: rgba(255,255,255,.88); }
+
+    .heading { margin-bottom: 22px; }
+    .heading h2 { font-size: 17px; margin-bottom: 7px; }
+    .heading p { color: var(--muted); font-size: 11px; line-height: 1.8; }
+
+    .notice { display: none; padding: 13px 16px; border-radius: 10px; font-size: 12px; line-height: 1.7; margin-bottom: 18px; }
+    .notice.error { display: block; background: #fff0f0; color: #a52b2b; }
+    .notice.success { display: block; background: #eaf7ed; color: #217346; }
+
+    .summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-bottom: 28px; }
+    .summary-card { background: white; padding: 21px; border: 1px solid var(--border); border-radius: 15px; min-width: 0; }
+    .summary-icon { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; font-size: 20px; margin-bottom: 17px; }
+    .icon-green { background: #e5f5eb; }
+    .icon-orange { background: #fff2df; }
+    .icon-blue { background: #e7f1ff; }
+    .icon-purple { background: #f0eaff; }
+    .summary-card p { font-size: 11px; color: var(--muted); margin-bottom: 9px; }
+    .summary-card h2 { font-size: 29px; color: var(--green); }
+
+    .panel { background: white; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+    .panel-heading { padding: 22px; border-bottom: 1px solid #edf1ed; }
+    .panel-heading h2 { font-size: 15px; margin-bottom: 7px; }
+    .panel-heading p { color: var(--muted); font-size: 11px; line-height: 1.8; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 900px; }
+    th, td { padding: 15px; text-align: left; border-bottom: 1px solid #edf1ed; font-size: 11px; vertical-align: top; }
+    th { background: #f9fbf9; color: #6f7d73; font-weight: 700; }
+    td { line-height: 1.8; overflow-wrap: anywhere; }
+
+    .status { display: inline-block; padding: 6px 9px; border-radius: 20px; background: #fff4d8; color: #946500; font-size: 10px; font-weight: 700; white-space: nowrap; }
+    .status-diproses { background: #e7f1ff; color: #235a9f; }
+    .status-selesai { background: #e5f7e9; color: #217346; }
+
+    select { width: 125px; max-width: 100%; padding: 9px; border: 1px solid #dce6dd; border-radius: 8px; background: white; font-size: 11px; outline: none; }
+    select:focus { border-color: var(--green); }
+    select:disabled { opacity: .6; cursor: wait; }
+
+    .thumb { width: 64px; height: 64px; object-fit: cover; border-radius: 9px; border: 1px solid var(--border); cursor: zoom-in; display: block; }
+    .judul { font-weight: 700; display: block; margin-bottom: 3px; }
+
+    .empty, .loading { padding: 30px; text-align: center; color: var(--muted); font-size: 12px; }
+    footer { text-align: center; padding: 25px 20px; color: #89948d; font-size: 10px; }
+    .overlay { display: none; }
+
+    /* PRATINJAU FOTO */
+    .lightbox { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(10,30,20,.75); align-items: center; justify-content: center; padding: 20px; cursor: zoom-out; }
+    .lightbox.show { display: flex; }
+    .lightbox img { max-width: 100%; max-height: 90vh; border-radius: 12px; background: white; }
+
+    @media (max-width: 1200px) {
+      .summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .content { padding: 25px 22px 35px; }
+      .topbar { padding: 0 22px; }
+    }
+
+    @media (max-width: 850px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-left: 0; }
+      .mobile-menu { display: grid; place-items: center; flex-shrink: 0; }
+      .overlay.show { display: block; position: fixed; inset: 0; z-index: 90; background: rgba(10,30,20,.45); }
+      .topbar { height: 70px; padding: 0 18px; }
+      .topbar h1 { font-size: 14px; }
+      .topbar p { font-size: 10px; }
+    }
+
+    @media (max-width: 600px) {
+      .online-badge { display: none; }
+      .content { padding: 20px 14px 30px; }
+      .welcome { padding: 23px 20px; }
+      .welcome h2 { font-size: 20px; }
+      .summary { grid-template-columns: 1fr; gap: 12px; }
+      .summary-card { padding: 18px; }
+      .summary-icon { margin-bottom: 12px; }
+      .summary-card h2 { font-size: 27px; }
+      .topbar { padding: 0 13px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <aside class="sidebar" id="sidebar">
+    <a href="admin.html" class="brand">
+      <div class="brand-icon">⌂</div>
+      <div>
+        <div class="brand-name">Portal Warga RT</div>
+        <div class="brand-caption">Sistem Informasi Warga</div>
+      </div>
+    </a>
+
+    <div class="nav-label">MENU UTAMA</div>
+
+    <nav class="nav-list">
+      <a href="admin.html" class="nav-item">
+        <span class="nav-icon">▦</span>
+        <span>Dashboard</span>
+      </a>
+
+      <a href="kelola-pengumuman.html" class="nav-item">
+        <span class="nav-icon">📢</span>
+        <span>Kelola Pengumuman</span>
+      </a>
+
+      <a href="kelola-pelayanan.html" class="nav-item">
+        <span class="nav-icon">📋</span>
+        <span>Kelola Pengajuan</span>
+      </a>
+
+      <a href="kelola-pengaduan.html" class="nav-item active">
+        <span class="nav-icon">📣</span>
+        <span>Kelola Pengaduan</span>
+      </a>
+
+      <a href="kelola-warga.html" class="nav-item">
+        <span class="nav-icon">👥</span>
+        <span>Data Warga</span>
+      </a>
+
+      <a href="kelola-kontak.html" class="nav-item">
+        <span class="nav-icon">📞</span>
+        <span>Kontak Pengurus</span>
+      </a>
+    </nav>
+
+    <div class="nav-label">AKSES WARGA</div>
+
+    <nav class="nav-list">
+      <a href="pengumuman.html" class="nav-item">
+        <span class="nav-icon">📄</span>
+        <span>Lihat Pengumuman</span>
+      </a>
+
+      <a href="pelayanan.html" class="nav-item">
+        <span class="nav-icon">📝</span>
+        <span>Halaman Pelayanan</span>
+      </a>
+
+      <a href="profil.html" class="nav-item">
+        <span class="nav-icon">👤</span>
+        <span>Profil Saya</span>
+      </a>
+
+      <a href="index.html" class="nav-item">
+        <span class="nav-icon">🏠</span>
+        <span>Beranda Portal</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="admin-mini">
+        <div class="avatar" id="adminAvatar">A</div>
+        <div class="admin-info">
+          <strong id="sidebarUserName">Memuat akun...</strong>
+          <span>Administrator</span>
+        </div>
+      </div>
+
+      <button id="logoutBtn" class="sidebar-logout">
+        ↗ &nbsp; Keluar dari akun
+      </button>
+    </div>
+  </aside>
+
+  <div class="overlay" id="overlay"></div>
+
+  <main class="main">
+
+    <header class="topbar">
+      <div class="topbar-left">
+        <button
+          type="button"
+          class="mobile-menu"
+          id="mobileMenu"
+          aria-label="Buka menu navigasi"
+          aria-expanded="false"
+        >☰</button>
+
+        <div>
+          <h1>Kelola Pengaduan</h1>
+          <p>Kelola pengaduan dan aspirasi warga.</p>
+        </div>
+      </div>
+
+      <div class="online-badge">
+        <span class="online-dot"></span>
+        Portal Aktif
+      </div>
+    </header>
+
+    <div class="content">
+
+      <section class="welcome">
+        <span class="welcome-label">PANEL ADMINISTRATOR</span>
+        <h2>Kelola Pengaduan Warga 📣</h2>
+        <p>
+          Pantau pengaduan yang dikirim warga dan perbarui status
+          penanganannya melalui halaman ini.
+        </p>
+      </section>
+
+      <div id="notice" class="notice" role="status"></div>
+
+      <section class="heading">
+        <h2>Ringkasan Pengaduan</h2>
+        <p>Informasi jumlah pengaduan berdasarkan status terbaru.</p>
+      </section>
+
+      <section class="summary">
+        <div class="summary-card">
+          <div class="summary-icon icon-green">📣</div>
+          <p>Total Pengaduan</p>
+          <h2 id="totalCount">—</h2>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-icon icon-orange">⏳</div>
+          <p>Menunggu</p>
+          <h2 id="waitingCount">—</h2>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-icon icon-blue">🔧</div>
+          <p>Diproses</p>
+          <h2 id="processCount">—</h2>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-icon icon-purple">✓</div>
+          <p>Selesai</p>
+          <h2 id="doneCount">—</h2>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-heading">
+          <h2>Daftar Pengaduan Warga</h2>
+          <p>
+            Pilih status pada kolom tindakan untuk memperbarui pengaduan.
+            Klik foto untuk memperbesar.
+          </p>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Warga</th>
+                <th>Pengaduan</th>
+                <th>Foto</th>
+                <th>Tanggal</th>
+                <th>Status</th>
+                <th>Ubah Status</th>
+              </tr>
+            </thead>
+
+            <tbody id="complaintTable">
+              <tr>
+                <td colspan="7" class="loading">Memuat data pengaduan...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+
+    <footer>
+      © <span id="year"></span> Portal Informasi dan Pelayanan Warga RT
+    </footer>
+
+  </main>
+
+  <div class="lightbox" id="lightbox" aria-label="Pratinjau foto">
+    <img id="lightboxImg" alt="Foto pengaduan">
+  </div>
+
+  <script type="module">
+    import { auth, db } from "./firebase.js";
+
+    import {
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    import {
+      collection,
+      getDocs,
+      doc,
+      getDoc,
+      updateDoc,
+      query,
+      orderBy
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const table = document.getElementById("complaintTable");
+    const notice = document.getElementById("notice");
+
+    const totalCount = document.getElementById("totalCount");
+    const waitingCount = document.getElementById("waitingCount");
+    const processCount = document.getElementById("processCount");
+    const doneCount = document.getElementById("doneCount");
+
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("overlay");
+    const mobileMenu = document.getElementById("mobileMenu");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightboxImg");
+
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
+
+    let complaints = [];
+
+    // SIDEBAR RESPONSIF
+    function closeSidebar() {
+      sidebar.classList.remove("open");
+      overlay.classList.remove("show");
+      mobileMenu.setAttribute("aria-expanded", "false");
+    }
+
+    mobileMenu.addEventListener("click", () => {
+      if (sidebar.classList.contains("open")) {
+        closeSidebar();
+      } else {
+        sidebar.classList.add("open");
+        overlay.classList.add("show");
+        mobileMenu.setAttribute("aria-expanded", "true");
+      }
+    });
+
+    overlay.addEventListener("click", closeSidebar);
+
+    document.querySelectorAll(".sidebar .nav-item").forEach(link => {
+      link.addEventListener("click", () => {
+        if (window.innerWidth <= 850) closeSidebar();
+      });
+    });
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 850) closeSidebar();
+    });
+
+    // PRATINJAU FOTO
+    lightbox.addEventListener("click", () => {
+      lightbox.classList.remove("show");
+      lightboxImg.removeAttribute("src");
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") lightbox.click();
+    });
+
+    // NOTIFIKASI
+    function showNotice(message, type = "error") {
+      notice.textContent = message;
+      notice.className = "notice " + type;
+    }
+
+    function clearNotice() {
+      notice.textContent = "";
+      notice.className = "notice";
+    }
+
+    function createCell(value) {
+      const td = document.createElement("td");
+      td.textContent = value || "-";
+      return td;
+    }
+
+    function formatDate(timestamp) {
+      if (!timestamp || typeof timestamp.toDate !== "function") {
+        return "-";
+      }
+
+      return timestamp.toDate().toLocaleString("id-ID", {
+        dateStyle: "medium",
+        timeStyle: "short"
+      });
+    }
+
+    function statusClass(status) {
+      if (status === "Selesai") return "status-selesai";
+      if (status === "Diproses") return "status-diproses";
+      return "";
+    }
+
+    // Hanya foto berbentuk data gambar atau https yang ditampilkan
+    function fotoAman(foto) {
+      return typeof foto === "string" &&
+        (foto.startsWith("data:image/") || foto.startsWith("https://"));
+    }
+
+    function pelapor(item) {
+      return item.email || item.nama || item.namaWarga || item.userId || "-";
+    }
+
+    // TAMPILKAN DATA PENGADUAN
+    function renderComplaints() {
+      table.replaceChildren();
+
+      totalCount.textContent = complaints.length;
+
+      waitingCount.textContent = complaints.filter(
+        item => (item.status || "Menunggu") === "Menunggu"
+      ).length;
+
+      processCount.textContent = complaints.filter(
+        item => item.status === "Diproses"
+      ).length;
+
+      doneCount.textContent = complaints.filter(
+        item => item.status === "Selesai"
+      ).length;
+
+      if (complaints.length === 0) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+
+        cell.colSpan = 7;
+        cell.className = "empty";
+        cell.textContent = "Belum ada pengaduan dari warga.";
+
+        row.appendChild(cell);
+        table.appendChild(row);
+        return;
+      }
+
+      complaints.forEach((item, index) => {
+        const row = document.createElement("tr");
+
+        row.appendChild(createCell(index + 1));
+        row.appendChild(createCell(pelapor(item)));
+
+        // Judul dan isi pengaduan
+        const textCell = document.createElement("td");
+        const judul = document.createElement("span");
+        judul.className = "judul";
+        judul.textContent = item.judul || "-";
+        textCell.appendChild(judul);
+        textCell.appendChild(document.createTextNode(item.isi || ""));
+        row.appendChild(textCell);
+
+        // Foto (opsional)
+        const fotoCell = document.createElement("td");
+
+        if (fotoAman(item.foto)) {
+          const img = document.createElement("img");
+          img.className = "thumb";
+          img.src = item.foto;
+          img.alt = "Foto pengaduan";
+          img.addEventListener("click", () => {
+            lightboxImg.src = item.foto;
+            lightbox.classList.add("show");
+          });
+          fotoCell.appendChild(img);
+        } else {
+          fotoCell.textContent = "-";
+        }
+
+        row.appendChild(fotoCell);
+        row.appendChild(createCell(formatDate(item.createdAt)));
+
+        const currentStatus = item.status || "Menunggu";
+
+        const statusCell = document.createElement("td");
+        const badge = document.createElement("span");
+
+        badge.className = "status " + statusClass(currentStatus);
+        badge.textContent = currentStatus;
+
+        statusCell.appendChild(badge);
+        row.appendChild(statusCell);
+
+        const actionCell = document.createElement("td");
+        const select = document.createElement("select");
+
+        ["Menunggu", "Diproses", "Selesai"].forEach(status => {
+          const option = document.createElement("option");
+
+          option.value = status;
+          option.textContent = status;
+          option.selected = currentStatus === status;
+
+          select.appendChild(option);
+        });
+
+        select.addEventListener("change", async () => {
+          const newStatus = select.value;
+          const oldStatus = item.status || "Menunggu";
+
+          if (newStatus === oldStatus) return;
+
+          select.disabled = true;
+          clearNotice();
+
+          try {
+            await updateDoc(
+              doc(db, "pengaduan", item.id),
+              { status: newStatus }
+            );
+
+            item.status = newStatus;
+
+            renderComplaints();
+
+            showNotice(
+              "Status pengaduan berhasil diperbarui.",
+              "success"
+            );
+
+          } catch (error) {
+            console.error("Gagal memperbarui status:", error);
+
+            select.disabled = false;
+            select.value = oldStatus;
+
+            showNotice(
+              "Status belum bisa diperbarui. Periksa koneksi internet, lalu coba lagi."
+            );
+          }
+        });
+
+        actionCell.appendChild(select);
+        row.appendChild(actionCell);
+
+        table.appendChild(row);
+      });
+    }
+
+    // AMBIL PENGADUAN DARI FIRESTORE
+    async function loadComplaints() {
+      try {
+        const result = await getDocs(
+          query(
+            collection(db, "pengaduan"),
+            orderBy("createdAt", "desc")
+          )
+        );
+
+        complaints = result.docs.map(document => ({
+          id: document.id,
+          ...document.data()
+        }));
+
+        renderComplaints();
+
+      } catch (error) {
+        console.error("Gagal memuat pengaduan:", error);
+
+        table.replaceChildren();
+
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+
+        cell.colSpan = 7;
+        cell.className = "empty";
+        cell.textContent =
+          "Data pengaduan belum dapat dimuat. Muat ulang halaman.";
+
+        row.appendChild(cell);
+        table.appendChild(row);
+
+        showNotice(
+          "Gagal membaca data pengaduan. Pastikan akun admin memiliki akses."
+        );
+      }
+    }
+
+    // CEK LOGIN DAN HAK AKSES ADMIN
+    onAuthStateChanged(auth, async user => {
+      if (!user) {
+        window.location.replace("login.html");
+        return;
+      }
+
+      try {
+        const roleSnapshot = await getDoc(
+          doc(db, "roles", user.uid)
+        );
+
+        if (!roleSnapshot.exists() ||
+            roleSnapshot.data().role !== "admin") {
+          alert("Halaman ini hanya dapat diakses oleh admin.");
+          window.location.replace("warga.html");
+          return;
+        }
+
+        const displayName =
+          user.displayName ||
+          (user.email ? user.email.split("@")[0] : "Admin");
+
+        document.getElementById("sidebarUserName").textContent =
+          displayName;
+
+        document.getElementById("adminAvatar").textContent =
+          displayName.charAt(0).toUpperCase();
+
+        await loadComplaints();
+
+      } catch (error) {
+        console.error("Pemeriksaan admin gagal:", error);
+
+        showNotice(
+          "Gagal memverifikasi akses admin. Silakan muat ulang halaman."
+        );
+      }
+    });
+
+    // LOGOUT
+    logoutBtn.addEventListener("click", async () => {
+      if (!confirm("Yakin ingin keluar dari akun?")) return;
+
+      try {
+        await signOut(auth);
+        window.location.replace("login.html");
+
+      } catch (error) {
+        console.error("Gagal logout:", error);
+        showNotice("Gagal keluar dari akun. Silakan coba lagi.");
+      }
+    });
+  </script>
+
+</body>
+</html>
