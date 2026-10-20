@@ -20,9 +20,10 @@
       link: ["Buka Pengumuman", "pengumuman.html"]
     },
     {
+    {
       k: ["kontak", "telepon", "telpon", "nomor", "hubungi", "pengurus", "bu rt", "whatsapp", "nunung"],
-      a: "Kamu bisa menghubungi Bu RT 02 lewat WhatsApp di nomor 0812-9940-4279.",
-      link: ["Chat WhatsApp Bu RT 02", "https://wa.me/6281299404279"]
+      kontak: true
+    },
     },
     {
       k: ["login", "masuk", "password", "sandi", "akun", "daftar"],
@@ -41,11 +42,51 @@
   const CEPAT = [
     "Cara mengajukan layanan",
     "Cara membuat pengaduan",
-    "Arti status pengajuan",
+    "Arti status laporan",
     "Di mana lihat pengumuman",
     "Kontak Bu RT"
   ];
+  // Kontak cadangan, dipakai kalau data di Firebase belum diisi atau gagal dimuat
+  let KONTAK = { nama: "Bu Nunung", noWa: "6289675432156", rt: "02" };
 
+  function jawabKontak() {
+    return {
+      a: "Kamu bisa menghubungi Bu RT " + KONTAK.rt + " (" + KONTAK.nama +
+         ") lewat WhatsApp di nomor 0" + KONTAK.noWa.slice(2) + ".",
+      link: ["Chat WhatsApp " + KONTAK.nama, "https://wa.me/" + KONTAK.noWa]
+    };
+  }
+
+  async function muatKontak() {
+    try {
+      const { auth, db } = await import("./firebase.js");
+      const { onAuthStateChanged } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js");
+      const { doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+
+      const user = await new Promise(function (resolve) {
+        const berhenti = onAuthStateChanged(auth, function (u) {
+          berhenti();
+          resolve(u);
+        });
+      });
+
+      if (!user) return;
+
+      const snap = await getDoc(doc(db, "pengaturan", "kontak"));
+
+      if (snap.exists()) {
+        const d = snap.data();
+
+        if (d.namaPengurus && /^62[0-9]{8,13}$/.test(d.noWa || "")) {
+          KONTAK = { nama: d.namaPengurus, noWa: d.noWa, rt: d.rt || KONTAK.rt };
+        }
+      }
+    } catch (e) {
+      console.error("Kontak RT memakai data cadangan:", e);
+    }
+  }
+
+  muatKontak();
   const css = `
     #cb-btn{position:fixed;right:18px;bottom:18px;width:56px;height:56px;border-radius:50%;border:none;background:#16845b;color:#fff;font-size:25px;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.22);z-index:9999;display:grid;place-items:center;transition:transform .2s,background .2s}
     #cb-btn:hover{background:#106b49;transform:scale(1.06)}
@@ -158,9 +199,12 @@
       }
     });
 
-    if (terbaik) return terbaik;
+    if (terbaik) return terbaik.kontak ? jawabKontak() : terbaik;
     if (kata.some(function (w) { return SAPAAN.indexOf(w) !== -1; })) return { a: SAPA_JAWAB };
-    return { a: TIDAK_TAHU };
+        return {
+      a: TIDAK_TAHU,
+      link: ["Chat WhatsApp " + KONTAK.nama, "https://wa.me/" + KONTAK.noWa]
+    };
   }
 
   function kirim(teks) {
