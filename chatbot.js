@@ -20,10 +20,8 @@
       link: ["Buka Pengumuman", "pengumuman.html"]
     },
     {
-    {
       k: ["kontak", "telepon", "telpon", "nomor", "hubungi", "pengurus", "bu rt", "whatsapp", "nunung"],
       kontak: true
-    },
     },
     {
       k: ["login", "masuk", "password", "sandi", "akun", "daftar"],
@@ -46,8 +44,8 @@
     "Di mana lihat pengumuman",
     "Kontak Bu RT"
   ];
-  // Kontak cadangan, dipakai kalau data di Firebase belum diisi atau gagal dimuat
-  let KONTAK = { nama: "Bu Nunung", noWa: "6289675432156", rt: "02" };
+
+  let KONTAK = { nama: "Bu Nunung", noWa: "6281299404279", rt: "02" };
 
   function jawabKontak() {
     return {
@@ -59,12 +57,12 @@
 
   async function muatKontak() {
     try {
-      const { auth, db } = await import("./firebase.js");
-      const { onAuthStateChanged } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js");
-      const { doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+      const fb = await import("./firebase.js");
+      const au = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js");
+      const fs = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
 
       const user = await new Promise(function (resolve) {
-        const berhenti = onAuthStateChanged(auth, function (u) {
+        const berhenti = au.onAuthStateChanged(fb.auth, function (u) {
           berhenti();
           resolve(u);
         });
@@ -72,7 +70,7 @@
 
       if (!user) return;
 
-      const snap = await getDoc(doc(db, "pengaturan", "kontak"));
+      const snap = await fs.getDoc(fs.doc(fb.db, "pengaturan", "kontak"));
 
       if (snap.exists()) {
         const d = snap.data();
@@ -87,6 +85,7 @@
   }
 
   muatKontak();
+
   const css = `
     #cb-btn{position:fixed;right:18px;bottom:18px;width:56px;height:56px;border-radius:50%;border:none;background:#16845b;color:#fff;font-size:25px;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.22);z-index:9999;display:grid;place-items:center;transition:transform .2s,background .2s}
     #cb-btn:hover{background:#106b49;transform:scale(1.06)}
@@ -128,7 +127,7 @@
   const box = document.createElement("div");
   box.id = "cb-box";
   box.innerHTML =
-    '<div id="cb-head"><span>Asisten Portal Warga RT</span>' +
+    '<div id="cb-head"><span>Asisten Warga RT 02</span>' +
     '<button id="cb-tutup" type="button" aria-label="Tutup">×</button></div>' +
     '<div id="cb-msgs" aria-live="polite"></div>' +
     '<div id="cb-quick"></div>' +
@@ -201,7 +200,8 @@
 
     if (terbaik) return terbaik.kontak ? jawabKontak() : terbaik;
     if (kata.some(function (w) { return SAPAAN.indexOf(w) !== -1; })) return { a: SAPA_JAWAB };
-        return {
+
+    return {
       a: TIDAK_TAHU,
       link: ["Chat WhatsApp " + KONTAK.nama, "https://wa.me/" + KONTAK.noWa]
     };
