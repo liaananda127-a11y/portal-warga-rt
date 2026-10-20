@@ -463,14 +463,17 @@
             await loadHistory();
 
         } catch (error) {
-            console.error("Gagal mengirim pengajuan:", error);
+             console.error("Gagal mengirim pengajuan:", error);
 
-            showMessage(
-                error.code === "permission-denied"
-                    ? "Pengajuan belum bisa disimpan. Aturan keamanan Firestore perlu diperiksa."
-                    : "Pengajuan gagal dikirim. Periksa koneksi dan konfigurasi Firebase, lalu coba lagi.",
-                "error"
-            );
+            let pesan = "Pengajuan gagal dikirim. Periksa koneksi internetmu, lalu coba lagi.";
+
+            if (error.code === "permission-denied") {
+                pesan = "Pengajuan belum bisa dikirim. Silakan hubungi pengurus RT.";
+            } else if (!error.code) {
+                pesan = error.message;
+            }
+
+            showMessage(pesan, "error");
         } finally {
             isSubmitting = false;
             submitButton.disabled = false;
