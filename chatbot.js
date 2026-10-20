@@ -21,8 +21,8 @@
     },
     {
       k: ["kontak", "telepon", "telpon", "nomor", "hubungi", "pengurus", "bu rt", "whatsapp", "nunung"],
-      a: "Kamu bisa menghubungi Bu RT (Bu Nunung) lewat WhatsApp di nomor 0812-9940-4279.",
-      link: ["Chat WhatsApp Bu RT", "https://wa.me/6281299404279"]
+      a: "Kamu bisa menghubungi Bu RT 02 lewat WhatsApp di nomor 0812-9940-4279.",
+      link: ["Chat WhatsApp Bu RT 02", "https://wa.me/6281299404279"]
     },
     {
       k: ["login", "masuk", "password", "sandi", "akun", "daftar"],
